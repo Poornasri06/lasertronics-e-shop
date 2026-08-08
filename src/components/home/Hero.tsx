@@ -43,6 +43,8 @@ export function Hero() {
     return () => clearInterval(id);
   }, []);
 
+  const slide = slides[index]!;
+
   return (
     <section className="relative isolate overflow-hidden bg-ink">
       {slides.map((s, i) => (
@@ -64,21 +66,21 @@ export function Hero() {
       <div className="container-page relative flex min-h-[26rem] flex-col justify-center py-16 sm:min-h-[30rem] lg:min-h-[34rem] lg:py-24">
         <div key={index} className="max-w-xl animate-fade-up">
           <p className="text-xs font-bold uppercase tracking-[0.22em] text-primary">
-            {slides[index].eyebrow}
+            {slide.eyebrow}
           </p>
           <h1 className="mt-3 text-3xl font-extrabold leading-tight text-ink-foreground sm:text-4xl lg:text-5xl">
-            {slides[index].title}
+            {slide.title}
           </h1>
           <p className="mt-4 max-w-md text-sm leading-relaxed text-ink-muted sm:text-base">
-            {slides[index].copy}
+            {slide.copy}
           </p>
           <div className="mt-7 flex flex-wrap gap-3">
             <Link
               to="/category/$slug"
-              params={{ slug: slides[index].slug }}
+              params={{ slug: slide.slug }}
               className="inline-flex min-h-12 items-center gap-2 rounded-full bg-primary px-6 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary-dark"
             >
-              {slides[index].cta}
+              {slide.cta}
               <ArrowRight className="size-4" aria-hidden />
             </Link>
             <Link
