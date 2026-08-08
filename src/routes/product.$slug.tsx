@@ -164,7 +164,7 @@ function ProductPage() {
               Specifications
             </h2>
             <dl className="mt-3 divide-y divide-border text-sm">
-              {product.specs.map((s) => (
+              {product.specs.map((s: { label: string; value: string }) => (
                 <div key={s.label} className="grid grid-cols-2 gap-3 py-2.5">
                   <dt className="text-muted-foreground">{s.label}</dt>
                   <dd className="font-medium">{s.value}</dd>
