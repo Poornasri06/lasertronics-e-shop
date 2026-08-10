@@ -100,7 +100,7 @@ function Index() {
         </div>
       </section>
 
-      {categories.slice(0, 2).map((c) => (
+      {categories.map((c) => (
         <CategoryRail key={c.slug} category={c} />
       ))}
 

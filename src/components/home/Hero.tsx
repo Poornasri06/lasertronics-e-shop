@@ -27,6 +27,7 @@ const slides = [
     cta: "Shop accessories",
     objectFit: "object-cover",
     objectPosition: "object-center",
+    light: true,
   },
   {
     image: hero3,
@@ -50,18 +51,17 @@ export function Hero() {
   }, []);
 
   const slide = slides[index]!;
-
-  const isLight = index === 1;
+  const light = Boolean((slide as { light?: boolean }).light);
   const isBlack = index === 0;
 
-  const sectionBgClass = isLight
-    ? "bg-slate-50"
+  const sectionBgClass = light
+    ? "bg-muted"
     : isBlack
     ? "bg-black"
     : "bg-ink";
 
-  const gradientOverlayClass = isLight
-    ? "bg-gradient-to-r from-slate-50 via-slate-50/90 to-slate-50/20"
+  const gradientOverlayClass = light
+    ? "bg-gradient-to-r from-muted via-muted/85 to-muted/40"
     : isBlack
     ? "bg-gradient-to-r from-black via-black/85 to-transparent"
     : "bg-gradient-to-r from-ink via-ink/85 to-ink/30";
@@ -78,7 +78,7 @@ export function Hero() {
           height={900}
           loading={i === 0 ? "eager" : "lazy"}
           className={`absolute inset-0 size-full ${s.objectFit} ${s.objectPosition} transition-opacity duration-1000 ${
-            i === index ? "opacity-70" : "opacity-0"
+            i === index ? (light ? "opacity-40" : "opacity-70") : "opacity-0"
           }`}
         />
       ))}
@@ -89,10 +89,18 @@ export function Hero() {
           <p className="text-xs font-bold uppercase tracking-[0.22em] text-primary">
             {slide.eyebrow}
           </p>
-          <h1 className={`mt-3 text-3xl font-extrabold leading-tight transition-colors duration-1000 sm:text-4xl lg:text-5xl ${isLight ? "text-slate-900" : "text-ink-foreground"}`}>
+          <h1
+            className={`mt-3 text-3xl font-extrabold leading-tight transition-colors duration-1000 sm:text-4xl lg:text-5xl ${
+              light ? "text-foreground" : "text-ink-foreground"
+            }`}
+          >
             {slide.title}
           </h1>
-          <p className={`mt-4 max-w-md text-sm leading-relaxed transition-colors duration-1000 sm:text-base ${isLight ? "text-slate-600" : "text-ink-muted"}`}>
+          <p
+            className={`mt-4 max-w-md text-sm leading-relaxed transition-colors duration-1000 sm:text-base ${
+              light ? "text-muted-foreground" : "text-ink-muted"
+            }`}
+          >
             {slide.copy}
           </p>
           <div className="mt-7 flex flex-wrap gap-3">
@@ -106,10 +114,10 @@ export function Hero() {
             </Link>
             <Link
               to="/shop"
-              className={`inline-flex min-h-12 items-center rounded-full border transition-colors duration-300 px-6 text-sm font-bold ${
-                isLight
-                  ? "border-slate-300 text-slate-800 hover:border-primary hover:text-primary"
-                  : "border-ink-muted/40 text-ink-foreground hover:border-primary hover:text-primary"
+              className={`inline-flex min-h-12 items-center rounded-full border px-6 text-sm font-bold transition-colors duration-300 hover:border-primary hover:text-primary ${
+                light
+                  ? "border-border text-foreground"
+                  : "border-ink-muted/40 text-ink-foreground"
               }`}
             >
               Browse all products
@@ -127,9 +135,9 @@ export function Hero() {
               className={`h-1.5 rounded-full transition-all ${
                 i === index
                   ? "w-10 bg-primary"
-                  : isLight
-                  ? "w-5 bg-slate-300"
-                  : "w-5 bg-ink-muted/40"
+                  : light
+                    ? "w-5 bg-foreground/20"
+                    : "w-5 bg-ink-muted/40"
               }`}
             />
           ))}
