@@ -32,6 +32,7 @@ const slides = [
     to: "/category/$slug",
     slug: "repair-kits",
     cta: "Shop repair tools",
+    light: true,
   },
 ];
 
@@ -44,9 +45,12 @@ export function Hero() {
   }, []);
 
   const slide = slides[index]!;
+  const light = Boolean((slide as { light?: boolean }).light);
 
   return (
-    <section className="relative isolate overflow-hidden bg-ink">
+    <section
+      className={`relative isolate overflow-hidden ${light ? "bg-background" : "bg-ink"}`}
+    >
       {slides.map((s, i) => (
         <img
           key={s.image}
@@ -57,21 +61,35 @@ export function Hero() {
           height={900}
           loading={i === 0 ? "eager" : "lazy"}
           className={`absolute inset-0 size-full object-cover transition-opacity duration-1000 ${
-            i === index ? "opacity-70" : "opacity-0"
+            i === index ? (light ? "opacity-25" : "opacity-70") : "opacity-0"
           }`}
         />
       ))}
-      <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/85 to-ink/30" />
+      <div
+        className={
+          light
+            ? "absolute inset-0 bg-gradient-to-r from-background via-background/90 to-background/50"
+            : "absolute inset-0 bg-gradient-to-r from-ink via-ink/85 to-ink/30"
+        }
+      />
 
       <div className="container-page relative flex min-h-[26rem] flex-col justify-center py-16 sm:min-h-[30rem] lg:min-h-[34rem] lg:py-24">
         <div key={index} className="max-w-xl animate-fade-up">
           <p className="text-xs font-bold uppercase tracking-[0.22em] text-primary">
             {slide.eyebrow}
           </p>
-          <h1 className="mt-3 text-3xl font-extrabold leading-tight text-ink-foreground sm:text-4xl lg:text-5xl">
+          <h1
+            className={`mt-3 text-3xl font-extrabold leading-tight sm:text-4xl lg:text-5xl ${
+              light ? "text-foreground" : "text-ink-foreground"
+            }`}
+          >
             {slide.title}
           </h1>
-          <p className="mt-4 max-w-md text-sm leading-relaxed text-ink-muted sm:text-base">
+          <p
+            className={`mt-4 max-w-md text-sm leading-relaxed sm:text-base ${
+              light ? "text-muted-foreground" : "text-ink-muted"
+            }`}
+          >
             {slide.copy}
           </p>
           <div className="mt-7 flex flex-wrap gap-3">
@@ -85,7 +103,11 @@ export function Hero() {
             </Link>
             <Link
               to="/shop"
-              className="inline-flex min-h-12 items-center rounded-full border border-ink-muted/40 px-6 text-sm font-bold text-ink-foreground transition-colors hover:border-primary hover:text-primary"
+              className={`inline-flex min-h-12 items-center rounded-full border px-6 text-sm font-bold transition-colors hover:border-primary hover:text-primary ${
+                light
+                  ? "border-border text-foreground"
+                  : "border-ink-muted/40 text-ink-foreground"
+              }`}
             >
               Browse all products
             </Link>
@@ -100,7 +122,11 @@ export function Hero() {
               aria-label={`Show slide ${i + 1}`}
               onClick={() => setIndex(i)}
               className={`h-1.5 rounded-full transition-all ${
-                i === index ? "w-10 bg-primary" : "w-5 bg-ink-muted/40"
+                i === index
+                  ? "w-10 bg-primary"
+                  : light
+                    ? "w-5 bg-foreground/20"
+                    : "w-5 bg-ink-muted/40"
               }`}
             />
           ))}
