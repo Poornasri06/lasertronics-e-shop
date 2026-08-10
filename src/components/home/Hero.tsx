@@ -32,6 +32,7 @@ const slides = [
     to: "/category/$slug",
     slug: "repair-kits",
     cta: "Shop repair tools",
+    light: true,
   },
 ];
 
