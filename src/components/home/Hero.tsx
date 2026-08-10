@@ -23,6 +23,7 @@ const slides = [
     to: "/category/$slug",
     slug: "mobile-accessories",
     cta: "Shop accessories",
+    light: true,
   },
   {
     image: hero3,
@@ -32,7 +33,6 @@ const slides = [
     to: "/category/$slug",
     slug: "repair-kits",
     cta: "Shop repair tools",
-    light: true,
   },
 ];
 
