@@ -23,6 +23,7 @@ const slides = [
     to: "/category/$slug",
     slug: "mobile-accessories",
     cta: "Shop accessories",
+    light: true,
   },
   {
     image: hero3,
@@ -32,7 +33,6 @@ const slides = [
     to: "/category/$slug",
     slug: "repair-kits",
     cta: "Shop repair tools",
-    light: true,
   },
 ];
 
@@ -48,9 +48,7 @@ export function Hero() {
   const light = Boolean((slide as { light?: boolean }).light);
 
   return (
-    <section
-      className={`relative isolate overflow-hidden ${light ? "bg-background" : "bg-ink"}`}
-    >
+    <section className={`relative isolate overflow-hidden ${light ? "bg-muted" : "bg-ink"}`}>
       {slides.map((s, i) => (
         <img
           key={s.image}
@@ -61,14 +59,14 @@ export function Hero() {
           height={900}
           loading={i === 0 ? "eager" : "lazy"}
           className={`absolute inset-0 size-full object-cover transition-opacity duration-1000 ${
-            i === index ? (light ? "opacity-25" : "opacity-70") : "opacity-0"
+            i === index ? (light ? "opacity-40" : "opacity-70") : "opacity-0"
           }`}
         />
       ))}
       <div
         className={
           light
-            ? "absolute inset-0 bg-gradient-to-r from-background via-background/90 to-background/50"
+            ? "absolute inset-0 bg-gradient-to-r from-muted via-muted/85 to-muted/40"
             : "absolute inset-0 bg-gradient-to-r from-ink via-ink/85 to-ink/30"
         }
       />
