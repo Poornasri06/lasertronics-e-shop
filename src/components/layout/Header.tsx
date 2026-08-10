@@ -56,7 +56,7 @@ export function Header() {
                 Lasertronics
               </span>
               <span className="hidden text-[10px] uppercase tracking-[0.18em] text-muted-foreground sm:block">
-                Electronics Store
+                Prototype by ValGrow Labs
               </span>
             </span>
           </Link>
