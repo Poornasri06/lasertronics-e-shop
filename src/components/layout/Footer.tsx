@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { MapPin, Phone, Mail } from "lucide-react";
-import logoAsset from "@/assets/lasertronics-logo.asset.json";
+import logoAsset from "@/assets/logo.jpg";
 import { categories } from "@/data/products";
 
 export function Footer() {
@@ -10,7 +10,7 @@ export function Footer() {
         <div>
           <div className="flex items-center gap-2.5">
             <img
-              src={logoAsset.url}
+              src={logoAsset}
               alt="Lasertronics logo"
               width={40}
               height={40}

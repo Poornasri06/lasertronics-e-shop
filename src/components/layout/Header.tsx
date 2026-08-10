@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Menu, X, ShoppingCart, Search, ChevronRight, Phone } from "lucide-react";
-import logoAsset from "@/assets/lasertronics-logo.asset.json";
+import logoAsset from "@/assets/logo.jpg";
 import { categories } from "@/data/products";
 import { useCart } from "@/lib/cart";
 
@@ -45,7 +45,7 @@ export function Header() {
         <div className="container-page grid h-16 grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 lg:h-20">
           <Link to="/" className="flex min-w-0 items-center gap-2.5">
             <img
-              src={logoAsset.url}
+              src={logoAsset}
               alt="Lasertronics logo"
               width={40}
               height={40}

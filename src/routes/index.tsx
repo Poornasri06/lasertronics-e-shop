@@ -104,8 +104,12 @@ function Index() {
         <CategoryRail key={c.slug} category={c} />
       ))}
 
+      {categories.slice(2).map((c) => (
+        <CategoryRail key={c.slug} category={c} />
+      ))}
+
       {/* Dark solutions band */}
-      <section className="bg-ink py-16 text-ink-foreground lg:py-20">
+      <section className="bg-ink py-16 text-ink-foreground lg:py-20 -mb-20">
         <div className="container-page">
           <p className="text-xs font-bold uppercase tracking-[0.22em] text-primary">Solutions</p>
           <h2 className="mt-3 max-w-2xl text-2xl font-extrabold sm:text-3xl lg:text-4xl">
@@ -136,10 +140,6 @@ function Index() {
           </Link>
         </div>
       </section>
-
-      {categories.slice(2).map((c) => (
-        <CategoryRail key={c.slug} category={c} />
-      ))}
     </SiteLayout>
   );
 }
