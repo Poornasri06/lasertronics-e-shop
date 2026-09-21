@@ -8,16 +8,16 @@ import { categories, products } from "@/data/products";
 export const Route = createFileRoute("/shop")({
   head: () => ({
     meta: [
-      { title: "All Products | Lasertronics Sri Lanka" },
+      { title: "All Products | LASERTRONICS PVT LTD Sri Lanka" },
       {
         name: "description",
         content:
-          "Browse every Lasertronics product: mobile accessories, components, TV accessories, IoT boards and repair kits with LKR pricing.",
+          "Browse every LASERTRONICS PVT LTD product: mobile accessories, components, TV accessories, IoT boards and repair kits with LKR pricing.",
       },
-      { property: "og:title", content: "All Products | Lasertronics" },
+      { property: "og:title", content: "All Products | LASERTRONICS PVT LTD" },
       {
         property: "og:description",
-        content: "The full Lasertronics electronics catalogue, priced in LKR.",
+        content: "The full LASERTRONICS PVT LTD electronics catalogue, priced in LKR.",
       },
     ],
   }),

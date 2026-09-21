@@ -12,12 +12,12 @@ export const Route = createFileRoute("/category/$slug")({
   },
   head: ({ loaderData }) => {
     const name = loaderData?.category.name ?? "Category";
-    const desc = loaderData?.category.description ?? "Browse Lasertronics products.";
+    const desc = loaderData?.category.description ?? "Browse LASERTRONICS PVT LTD products.";
     return {
       meta: [
-        { title: `${name} | Lasertronics Sri Lanka` },
+        { title: `${name} | LASERTRONICS PVT LTD Sri Lanka` },
         { name: "description", content: desc },
-        { property: "og:title", content: `${name} | Lasertronics` },
+        { property: "og:title", content: `${name} | LASERTRONICS PVT LTD` },
         { property: "og:description", content: desc },
       ],
     };
@@ -31,35 +31,43 @@ function CategoryPage() {
 
   return (
     <SiteLayout>
-      <div className="bg-ink py-10 text-ink-foreground lg:py-14">
+      <div className="bg-ink py-10 text-ink-foreground lg:py-14 border-b border-ink-muted/15">
         <div className="container-page">
-          <nav className="flex items-center gap-1 text-xs text-ink-muted">
-            <Link to="/" className="hover:text-primary">
+          <nav className="flex items-center gap-1.5 text-xs text-ink-muted">
+            <Link to="/" className="hover:text-primary transition-colors">
               Home
             </Link>
             <ChevronRight className="size-3" aria-hidden />
-            <span className="truncate text-ink-foreground">{category.name}</span>
+            <span className="truncate text-ink-foreground font-medium">{category.name}</span>
           </nav>
-          <p className="mt-5 text-xs font-bold uppercase tracking-[0.2em] text-primary">
+          <span className="mt-4 inline-block rounded-full bg-primary/20 px-3 py-1 text-xs font-bold uppercase tracking-[0.2em] text-primary">
             {category.tagline}
-          </p>
-          <h1 className="mt-2 text-3xl font-extrabold sm:text-4xl">{category.name}</h1>
-          <p className="mt-3 max-w-xl text-sm leading-relaxed text-ink-muted">
+          </span>
+          <h1 className="mt-2 font-display text-3xl font-extrabold sm:text-4xl text-white">
+            {category.name}
+          </h1>
+          <p className="mt-2.5 max-w-xl text-xs sm:text-sm leading-relaxed text-ink-muted">
             {category.description}
           </p>
         </div>
       </div>
 
       <div className="container-page py-10 lg:py-14">
-        <p className="text-sm text-muted-foreground">{items.length} products</p>
-        <div className="mt-5 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4 xl:grid-cols-5">
+        <div className="flex items-center justify-between border-b border-border pb-4">
+          <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+            Showing all {items.length} products
+          </p>
+          <span className="text-xs font-semibold text-primary">Sri Lanka In-Stock</span>
+        </div>
+
+        <div className="mt-6 grid grid-cols-2 gap-3.5 sm:gap-4 lg:grid-cols-4 xl:grid-cols-5">
           {items.map((p) => (
             <ProductCard key={p.slug} product={p} />
           ))}
         </div>
 
         <div className="mt-14 border-t border-border pt-8">
-          <h2 className="text-lg font-bold">Other categories</h2>
+          <h2 className="text-base font-bold font-display">Other Categories</h2>
           <div className="mt-4 flex flex-wrap gap-2">
             {categories
               .filter((c) => c.slug !== category.slug)
@@ -68,7 +76,7 @@ function CategoryPage() {
                   key={c.slug}
                   to="/category/$slug"
                   params={{ slug: c.slug }}
-                  className="rounded-full border border-border bg-surface px-4 py-2 text-xs font-semibold transition-colors hover:border-primary hover:text-primary"
+                  className="rounded-full border border-border bg-surface px-4 py-2 text-xs font-semibold text-foreground/80 transition-all hover:border-primary hover:bg-accent/40 hover:text-primary"
                 >
                   {c.name}
                 </Link>
@@ -79,3 +87,4 @@ function CategoryPage() {
     </SiteLayout>
   );
 }
+

@@ -79,14 +79,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lasertronics | Electronics Store Sri Lanka" },
+      { title: "LASERTRONICS PVT LTD | Electronics Store Sri Lanka" },
       {
         name: "description",
         content:
           "Mobile accessories, components, TV accessories, IoT boards and repair kits with LKR pricing and island-wide delivery.",
       },
-      { name: "author", content: "Lasertronics" },
-      { property: "og:title", content: "Lasertronics | Electronics Store Sri Lanka" },
+      { name: "author", content: "LASERTRONICS PVT LTD" },
+      { property: "og:title", content: "LASERTRONICS PVT LTD | Electronics Store Sri Lanka" },
       {
         property: "og:description",
         content: "Genuine electronics, IoT and repair supplies delivered across Sri Lanka.",

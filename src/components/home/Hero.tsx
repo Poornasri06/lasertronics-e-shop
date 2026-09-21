@@ -1,44 +1,34 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import hero1 from "@/assets/hero-1-new.png";
 import hero2 from "@/assets/hero-2.jpg";
 import hero3 from "@/assets/hero-3.jpg";
 
 const slides = [
   {
+    image: hero3,
+    eyebrow: "REPAIR KITS",
+    title: "Bench-grade tools for real work",
+    copy: "Professional soldering stations, ESD-safe kits and precision tools for technicians and makers.",
+    slug: "repair-kits",
+    cta: "Shop Repair Tools",
+  },
+  {
     image: hero1,
-    eyebrow: "IoT & Microcontrollers",
+    eyebrow: "IOT & MICROCONTROLLERS",
     title: "Build connected things, faster",
     copy: "Dev boards, sensors and starter kits stocked in Colombo and shipped island-wide.",
-    to: "/category/$slug",
     slug: "iot-and-microcontrollers",
-    cta: "Shop dev boards",
-    objectFit: "object-contain",
-    objectPosition: "object-right",
+    cta: "Shop Dev Boards",
   },
   {
     image: hero2,
-    eyebrow: "Mobile Accessories",
+    eyebrow: "MOBILE ACCESSORIES",
     title: "Power that keeps up with you",
     copy: "GaN chargers, 100W cables and magnetic power banks built for everyday punishment.",
-    to: "/category/$slug",
     slug: "mobile-accessories",
-    cta: "Shop accessories",
-    objectFit: "object-cover",
-    objectPosition: "object-center",
-    light: true,
-  },
-  {
-    image: hero3,
-    eyebrow: "Repair Kits",
-    title: "Bench-grade tools for real work",
-    copy: "Soldering stations, ESD-safe kits and precision drivers trusted by service centres.",
-    to: "/category/$slug",
-    slug: "repair-kits",
-    cta: "Shop repair tools",
-    objectFit: "object-cover",
-    objectPosition: "object-center",
+    cta: "Shop Accessories",
   },
 ];
 
@@ -51,98 +41,102 @@ export function Hero() {
   }, []);
 
   const slide = slides[index]!;
-  const light = Boolean((slide as { light?: boolean }).light);
-  const isBlack = index === 0;
-
-  const sectionBgClass = light
-    ? "bg-muted"
-    : isBlack
-    ? "bg-black"
-    : "bg-ink";
-
-  const gradientOverlayClass = light
-    ? "bg-gradient-to-r from-muted via-muted/85 to-muted/40"
-    : isBlack
-    ? "bg-gradient-to-r from-black via-black/85 to-transparent"
-    : "bg-gradient-to-r from-ink via-ink/85 to-ink/30";
 
   return (
-    <section className={`relative isolate overflow-hidden transition-colors duration-1000 ${sectionBgClass}`}>
-      {slides.map((s, i) => (
-        <img
-          key={s.image}
-          src={s.image}
-          alt=""
-          aria-hidden={i !== index}
-          width={1600}
-          height={900}
-          loading={i === 0 ? "eager" : "lazy"}
-          className={`absolute inset-0 size-full ${s.objectFit} ${s.objectPosition} transition-opacity duration-1000 ${
-            i === index ? (light ? "opacity-40" : "opacity-70") : "opacity-0"
-          }`}
-        />
-      ))}
-      <div className={`absolute inset-0 transition-all duration-1000 ${gradientOverlayClass}`} />
+    <section className="relative overflow-hidden bg-gradient-to-b from-secondary/40 via-surface to-surface py-8 sm:py-12 lg:py-16">
+      <div className="container-page relative">
+        <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-12 lg:gap-12">
+          {/* Left Column Text & CTAs */}
+          <div key={index} className="animate-fade-up lg:col-span-7">
+            <span className="inline-block rounded-full bg-accent px-3 py-1 text-xs font-bold uppercase tracking-[0.2em] text-primary">
+              {slide.eyebrow}
+            </span>
+            <h1 className="mt-4 font-display text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl lg:text-5xl lg:leading-[1.15]">
+              {slide.title}
+            </h1>
+            <p className="mt-4 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+              {slide.copy}
+            </p>
 
-      <div className="container-page relative flex min-h-[26rem] flex-col justify-center py-16 sm:min-h-[30rem] lg:min-h-[34rem] lg:py-24">
-        <div key={index} className="max-w-xl animate-fade-up">
-          <p className="text-xs font-bold uppercase tracking-[0.22em] text-primary">
-            {slide.eyebrow}
-          </p>
-          <h1
-            className={`mt-3 text-3xl font-extrabold leading-tight transition-colors duration-1000 sm:text-4xl lg:text-5xl ${
-              light ? "text-foreground" : "text-ink-foreground"
-            }`}
-          >
-            {slide.title}
-          </h1>
-          <p
-            className={`mt-4 max-w-md text-sm leading-relaxed transition-colors duration-1000 sm:text-base ${
-              light ? "text-muted-foreground" : "text-ink-muted"
-            }`}
-          >
-            {slide.copy}
-          </p>
-          <div className="mt-7 flex flex-wrap gap-3">
-            <Link
-              to="/category/$slug"
-              params={{ slug: slide.slug }}
-              className="inline-flex min-h-12 items-center gap-2 rounded-full bg-primary px-6 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary-dark"
-            >
-              {slide.cta}
-              <ArrowRight className="size-4" aria-hidden />
-            </Link>
-            <Link
-              to="/shop"
-              className={`inline-flex min-h-12 items-center rounded-full border px-6 text-sm font-bold transition-colors duration-300 hover:border-primary hover:text-primary ${
-                light
-                  ? "border-border text-foreground"
-                  : "border-ink-muted/40 text-ink-foreground"
-              }`}
-            >
-              Browse all products
-            </Link>
+            <div className="mt-8 flex flex-wrap items-center gap-3.5">
+              <Link
+                to="/category/$slug"
+                params={{ slug: slide.slug }}
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-primary px-7 text-sm font-bold text-primary-foreground shadow-md transition-all hover:bg-primary-dark hover:shadow-lg active:scale-95"
+              >
+                {slide.cta}
+                <ArrowRight className="size-4" aria-hidden />
+              </Link>
+
+              <Link
+                to="/shop"
+                className="inline-flex min-h-12 items-center justify-center rounded-full border-2 border-primary/40 bg-surface px-6 text-sm font-bold text-primary transition-all hover:border-primary hover:bg-accent/50 active:scale-95"
+              >
+                Browse All Products
+              </Link>
+            </div>
+
+            {/* Slider Dots */}
+            <div className="mt-10 flex items-center gap-3">
+              <div className="flex gap-2">
+                {slides.map((_, i) => (
+                  <button
+                    key={i}
+                    type="button"
+                    aria-label={`Go to slide ${i + 1}`}
+                    onClick={() => setIndex(i)}
+                    className={`h-2.5 rounded-full transition-all duration-300 ${
+                      i === index ? "w-9 bg-primary" : "w-2.5 bg-border hover:bg-primary/50"
+                    }`}
+                  />
+                ))}
+              </div>
+              <span className="ml-2 text-xs font-bold text-muted-foreground">
+                0{index + 1} / 0{slides.length}
+              </span>
+            </div>
           </div>
-        </div>
 
-        <div className="mt-10 flex gap-2">
-          {slides.map((s, i) => (
-            <button
-              key={s.image}
-              type="button"
-              aria-label={`Show slide ${i + 1}`}
-              onClick={() => setIndex(i)}
-              className={`h-1.5 rounded-full transition-all ${
-                i === index
-                  ? "w-10 bg-primary"
-                  : light
-                    ? "w-5 bg-foreground/20"
-                    : "w-5 bg-ink-muted/40"
-              }`}
-            />
-          ))}
+          {/* Right Column Product Image Showcase */}
+          <div className="relative lg:col-span-5">
+            <div className="relative aspect-4/3 overflow-hidden rounded-2xl border border-border/80 bg-surface shadow-lift sm:aspect-16/10 lg:aspect-square">
+              {slides.map((s, i) => (
+                <img
+                  key={s.slug}
+                  src={s.image}
+                  alt={s.title}
+                  width={1000}
+                  height={1000}
+                  className={`absolute inset-0 size-full object-cover transition-opacity duration-700 ${
+                    i === index ? "opacity-100" : "opacity-0 pointer-events-none"
+                  }`}
+                />
+              ))}
+
+              {/* Prev / Next controls */}
+              <div className="absolute bottom-3 right-3 flex gap-2">
+                <button
+                  type="button"
+                  aria-label="Previous slide"
+                  onClick={() => setIndex((i) => (i - 1 + slides.length) % slides.length)}
+                  className="grid size-9 place-items-center rounded-full bg-surface/90 text-foreground shadow-sm transition-colors hover:bg-primary hover:text-primary-foreground"
+                >
+                  <ChevronLeft className="size-4" aria-hidden />
+                </button>
+                <button
+                  type="button"
+                  aria-label="Next slide"
+                  onClick={() => setIndex((i) => (i + 1) % slides.length)}
+                  className="grid size-9 place-items-center rounded-full bg-surface/90 text-foreground shadow-sm transition-colors hover:bg-primary hover:text-primary-foreground"
+                >
+                  <ChevronRight className="size-4" aria-hidden />
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
   );
 }
+

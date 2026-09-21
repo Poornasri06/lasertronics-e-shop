@@ -1,13 +1,18 @@
 import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Menu, X, ShoppingCart, Search, ChevronRight, Phone } from "lucide-react";
+import { Menu, X, ShoppingCart, Search, Heart, User, ChevronRight, Phone } from "lucide-react";
 import logoAsset from "@/assets/logo.jpg";
 import { categories } from "@/data/products";
 import { useCart } from "@/lib/cart";
 
-const navLinks = [
+const desktopNavLinks = [
   { label: "Home", to: "/" },
-  { label: "Shop", to: "/shop" },
+  { label: "Mobile Accessories", to: "/category/$slug", params: { slug: "mobile-accessories" } },
+  { label: "Electronics", to: "/category/$slug", params: { slug: "electronics" } },
+  { label: "TV Accessories", to: "/category/$slug", params: { slug: "tv-accessories" } },
+  { label: "IoT & Microcontrollers", to: "/category/$slug", params: { slug: "iot-and-microcontrollers" } },
+  { label: "Repair Kits", to: "/category/$slug", params: { slug: "repair-kits" } },
+  { label: "Solutions", to: "/#solutions" },
   { label: "About", to: "/about" },
   { label: "Contact", to: "/contact" },
 ];
@@ -25,55 +30,69 @@ export function Header() {
 
   return (
     <>
-      {/* Slim utility bar */}
+      {/* Slim announcement bar */}
       <div className="bg-ink text-ink-foreground">
         <div className="container-page flex h-9 items-center justify-between gap-3 text-[11px] sm:text-xs">
-          <p className="truncate">Island-wide delivery · Free over LKR 15,000</p>
+          <p className="truncate font-medium">Island-wide delivery · Free delivery over LKR 15,000</p>
           <a
             href="tel:+94777882156"
             className="flex shrink-0 items-center gap-1.5 text-ink-muted transition-colors hover:text-primary"
           >
-            <Phone className="size-3.5" aria-hidden />
-            <span className="hidden sm:inline">+94 77 788 2156</span>
-            <span className="sm:hidden">Call us</span>
+            <Phone className="size-3.5 text-primary" aria-hidden />
+            <span className="font-semibold">Call Us: +94 77 788 2156</span>
           </a>
         </div>
       </div>
 
-      {/* Sticky nav */}
-      <header className="sticky top-0 z-40 border-b border-border bg-surface/95 backdrop-blur">
-        <div className="container-page grid h-16 grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 lg:h-20">
-          <Link to="/" className="flex min-w-0 items-center gap-2.5">
+      {/* Main White Header */}
+      <header className="sticky top-0 z-40 border-b border-border bg-surface/98 backdrop-blur">
+        <div className="container-page flex h-16 items-center justify-between gap-4 lg:h-20">
+          {/* Logo & Brand Name */}
+          <Link to="/" className="flex shrink-0 items-center gap-2.5">
             <img
               src={logoAsset}
-              alt="Lasertronics logo"
-              width={40}
-              height={40}
+              alt="Lasertronics PVT LTD logo"
+              width={44}
+              height={44}
               className="size-9 shrink-0 rounded-full object-cover lg:size-11"
             />
             <span className="min-w-0">
-              <span className="block truncate font-display text-base font-extrabold tracking-tight lg:text-lg">
-                Lasertronics
+              <span className="block font-display text-base font-extrabold tracking-tight text-foreground lg:text-lg">
+                Lasertronics PVT LTD
               </span>
-              <span className="hidden text-[10px] uppercase tracking-[0.18em] text-muted-foreground sm:block">
-                Prototype by ValGrow Labs
+              <span className="hidden text-[10px] font-semibold uppercase tracking-[0.16em] text-primary sm:block">
+                Electronics & Technology
               </span>
             </span>
           </Link>
 
-          <nav className="hidden justify-center gap-1 lg:flex">
-            {navLinks.map((l) => (
-              <Link
-                key={l.to}
-                to={l.to}
-                activeProps={{ className: "text-primary" }}
-                className="rounded-md px-3 py-2 text-sm font-semibold text-foreground/80 transition-colors hover:text-primary"
-              >
-                {l.label}
-              </Link>
-            ))}
+          {/* Center Organized Navigation (Desktop) */}
+          <nav className="hidden items-center gap-1 xl:flex">
+            {desktopNavLinks.map((l) =>
+              l.params ? (
+                <Link
+                  key={l.label}
+                  to={l.to}
+                  params={l.params}
+                  activeProps={{ className: "text-primary font-bold bg-accent/60" }}
+                  className="rounded-md px-2.5 py-1.5 text-[13px] font-semibold text-foreground/80 transition-colors hover:bg-accent/40 hover:text-primary"
+                >
+                  {l.label}
+                </Link>
+              ) : (
+                <Link
+                  key={l.label}
+                  to={l.to}
+                  activeProps={{ className: "text-primary font-bold bg-accent/60" }}
+                  className="rounded-md px-2.5 py-1.5 text-[13px] font-semibold text-foreground/80 transition-colors hover:bg-accent/40 hover:text-primary"
+                >
+                  {l.label}
+                </Link>
+              )
+            )}
           </nav>
 
+          {/* Right Action Icons */}
           <div className="flex items-center justify-end gap-1">
             <Link
               to="/shop"
@@ -82,6 +101,15 @@ export function Header() {
             >
               <Search className="size-5" aria-hidden />
             </Link>
+
+            <Link
+              to="/shop"
+              aria-label="Wishlist"
+              className="hidden size-10 place-items-center rounded-full text-foreground/70 transition-colors hover:bg-muted hover:text-primary sm:grid"
+            >
+              <Heart className="size-5" aria-hidden />
+            </Link>
+
             <Link
               to="/cart"
               aria-label="Cart"
@@ -94,28 +122,37 @@ export function Header() {
                 </span>
               )}
             </Link>
+
+            <Link
+              to="/about"
+              aria-label="Account"
+              className="hidden size-10 place-items-center rounded-full text-foreground/70 transition-colors hover:bg-muted hover:text-primary sm:grid"
+            >
+              <User className="size-5" aria-hidden />
+            </Link>
+
             <button
               type="button"
               aria-label="Open menu"
               aria-expanded={open}
               onClick={() => setOpen(true)}
-              className="grid size-10 place-items-center rounded-full text-foreground/70 transition-colors hover:bg-muted lg:hidden"
+              className="grid size-10 place-items-center rounded-full text-foreground/70 transition-colors hover:bg-muted xl:hidden"
             >
               <Menu className="size-6" aria-hidden />
             </button>
           </div>
         </div>
 
-        {/* Desktop category rail */}
-        <div className="hidden border-t border-border lg:block">
-          <div className="container-page flex h-11 items-center gap-1">
+        {/* Sub-nav Category Rail for medium screens */}
+        <div className="hidden border-t border-border bg-muted/40 lg:block xl:hidden">
+          <div className="container-page flex h-10 items-center justify-between gap-1 overflow-x-auto no-scrollbar">
             {categories.map((c) => (
               <Link
                 key={c.slug}
                 to="/category/$slug"
                 params={{ slug: c.slug }}
-                activeProps={{ className: "text-primary" }}
-                className="rounded-md px-3 py-1.5 text-[13px] font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-primary"
+                activeProps={{ className: "text-primary font-bold" }}
+                className="whitespace-nowrap px-3 py-1 text-xs font-semibold text-muted-foreground transition-colors hover:text-primary"
               >
                 {c.name}
               </Link>
@@ -126,7 +163,7 @@ export function Header() {
 
       {/* Mobile slide-out menu */}
       <div
-        className={`fixed inset-0 z-50 lg:hidden ${open ? "" : "pointer-events-none"}`}
+        className={`fixed inset-0 z-50 xl:hidden ${open ? "" : "pointer-events-none"}`}
         aria-hidden={!open}
       >
         <button
@@ -134,19 +171,22 @@ export function Header() {
           tabIndex={open ? 0 : -1}
           aria-label="Close menu"
           onClick={() => setOpen(false)}
-          className={`absolute inset-0 bg-ink/60 transition-opacity duration-300 ${
+          className={`absolute inset-0 bg-ink/60 backdrop-blur-xs transition-opacity duration-300 ${
             open ? "opacity-100" : "opacity-0"
           }`}
         />
         <aside
-          className={`absolute inset-y-0 right-0 flex w-[86%] max-w-sm flex-col bg-surface shadow-lift transition-transform duration-300 ${
-            open ? "translate-x-0" : "translate-x-full"
+          className={`absolute inset-y-0 left-0 flex w-[88%] max-w-sm flex-col bg-surface shadow-lift transition-transform duration-300 ${
+            open ? "translate-x-0" : "-translate-x-full"
           }`}
         >
           <div className="flex h-16 shrink-0 items-center justify-between border-b border-border px-4">
-            <span className="font-display text-sm font-bold uppercase tracking-[0.16em] text-muted-foreground">
-              Menu
-            </span>
+            <div className="flex items-center gap-2">
+              <img src={logoAsset} alt="Logo" className="size-8 rounded-full object-cover" />
+              <span className="font-display text-sm font-bold text-foreground">
+                LASERTRONICS PVT LTD
+              </span>
+            </div>
             <button
               type="button"
               onClick={() => setOpen(false)}
@@ -157,44 +197,34 @@ export function Header() {
             </button>
           </div>
 
-          <div className="flex-1 overflow-y-auto overscroll-contain px-4 py-5">
-            <nav className="flex flex-col">
-              {navLinks.map((l) => (
-                <Link
-                  key={l.to}
-                  to={l.to}
-                  onClick={() => setOpen(false)}
-                  className="flex min-h-12 items-center justify-between rounded-lg px-2 text-[15px] font-semibold text-foreground hover:bg-muted"
-                >
-                  <span>{l.label}</span>
-                  <ChevronRight className="size-4 shrink-0 text-muted-foreground" aria-hidden />
-                </Link>
-              ))}
-            </nav>
-
-            <p className="mt-6 mb-2 px-2 text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
-              Shop by category
-            </p>
-            <nav className="flex flex-col">
-              {categories.map((c) => (
-                <Link
-                  key={c.slug}
-                  to="/category/$slug"
-                  params={{ slug: c.slug }}
-                  onClick={() => setOpen(false)}
-                  className="flex min-h-12 items-center justify-between gap-3 rounded-lg px-2 hover:bg-muted"
-                >
-                  <span className="min-w-0">
-                    <span className="block truncate text-[15px] font-medium text-foreground">
-                      {c.name}
-                    </span>
-                    <span className="block truncate text-xs text-muted-foreground">
-                      {c.tagline}
-                    </span>
-                  </span>
-                  <ChevronRight className="size-4 shrink-0 text-muted-foreground" aria-hidden />
-                </Link>
-              ))}
+          <div className="flex-1 overflow-y-auto overscroll-contain px-4 py-6">
+            <nav className="flex flex-col space-y-1">
+              {desktopNavLinks.map((l) =>
+                l.params ? (
+                  <Link
+                    key={l.label}
+                    to={l.to}
+                    params={l.params}
+                    onClick={() => setOpen(false)}
+                    activeProps={{ className: "bg-accent/70 text-primary font-bold" }}
+                    className="flex min-h-12 items-center justify-between rounded-lg px-3 text-sm font-semibold text-foreground hover:bg-muted"
+                  >
+                    <span>{l.label}</span>
+                    <ChevronRight className="size-4 shrink-0 text-muted-foreground" aria-hidden />
+                  </Link>
+                ) : (
+                  <Link
+                    key={l.label}
+                    to={l.to}
+                    onClick={() => setOpen(false)}
+                    activeProps={{ className: "bg-accent/70 text-primary font-bold" }}
+                    className="flex min-h-12 items-center justify-between rounded-lg px-3 text-sm font-semibold text-foreground hover:bg-muted"
+                  >
+                    <span>{l.label}</span>
+                    <ChevronRight className="size-4 shrink-0 text-muted-foreground" aria-hidden />
+                  </Link>
+                )
+              )}
             </nav>
           </div>
 
@@ -202,16 +232,16 @@ export function Header() {
             <Link
               to="/cart"
               onClick={() => setOpen(false)}
-              className="flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-primary px-5 font-semibold text-primary-foreground"
+              className="flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-primary px-5 font-semibold text-primary-foreground shadow-md"
             >
               <ShoppingCart className="size-4" aria-hidden />
-              View cart{count > 0 ? ` (${count})` : ""}
+              View Cart {count > 0 ? `(${count})` : ""}
             </Link>
             <a
               href="tel:+94777882156"
-              className="mt-2 flex min-h-11 w-full items-center justify-center gap-2 rounded-full border border-border text-sm font-semibold text-foreground"
+              className="mt-2 flex min-h-11 w-full items-center justify-center gap-2 rounded-full border border-border text-xs font-bold text-foreground"
             >
-              <Phone className="size-4" aria-hidden /> +94 77 788 2156
+              <Phone className="size-3.5 text-primary" aria-hidden /> +94 77 788 2156
             </a>
           </div>
         </aside>
@@ -219,3 +249,4 @@ export function Header() {
     </>
   );
 }
+
