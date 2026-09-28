@@ -73,7 +73,7 @@ export function Header() {
           </Link>
 
           {/* Center iOS Segmented / Pill Navigation (Desktop) */}
-          <nav className="hidden items-center gap-1 rounded-full border border-white/80 bg-white/50 p-1.5 backdrop-blur-md shadow-[inset_0_1px_2px_rgba(0,0,0,0.02)] xl:flex">
+          <nav className="hidden items-center gap-0.5 rounded-full border border-white/80 bg-white/50 p-1 backdrop-blur-md shadow-[inset_0_1px_2px_rgba(0,0,0,0.02)] xl:flex">
             {desktopNavLinks.map((l) =>
               l.params ? (
                 <Link
@@ -82,9 +82,9 @@ export function Header() {
                   params={l.params}
                   activeProps={{
                     className:
-                      "bg-primary text-primary-foreground font-bold shadow-[0_2px_8px_rgba(8,120,209,0.3)]",
+                      "!bg-primary !text-primary-foreground font-bold shadow-[0_2px_8px_rgba(8,120,209,0.3)]",
                   }}
-                  className="rounded-full px-3.5 py-1 text-xs font-semibold text-foreground/80 transition-all hover:bg-white/80 hover:text-primary active:scale-95"
+                  className="inline-flex h-8 items-center justify-center whitespace-nowrap rounded-full px-3 text-xs font-semibold text-foreground/80 transition-all hover:bg-white/80 hover:text-primary active:scale-95"
                 >
                   {l.label}
                 </Link>
@@ -94,9 +94,9 @@ export function Header() {
                   to={l.to}
                   activeProps={{
                     className:
-                      "bg-primary text-primary-foreground font-bold shadow-[0_2px_8px_rgba(8,120,209,0.3)]",
+                      "!bg-primary !text-primary-foreground font-bold shadow-[0_2px_8px_rgba(8,120,209,0.3)]",
                   }}
-                  className="rounded-full px-3.5 py-1 text-xs font-semibold text-foreground/80 transition-all hover:bg-white/80 hover:text-primary active:scale-95"
+                  className="inline-flex h-8 items-center justify-center whitespace-nowrap rounded-full px-3 text-xs font-semibold text-foreground/80 transition-all hover:bg-white/80 hover:text-primary active:scale-95"
                 >
                   {l.label}
                 </Link>
@@ -163,8 +163,8 @@ export function Header() {
                 key={c.slug}
                 to="/category/$slug"
                 params={{ slug: c.slug }}
-                activeProps={{ className: "text-primary font-bold bg-white/60 shadow-xs" }}
-                className="whitespace-nowrap rounded-full px-3 py-1 text-xs font-semibold text-foreground/75 transition-all hover:bg-white/50 hover:text-primary"
+                activeProps={{ className: "!text-primary font-bold bg-white/70 shadow-xs" }}
+                className="inline-flex h-7 shrink-0 items-center justify-center whitespace-nowrap rounded-full px-3 text-xs font-semibold text-foreground/75 transition-all hover:bg-white/50 hover:text-primary"
               >
                 {c.name}
               </Link>

@@ -148,9 +148,9 @@ export function Hero() {
                     }`}
                   />
                   {/* High-legibility Multi-Layer Dark Gradients for Text Clarity */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-slate-950/95 via-slate-950/85 to-slate-950/40 sm:from-slate-950/95 sm:via-slate-950/70 sm:to-transparent" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-950/30 to-slate-950/50" />
-                  <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,rgba(8,120,209,0.25),transparent_65%)]" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-slate-950/95 via-slate-950/80 to-transparent sm:from-slate-950/95 sm:via-slate-950/60 sm:to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-transparent to-slate-950/40" />
+                  <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,rgba(8,120,209,0.18),transparent_65%)]" />
                 </div>
 
                 {/* Main Content Overlay Container */}
