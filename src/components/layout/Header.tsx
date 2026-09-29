@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { ShoppingCart, Search, Heart, User, Phone, Menu, X } from "lucide-react";
+import { ShoppingCart, Search, Heart, User, Phone, Menu, X, ChevronRight } from "lucide-react";
 import { useState } from "react";
 import logoAsset from "@/assets/logo.jpg";
 import { useCart } from "@/lib/cart";
@@ -22,9 +22,9 @@ export function Header() {
 
   return (
     <>
-      {/* Slim announcement bar */}
+      {/* Slim iOS-style announcement bar */}
       <div className="border-b border-white/10 bg-[#0A192F]/90 text-white backdrop-blur-md">
-        <div className="container-page flex h-8 items-center justify-between gap-2 text-xs">
+        <div className="container-page flex h-8 items-center justify-between gap-2 text-[11px] sm:text-xs">
           <p className="flex items-center gap-1.5 font-medium text-white/90 truncate">
             <span className="inline-block size-1.5 shrink-0 rounded-full bg-emerald-400 animate-pulse" />
             <span className="truncate">Island-wide delivery · Free delivery over LKR 15,000</span>
@@ -39,9 +39,9 @@ export function Header() {
         </div>
       </div>
 
-      {/* Main Header */}
-      <header className="sticky top-0 z-40 border-b border-white/60 bg-white/80 backdrop-blur-2xl shadow-[0_4px_24px_rgba(10,30,60,0.04)]">
-        <div className="container-page flex h-16 sm:h-20 items-center justify-between gap-2 sm:gap-4">
+      {/* Main Apple Frosted Glass Header */}
+      <header className="sticky top-0 z-40 border-b border-white/60 bg-white/85 backdrop-blur-2xl shadow-[0_4px_24px_rgba(10,30,60,0.04)]">
+        <div className="container-page flex h-16 sm:h-20 items-center justify-between gap-3">
           {/* Logo & Brand Name */}
           <Link to="/" className="group flex shrink-0 items-center gap-2 sm:gap-2.5">
             <div className="relative shrink-0">
@@ -58,13 +58,13 @@ export function Header() {
               <span className="block whitespace-nowrap font-display text-sm sm:text-lg font-extrabold tracking-tight text-foreground group-hover:text-primary transition-colors">
                 Lasertronics PVT LTD
               </span>
-              <span className="block whitespace-nowrap text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.14em] sm:tracking-[0.18em] text-primary/90">
+              <span className="block whitespace-nowrap text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.16em] sm:tracking-[0.18em] text-primary/90">
                 ELECTRONICS & TECHNOLOGY
               </span>
             </div>
           </Link>
 
-          {/* Center Navigation - Desktop Only */}
+          {/* Desktop Center Navigation - hidden on mobile/tablet */}
           <nav className="hidden xl:flex items-center gap-0.5 rounded-full border border-white/80 bg-white/50 p-1 backdrop-blur-md shadow-[inset_0_1px_2px_rgba(0,0,0,0.02)]">
             {desktopNavLinks.map((l) =>
               l.params ? (
@@ -101,7 +101,7 @@ export function Header() {
             <Link
               to="/shop"
               aria-label="Search products"
-              className="grid size-9 sm:size-10 place-items-center rounded-full border border-white/70 bg-white/60 text-foreground/80 shadow-[0_2px_8px_rgba(0,0,0,0.03)] backdrop-blur-md transition-all hover:bg-white hover:text-primary active:scale-95"
+              className="grid size-9 sm:size-10 place-items-center rounded-full border border-white/70 bg-white/60 text-foreground/80 shadow-[0_2px_8px_rgba(0,0,0,0.03)] backdrop-blur-md transition-all hover:bg-white hover:text-primary hover:shadow-md active:scale-95"
             >
               <Search className="size-4 sm:size-4.5" aria-hidden />
             </Link>
@@ -109,7 +109,7 @@ export function Header() {
             <Link
               to="/shop"
               aria-label="Wishlist"
-              className="hidden sm:grid size-10 place-items-center rounded-full border border-white/70 bg-white/60 text-foreground/80 shadow-[0_2px_8px_rgba(0,0,0,0.03)] backdrop-blur-md transition-all hover:bg-white hover:text-primary active:scale-95"
+              className="hidden sm:grid size-10 place-items-center rounded-full border border-white/70 bg-white/60 text-foreground/80 shadow-[0_2px_8px_rgba(0,0,0,0.03)] backdrop-blur-md transition-all hover:bg-white hover:text-primary hover:shadow-md active:scale-95"
             >
               <Heart className="size-4.5" aria-hidden />
             </Link>
@@ -117,11 +117,11 @@ export function Header() {
             <Link
               to="/cart"
               aria-label="Cart"
-              className="relative grid size-9 sm:size-10 place-items-center rounded-full border border-white/70 bg-white/60 text-foreground/80 shadow-[0_2px_8px_rgba(0,0,0,0.03)] backdrop-blur-md transition-all hover:bg-white hover:text-primary active:scale-95"
+              className="relative grid size-9 sm:size-10 place-items-center rounded-full border border-white/70 bg-white/60 text-foreground/80 shadow-[0_2px_8px_rgba(0,0,0,0.03)] backdrop-blur-md transition-all hover:bg-white hover:text-primary hover:shadow-md active:scale-95"
             >
               <ShoppingCart className="size-4 sm:size-4.5" aria-hidden />
               {count > 0 && (
-                <span className="absolute -right-0.5 -top-0.5 grid min-w-4.5 h-4.5 place-items-center rounded-full bg-[#ff3b30] px-1 text-[10px] font-extrabold text-white shadow-xs ring-2 ring-white">
+                <span className="absolute -right-0.5 -top-0.5 grid min-w-4 h-4 sm:min-w-4.5 sm:h-4.5 place-items-center rounded-full bg-[#ff3b30] px-1 text-[9px] sm:text-[10px] font-extrabold text-white shadow-[0_2px_8px_rgba(255,59,48,0.5)] ring-2 ring-white">
                   {count}
                 </span>
               )}
@@ -130,47 +130,49 @@ export function Header() {
             <Link
               to="/about"
               aria-label="Account"
-              className="hidden sm:grid size-10 place-items-center rounded-full border border-white/70 bg-white/60 text-foreground/80 shadow-[0_2px_8px_rgba(0,0,0,0.03)] backdrop-blur-md transition-all hover:bg-white hover:text-primary active:scale-95"
+              className="hidden sm:grid size-10 place-items-center rounded-full border border-white/70 bg-white/60 text-foreground/80 shadow-[0_2px_8px_rgba(0,0,0,0.03)] backdrop-blur-md transition-all hover:bg-white hover:text-primary hover:shadow-md active:scale-95"
             >
               <User className="size-4.5" aria-hidden />
             </Link>
 
-            {/* Mobile Hamburger Toggle Button */}
+            {/* Mobile Menu Button - visible on screens < xl */}
             <button
               type="button"
-              aria-label="Toggle mobile menu"
+              aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="grid size-9 sm:size-10 place-items-center rounded-full border border-white/70 bg-white/60 text-foreground/80 shadow-xs backdrop-blur-md transition-all hover:bg-white hover:text-primary active:scale-95 xl:hidden"
+              className="grid size-9 sm:size-10 xl:hidden place-items-center rounded-full border border-white/70 bg-white/60 text-foreground/80 shadow-[0_2px_8px_rgba(0,0,0,0.03)] backdrop-blur-md transition-all hover:bg-white hover:text-primary active:scale-95"
             >
-              {mobileMenuOpen ? <X className="size-5" /> : <Menu className="size-5" />}
+              {mobileMenuOpen ? (
+                <X className="size-4.5 text-foreground" />
+              ) : (
+                <Menu className="size-4.5 text-foreground" />
+              )}
             </button>
           </div>
         </div>
 
-        {/* Mobile Dropdown Drawer Menu */}
+        {/* Mobile Dropdown Menu Drawer */}
         {mobileMenuOpen && (
-          <div className="border-t border-slate-200/80 bg-white/95 px-4 py-4 backdrop-blur-2xl shadow-xl xl:hidden">
-            <nav className="flex flex-col gap-1">
+          <div className="xl:hidden border-t border-slate-200/80 bg-white/95 backdrop-blur-2xl p-4 shadow-xl">
+            <nav className="flex flex-col space-y-1">
               {desktopNavLinks.map((l) => (
                 <Link
                   key={l.label}
                   to={l.to}
                   params={l.params}
                   onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center justify-between rounded-xl px-3.5 py-2.5 text-sm font-bold text-foreground/90 transition-colors hover:bg-slate-100 hover:text-primary active:bg-slate-200"
+                  className="flex items-center justify-between rounded-xl px-3.5 py-2.5 text-xs font-bold text-foreground hover:bg-slate-100 hover:text-primary transition-colors"
                 >
                   <span>{l.label}</span>
+                  <ChevronRight className="size-3.5 text-muted-foreground" />
                 </Link>
               ))}
             </nav>
-            <div className="mt-4 border-t border-slate-100 pt-3">
-              <a
-                href="tel:+94777882156"
-                className="flex items-center gap-2 rounded-xl bg-blue-50 px-3.5 py-2.5 text-sm font-bold text-[#0066FF]"
-              >
-                <Phone className="size-4" />
-                <span>Call Support: +94 77 788 2156</span>
+            <div className="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-muted-foreground">
+              <a href="tel:+94777882156" className="flex items-center gap-1.5 font-semibold text-primary">
+                <Phone className="size-3.5" /> +94 77 788 2156
               </a>
+              <span>Colombo, Sri Lanka</span>
             </div>
           </div>
         )}
