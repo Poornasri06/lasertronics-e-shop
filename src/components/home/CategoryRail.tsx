@@ -23,25 +23,17 @@ export function CategoryRail({ category }: { category: Category }) {
         <Link
           to="/category/$slug"
           params={{ slug: category.slug }}
-          className="apple-btn-glass hidden shrink-0 items-center gap-1.5 rounded-full px-4 py-2 text-xs font-bold text-foreground hover:text-primary sm:inline-flex"
+          className="apple-btn-glass inline-flex shrink-0 items-center gap-1.5 rounded-full px-4 py-2 text-xs font-bold text-foreground hover:text-primary"
         >
           View all 10 products <ArrowRight className="size-3.5 text-primary" aria-hidden />
         </Link>
       </div>
 
-      <div className="mt-6 grid grid-cols-2 gap-3.5 sm:gap-4 lg:grid-cols-3 xl:grid-cols-6">
+      <div className="mt-6 grid grid-cols-6 gap-4">
         {items.map((p) => (
           <ProductCard key={p.slug} product={p} />
         ))}
       </div>
-
-      <Link
-        to="/category/$slug"
-        params={{ slug: category.slug }}
-        className="apple-btn-glass mt-6 flex min-h-11 items-center justify-center gap-2 rounded-full text-xs font-bold text-foreground sm:hidden"
-      >
-        Explore all {category.name} <ArrowRight className="size-3.5 text-primary" aria-hidden />
-      </Link>
     </section>
   );
 }

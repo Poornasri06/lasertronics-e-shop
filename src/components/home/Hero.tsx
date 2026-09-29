@@ -39,11 +39,10 @@ const slides = [
   },
 ];
 
-const AUTOPLAY_DELAY = 5500;
+const AUTOPLAY_DELAY = 3500; // Shows each picture for 3.5 seconds then slides to next
 
 export function Hero() {
   const [index, setIndex] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [dragOffset, setDragOffset] = useState(0);
   const dragStartX = useRef<number | null>(null);
@@ -56,12 +55,14 @@ export function Hero() {
     setIndex((prev) => (prev - 1 + slides.length) % slides.length);
   }, []);
 
-  // Autoplay timer
+  // Autoplay timer: shows each picture for a few seconds then automatically slides to next
   useEffect(() => {
-    if (isPaused || isDragging) return;
-    const timer = setInterval(nextSlide, AUTOPLAY_DELAY);
+    if (isDragging) return;
+    const timer = setInterval(() => {
+      setIndex((prev) => (prev + 1) % slides.length);
+    }, AUTOPLAY_DELAY);
     return () => clearInterval(timer);
-  }, [isPaused, isDragging, nextSlide]);
+  }, [isDragging, index]);
 
   // Keyboard navigation
   useEffect(() => {
@@ -105,11 +106,6 @@ export function Hero() {
         className={`group relative min-h-[520px] sm:min-h-[580px] lg:min-h-[640px] w-full overflow-hidden ${
           isDragging ? "cursor-grabbing" : "cursor-grab"
         }`}
-        onMouseEnter={() => setIsPaused(true)}
-        onMouseLeave={() => {
-          setIsPaused(false);
-          if (isDragging) handleDragEnd();
-        }}
         // Mouse drag events
         onMouseDown={(e) => handleDragStart(e.clientX)}
         onMouseMove={(e) => handleDragMove(e.clientX)}
@@ -224,12 +220,22 @@ export function Hero() {
                   type="button"
                   aria-label={`Go to slide ${i + 1}`}
                   onClick={() => setIndex(i)}
-                  className={`h-2.5 rounded-full transition-all duration-300 cursor-pointer ${
+                  className={`relative h-2.5 overflow-hidden rounded-full transition-all duration-300 cursor-pointer ${
                     i === index
-                      ? "w-8 bg-[#0878D1] shadow-[0_0_12px_rgba(8,120,209,0.9)]"
+                      ? "w-9 bg-[#0878D1]/30 shadow-[0_0_12px_rgba(8,120,209,0.9)]"
                       : "w-2.5 bg-white/40 hover:bg-white/80"
                   }`}
-                />
+                >
+                  {i === index && (
+                    <span
+                      key={index}
+                      className="absolute inset-y-0 left-0 bg-[#0878D1] rounded-full"
+                      style={{
+                        animation: `heroProgress ${AUTOPLAY_DELAY}ms linear forwards`,
+                      }}
+                    />
+                  )}
+                </button>
               ))}
             </div>
             <span className="text-xs sm:text-sm font-bold tracking-wide text-white/90 drop-shadow">

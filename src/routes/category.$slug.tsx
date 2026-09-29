@@ -62,13 +62,9 @@ function CategoryPage() {
           <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
             Showing all {items.length} products
           </p>
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-300/40 bg-emerald-50/80 px-2.5 py-0.5 text-xs font-bold text-emerald-800 backdrop-blur-sm">
-            <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse" />
-            Sri Lanka In-Stock
-          </span>
         </div>
 
-        <div className="mt-6 grid grid-cols-2 gap-3.5 sm:gap-4 lg:grid-cols-4 xl:grid-cols-5">
+        <div className="mt-6 grid grid-cols-5 gap-4">
           {items.map((p) => (
             <ProductCard key={p.slug} product={p} />
           ))}

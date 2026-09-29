@@ -120,14 +120,14 @@
 
   html {
     scroll-behavior: smooth;
-    overflow-x: hidden;
+    min-width: 1280px;
   }
 
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-sans);
-    overflow-x: hidden;
+    min-width: 1280px;
     -webkit-tap-highlight-color: transparent;
   }
 
@@ -287,6 +287,15 @@
   }
   &:active {
     transform: scale(0.96);
+  }
+}
+
+@keyframes heroProgress {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 100%;
   }
 }
 
