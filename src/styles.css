@@ -120,14 +120,14 @@
 
   html {
     scroll-behavior: smooth;
-    min-width: 1280px;
+    overflow-x: hidden;
   }
 
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-sans);
-    min-width: 1280px;
+    overflow-x: hidden;
     -webkit-tap-highlight-color: transparent;
   }
 
