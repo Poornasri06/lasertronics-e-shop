@@ -43,22 +43,22 @@ export function Header() {
       <header className="sticky top-0 z-40 border-b border-white/60 bg-white/85 backdrop-blur-2xl shadow-[0_4px_24px_rgba(10,30,60,0.04)]">
         <div className="container-page flex h-16 sm:h-20 items-center justify-between gap-3">
           {/* Logo & Brand Name */}
-          <Link to="/" className="group flex shrink-0 items-center gap-2 sm:gap-2.5">
+          <Link to="/" className="group flex min-w-0 items-center gap-2 sm:gap-2.5">
             <div className="relative shrink-0">
               <img
                 src={logoAsset}
                 alt="Lasertronics PVT LTD logo"
-                width={40}
-                height={40}
-                className="size-9 sm:size-11 shrink-0 rounded-full object-cover ring-2 ring-white/90 shadow-sm transition-transform duration-300 group-hover:scale-105"
+                width={36}
+                height={36}
+                className="size-8 sm:size-11 shrink-0 rounded-full object-cover ring-2 ring-white/90 shadow-sm transition-transform duration-300 group-hover:scale-105"
               />
               <span className="absolute -bottom-0.5 -right-0.5 size-2 sm:size-2.5 rounded-full border-2 border-white bg-blue-500" />
             </div>
-            <div className="shrink-0">
-              <span className="block whitespace-nowrap font-display text-sm sm:text-lg font-extrabold tracking-tight text-foreground group-hover:text-primary transition-colors">
+            <div className="min-w-0">
+              <span className="block font-display text-xs sm:text-base lg:text-lg font-extrabold tracking-tight text-foreground group-hover:text-primary transition-colors truncate leading-tight">
                 Lasertronics PVT LTD
               </span>
-              <span className="block whitespace-nowrap text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.16em] sm:tracking-[0.18em] text-primary/90">
+              <span className="block text-[8px] sm:text-[10px] font-bold uppercase tracking-[0.12em] sm:tracking-[0.18em] text-primary/90 truncate leading-tight">
                 ELECTRONICS & TECHNOLOGY
               </span>
             </div>

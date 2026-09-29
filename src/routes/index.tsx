@@ -125,20 +125,20 @@ function Index() {
       <Hero />
 
       {/* 2. iOS Widget Benefits Section */}
-      <section className="py-6">
+      <section className="py-4 sm:py-6">
         <div className="container-page">
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid grid-cols-2 gap-2.5 sm:gap-4 lg:grid-cols-4">
             {benefits.map((b) => (
               <div
                 key={b.title}
-                className="glass-card group relative flex items-start gap-4 rounded-2xl border border-white/80 bg-white/70 p-4.5 shadow-[0_4px_20px_-2px_rgba(12,32,68,0.05),inset_0_1px_0_0_rgba(255,255,255,0.95)] backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-blue-400/40 hover:bg-white/85 hover:shadow-md"
+                className="glass-card group relative flex items-start gap-2.5 sm:gap-4 rounded-xl sm:rounded-2xl border border-white/80 bg-white/70 p-3 sm:p-4.5 shadow-[0_4px_20px_-2px_rgba(12,32,68,0.05),inset_0_1px_0_0_rgba(255,255,255,0.95)] backdrop-blur-xl transition-all duration-300 hover:border-blue-400/40 hover:bg-white/85"
               >
-                <div className="grid size-12 shrink-0 place-items-center rounded-2xl border border-blue-200/50 bg-gradient-to-br from-blue-500/15 via-sky-400/10 to-transparent text-primary shadow-xs transition-transform duration-300 group-hover:scale-105">
-                  <b.icon className="size-5.5" aria-hidden />
+                <div className="grid size-9 sm:size-12 shrink-0 place-items-center rounded-xl sm:rounded-2xl border border-blue-200/50 bg-gradient-to-br from-blue-500/15 via-sky-400/10 to-transparent text-primary shadow-xs transition-transform duration-300 group-hover:scale-105">
+                  <b.icon className="size-4 sm:size-5.5" aria-hidden />
                 </div>
                 <div className="min-w-0">
-                  <h3 className="text-sm font-bold tracking-tight text-foreground/90">{b.title}</h3>
-                  <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{b.copy}</p>
+                  <h3 className="text-xs sm:text-sm font-bold tracking-tight text-foreground/90 leading-snug">{b.title}</h3>
+                  <p className="mt-0.5 sm:mt-1 text-[10px] sm:text-xs leading-relaxed text-muted-foreground line-clamp-2">{b.copy}</p>
                 </div>
               </div>
             ))}

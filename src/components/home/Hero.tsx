@@ -117,7 +117,7 @@ export function Hero() {
       >
         {/* Horizontal Slide Track */}
         <div
-          className={`flex h-full min-h-[520px] sm:min-h-[580px] lg:min-h-[640px] w-full ${
+          className={`flex h-full min-h-[400px] sm:min-h-[520px] lg:min-h-[620px] w-full ${
             isDragging
               ? "transition-none"
               : "transition-transform duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]"
@@ -131,7 +131,7 @@ export function Hero() {
             return (
               <div
                 key={slide.slug}
-                className="relative flex h-full min-h-[520px] sm:min-h-[580px] lg:min-h-[640px] w-full shrink-0 flex-col justify-between"
+                className="relative flex h-full min-h-[400px] sm:min-h-[520px] lg:min-h-[620px] w-full shrink-0 flex-col justify-between"
               >
                 {/* Slide Background Image with Ken-Burns Motion */}
                 <div className="absolute inset-0 size-full overflow-hidden">
@@ -150,54 +150,54 @@ export function Hero() {
                 </div>
 
                 {/* Main Content Overlay Container */}
-                <div className="container-page relative z-10 flex flex-col justify-center pt-12 sm:pt-16 lg:pt-20 pb-24 sm:pb-28">
+                <div className="container-page relative z-10 flex flex-col justify-center pt-6 sm:pt-14 lg:pt-20 pb-14 sm:pb-24">
                   <div className="max-w-2xl">
                     {/* Eyebrow Pill */}
-                    <div className="inline-flex items-center gap-2 rounded-full border border-cyan-400/30 bg-cyan-950/50 px-4 py-1.5 text-xs font-extrabold uppercase tracking-[0.2em] text-cyan-300 shadow-sm backdrop-blur-xl">
-                      <span className="size-2 rounded-full bg-cyan-400 animate-pulse" />
+                    <div className="inline-flex items-center gap-1.5 rounded-full border border-cyan-400/30 bg-cyan-950/50 px-3 py-1 text-[10px] sm:text-xs font-extrabold uppercase tracking-[0.2em] text-cyan-300 shadow-sm backdrop-blur-xl">
+                      <span className="size-1.5 sm:size-2 rounded-full bg-cyan-400 animate-pulse" />
                       {slide.eyebrow}
                     </div>
 
                     {/* Main Title */}
-                    <h1 className="mt-4 font-display text-3xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl lg:leading-[1.12] drop-shadow-md">
+                    <h1 className="mt-2.5 sm:mt-4 font-display text-2xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white drop-shadow-md leading-tight">
                       {slide.title}
                     </h1>
 
                     {/* Description Copy */}
-                    <p className="mt-4 max-w-xl text-base leading-relaxed text-slate-200 sm:text-lg lg:text-xl drop-shadow-sm font-normal">
+                    <p className="mt-2 sm:mt-4 max-w-xl text-xs sm:text-base lg:text-lg leading-relaxed text-slate-200 drop-shadow-sm font-normal line-clamp-2 sm:line-clamp-none">
                       {slide.copy}
                     </p>
 
                     {/* Micro Badges Row */}
-                    <div className="mt-6 flex flex-wrap items-center gap-2.5">
-                      <span className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-slate-900/80 px-3.5 py-1.5 text-xs sm:text-sm font-medium text-white/95 shadow-sm backdrop-blur-md">
-                        <ShieldCheck className="size-4 text-emerald-400" />
+                    <div className="mt-3.5 sm:mt-6 flex flex-wrap items-center gap-1.5 sm:gap-2.5">
+                      <span className="inline-flex items-center gap-1 sm:gap-1.5 rounded-full border border-white/20 bg-slate-900/80 px-2.5 sm:px-3.5 py-1 text-[11px] sm:text-sm font-medium text-white/95 shadow-sm backdrop-blur-md">
+                        <ShieldCheck className="size-3.5 sm:size-4 text-emerald-400" />
                         100% Genuine Stock
                       </span>
-                      <span className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-slate-900/80 px-3.5 py-1.5 text-xs sm:text-sm font-medium text-white/95 shadow-sm backdrop-blur-md">
-                        <Zap className="size-4 text-amber-400" />
+                      <span className="inline-flex items-center gap-1 sm:gap-1.5 rounded-full border border-white/20 bg-slate-900/80 px-2.5 sm:px-3.5 py-1 text-[11px] sm:text-sm font-medium text-white/95 shadow-sm backdrop-blur-md">
+                        <Zap className="size-3.5 sm:size-4 text-amber-400" />
                         24h Colombo Dispatch
                       </span>
-                      <span className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-slate-900/80 px-3.5 py-1.5 text-xs sm:text-sm font-medium text-white/95 shadow-sm backdrop-blur-md">
+                      <span className="hidden sm:inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-slate-900/80 px-3.5 py-1.5 text-xs sm:text-sm font-medium text-white/95 shadow-sm backdrop-blur-md">
                         <Sparkles className="size-4 text-cyan-400" />
                         Local Warranty
                       </span>
                     </div>
 
                     {/* CTA Buttons */}
-                    <div className="mt-8 flex flex-wrap items-center gap-4">
+                    <div className="mt-4 sm:mt-8 flex flex-wrap items-center gap-2.5 sm:gap-4">
                       <Link
                         to="/category/$slug"
                         params={{ slug: slide.slug }}
-                        className="inline-flex min-h-12 items-center justify-center gap-2.5 rounded-full bg-[#0878D1] hover:bg-[#0768b5] px-8 text-sm sm:text-base font-bold text-white shadow-lg shadow-blue-500/30 transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer"
+                        className="inline-flex min-h-10 sm:min-h-12 items-center justify-center gap-2 rounded-full bg-[#0878D1] hover:bg-[#0768b5] px-5 sm:px-8 text-xs sm:text-base font-bold text-white shadow-lg shadow-blue-500/30 transition-all duration-200 active:scale-95 cursor-pointer"
                       >
                         {slide.cta}
-                        <Plus className="size-4.5 stroke-[2.5]" aria-hidden />
+                        <Plus className="size-4 stroke-[2.5]" aria-hidden />
                       </Link>
 
                       <Link
                         to="/shop"
-                        className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/30 bg-white/10 px-7 text-sm sm:text-base font-bold text-white shadow-sm backdrop-blur-md transition-all duration-200 hover:bg-white/20 hover:scale-105 active:scale-95 cursor-pointer"
+                        className="inline-flex min-h-10 sm:min-h-12 items-center justify-center rounded-full border border-white/30 bg-white/10 px-4 sm:px-7 text-xs sm:text-base font-bold text-white shadow-sm backdrop-blur-md transition-all duration-200 hover:bg-white/20 active:scale-95 cursor-pointer"
                       >
                         Browse All Products
                       </Link>
@@ -209,8 +209,8 @@ export function Hero() {
           })}
         </div>
 
-        {/* Persistent Floating Controls Overlay (Aligned with page container) */}
-        <div className="container-page absolute inset-x-0 bottom-0 z-20 flex items-center justify-between py-6 sm:py-8 pointer-events-none">
+        {/* Persistent Floating Controls Overlay */}
+        <div className="container-page absolute inset-x-0 bottom-0 z-20 flex items-center justify-between py-3 sm:py-6 pointer-events-none">
           {/* Slide Indicators / Dots */}
           <div className="flex items-center gap-3 pointer-events-auto">
             <div className="flex items-center gap-2 rounded-full border border-white/20 bg-slate-900/80 p-1.5 backdrop-blur-md shadow-md">
