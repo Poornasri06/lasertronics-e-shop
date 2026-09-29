@@ -65,7 +65,7 @@ function CategoryPage() {
         </div>
 
         {/* Amazon-style 2 pictures per row (down by down) on mobile, scaling to 3, 4 and 5 on larger screens */}
-        <div className="mt-6 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+        <div className="mt-6 grid grid-cols-2 gap-3.5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
           {items.map((p) => (
             <ProductCard key={p.slug} product={p} />
           ))}
