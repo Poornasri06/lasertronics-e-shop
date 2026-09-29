@@ -29,8 +29,8 @@ export function CategoryRail({ category }: { category: Category }) {
         </Link>
       </div>
 
-      {/* Amazon-style 2 pictures per row (down by down) on mobile, scaling on larger screens */}
-      <div className="mt-5 grid grid-cols-2 gap-3.5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
+      {/* Amazon-style 2 pictures per row (down by down) on mobile/tablet, scaling on desktop */}
+      <div className="mt-5 grid grid-cols-2 gap-3.5 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6">
         {items.map((p) => (
           <ProductCard key={p.slug} product={p} />
         ))}

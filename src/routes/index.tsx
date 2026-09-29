@@ -218,8 +218,8 @@ function Index() {
             </Link>
           </div>
 
-          {/* Amazon-style 2-columns (down by down) on mobile */}
-          <div className="grid grid-cols-2 gap-3.5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
+          {/* Amazon-style 2-columns (down by down) on mobile/tablet */}
+          <div className="grid grid-cols-2 gap-3.5 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6">
             {newArrivals.map((p) => (
               <ProductCard key={p.slug} product={p} />
             ))}
