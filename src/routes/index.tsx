@@ -160,7 +160,7 @@ function Index() {
           </p>
         </div>
 
-        <div className="mt-8 grid grid-cols-1 gap-4.5 sm:grid-cols-2 lg:grid-cols-5">
+        <div className="mt-8 grid grid-cols-2 gap-3.5 sm:gap-4.5 lg:grid-cols-5">
           {categories.map((c, i) => {
             const Icon = categoryIcons[i] ?? Cpu;
             return (
@@ -168,22 +168,22 @@ function Index() {
                 key={c.slug}
                 to="/category/$slug"
                 params={{ slug: c.slug }}
-                className="glass-card group relative flex flex-col justify-between overflow-hidden rounded-3xl border border-white/80 bg-white/70 p-5.5 shadow-[0_4px_20px_-2px_rgba(12,32,68,0.06),inset_0_1px_0_0_rgba(255,255,255,0.95)] backdrop-blur-xl transition-all duration-300 hover:-translate-y-1.5 hover:border-blue-400/50 hover:bg-white/90 hover:shadow-xl"
+                className="glass-card group relative flex flex-col justify-between overflow-hidden rounded-2xl sm:rounded-3xl border border-white/80 bg-white/70 p-4 sm:p-5.5 shadow-[0_4px_20px_-2px_rgba(12,32,68,0.06),inset_0_1px_0_0_rgba(255,255,255,0.95)] backdrop-blur-xl transition-all duration-300 hover:-translate-y-1.5 hover:border-blue-400/50 hover:bg-white/90 hover:shadow-xl last:col-span-2 sm:last:col-span-1 lg:last:col-span-1"
               >
                 {/* Specular highlight */}
                 <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white to-transparent opacity-80" />
 
                 <div>
-                  <div className="grid size-12.5 place-items-center rounded-2xl border border-white/30 bg-gradient-to-br from-blue-600 to-indigo-600 text-white shadow-md transition-all duration-300 group-hover:scale-108 group-hover:shadow-lg">
-                    <Icon className="size-6" aria-hidden />
+                  <div className="grid size-10 sm:size-12.5 place-items-center rounded-xl sm:rounded-2xl border border-white/30 bg-gradient-to-br from-blue-600 to-indigo-600 text-white shadow-md transition-all duration-300 group-hover:scale-108 group-hover:shadow-lg">
+                    <Icon className="size-5 sm:size-6" aria-hidden />
                   </div>
-                  <h3 className="mt-4 font-display text-base font-bold leading-snug tracking-tight text-foreground transition-colors group-hover:text-primary">
+                  <h3 className="mt-3 sm:mt-4 font-display text-sm sm:text-base font-bold leading-snug tracking-tight text-foreground transition-colors group-hover:text-primary">
                     {c.name}
                   </h3>
-                  <p className="mt-1.5 text-xs text-muted-foreground leading-relaxed">{c.tagline}</p>
+                  <p className="mt-1 sm:mt-1.5 text-[11px] sm:text-xs text-muted-foreground leading-relaxed line-clamp-2">{c.tagline}</p>
                 </div>
-                <div className="mt-6 flex items-center justify-between border-t border-slate-200/50 pt-3">
-                  <span className="text-xs font-bold text-primary">Explore Category</span>
+                <div className="mt-4 sm:mt-6 flex items-center justify-between border-t border-slate-200/50 pt-2.5 sm:pt-3">
+                  <span className="text-[11px] sm:text-xs font-bold text-primary">Explore</span>
                   <ArrowRight className="size-3.5 text-primary transition-transform duration-300 group-hover:translate-x-1" aria-hidden />
                 </div>
               </Link>
@@ -197,7 +197,7 @@ function Index() {
         <CategoryRail key={c.slug} category={c} />
       ))}
 
-      {/* 5. New Arrivals Horizontal Glass Carousel */}
+      {/* 5. New Arrivals (Amazon-style 2 pictures down by down on mobile) */}
       <section className="py-12 lg:py-16">
         <div className="container-page">
           <div className="flex items-center justify-between gap-4 pb-6">
@@ -212,17 +212,16 @@ function Index() {
             </div>
             <Link
               to="/shop"
-              className="apple-btn-glass hidden shrink-0 items-center gap-1.5 rounded-full px-4 py-2 text-xs font-bold text-foreground hover:text-primary sm:inline-flex"
+              className="apple-btn-glass inline-flex shrink-0 items-center gap-1.5 rounded-full px-3.5 py-1.5 sm:px-4 sm:py-2 text-xs font-bold text-foreground hover:text-primary"
             >
-              Browse All Products <ArrowRight className="size-3.5 text-primary" aria-hidden />
+              Browse All <ArrowRight className="size-3.5 text-primary" aria-hidden />
             </Link>
           </div>
 
-          <div className="flex gap-4 overflow-x-auto pb-4 no-scrollbar">
+          {/* Amazon-style 2-columns (down by down) on mobile */}
+          <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-6">
             {newArrivals.map((p) => (
-              <div key={p.slug} className="w-[240px] shrink-0 sm:w-[260px]">
-                <ProductCard product={p} />
-              </div>
+              <ProductCard key={p.slug} product={p} />
             ))}
           </div>
         </div>

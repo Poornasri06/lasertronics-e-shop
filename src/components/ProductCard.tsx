@@ -7,18 +7,15 @@ import { useCart } from "@/lib/cart";
 export function ProductCard({ product }: { product: Product }) {
   const { add } = useCart();
   const navigate = useNavigate();
-  const [wished, setWished] = useState(false);
 
   return (
-    <article className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-white/80 bg-white/75 shadow-[0_4px_20px_-2px_rgba(12,32,68,0.06),inset_0_1px_0_0_rgba(255,255,255,0.95)] backdrop-blur-xl transition-all duration-300 hover:-translate-y-1.5 hover:border-blue-400/40 hover:bg-white/88 hover:shadow-[0_16px_36px_-6px_rgba(8,70,150,0.14),inset_0_1px_0_0_rgba(255,255,255,1)]">
-      {/* Specular glass highlight reflection at top edge */}
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white to-transparent opacity-80" />
-
-      <div className="relative block aspect-square overflow-hidden bg-gradient-to-b from-slate-100/80 to-slate-200/50 backdrop-blur-md">
+    <article className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-[0_2px_10px_rgba(0,0,0,0.03)] transition-all duration-300 hover:shadow-md">
+      {/* Product Image Area */}
+      <div className="relative block aspect-square overflow-hidden bg-[#F6F7F9]">
         <Link
           to="/product/$slug"
           params={{ slug: product.slug }}
-          className="block size-full"
+          className="flex size-full items-center justify-center p-3"
         >
           <img
             src={product.image}
@@ -26,54 +23,45 @@ export function ProductCard({ product }: { product: Product }) {
             width={800}
             height={800}
             loading="lazy"
-            className="size-full object-cover transition-transform duration-500 ease-out group-hover:scale-106"
+            className="size-full object-contain transition-transform duration-300 group-hover:scale-105"
           />
         </Link>
 
         {product.badge && (
-          <span className="absolute left-2.5 top-2.5 rounded-full border border-white/40 bg-gradient-to-r from-blue-600 to-indigo-600 px-2.5 py-0.5 text-[10px] font-extrabold uppercase tracking-wide text-white shadow-md backdrop-blur-md">
+          <span className="absolute left-2.5 top-2.5 rounded-full bg-[#0066FF] px-2.5 py-0.5 text-[10px] font-extrabold uppercase tracking-wide text-white shadow-xs">
             {product.badge}
           </span>
         )}
-
-        <button
-          type="button"
-          aria-label="Add to wishlist"
-          onClick={() => setWished(!wished)}
-          className={`absolute right-2.5 top-2.5 grid size-8 place-items-center rounded-full border border-white/80 bg-white/75 backdrop-blur-md shadow-sm transition-all hover:bg-white hover:scale-105 active:scale-90 ${
-            wished ? "text-[#ff3b30]" : "text-muted-foreground hover:text-primary"
-          }`}
-        >
-          <Heart className={`size-4 ${wished ? "fill-[#ff3b30] text-[#ff3b30]" : ""}`} aria-hidden />
-        </button>
       </div>
 
-      <div className="flex flex-1 flex-col p-3.5 sm:p-4">
-        <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
-          <div className="flex items-center gap-1 rounded-full border border-amber-300/40 bg-amber-50/80 px-2 py-0.5">
-            <Star className="size-3 fill-amber-400 text-amber-400" aria-hidden />
-            <span className="font-bold text-amber-900">{product.rating.toFixed(1)}</span>
-          </div>
-          <span className="text-[11px] font-medium text-muted-foreground">({product.reviews})</span>
+      {/* Product Details Area */}
+      <div className="flex flex-1 flex-col p-3.5 sm:p-4 bg-white">
+        {/* Rating Line: Blue star + rating + reviews */}
+        <div className="flex items-center gap-1.5 text-xs">
+          <Star className="size-3.5 fill-[#0066FF] text-[#0066FF]" aria-hidden />
+          <span className="font-bold text-slate-900">{product.rating.toFixed(1)}</span>
+          <span className="text-slate-500">({product.reviews})</span>
         </div>
 
-        <h3 className="mt-2 line-clamp-2 text-sm font-semibold leading-snug tracking-tight text-foreground/90">
+        {/* Title */}
+        <h3 className="mt-1.5 line-clamp-2 text-sm font-bold leading-snug tracking-tight text-slate-900">
           <Link
             to="/product/$slug"
             params={{ slug: product.slug }}
-            className="transition-colors hover:text-primary"
+            className="transition-colors hover:text-[#0066FF]"
           >
             {product.name}
           </Link>
         </h3>
 
-        <div className="mt-auto pt-3.5">
-          <div className="flex flex-wrap items-baseline gap-x-2">
-            <span className="font-display text-base font-bold text-foreground">
+        {/* Price & Actions */}
+        <div className="mt-auto pt-3">
+          <div className="flex flex-wrap items-baseline gap-2">
+            <span className="font-extrabold text-base text-slate-900">
               {formatLKR(product.price)}
             </span>
             {product.oldPrice && (
-              <span className="text-xs text-muted-foreground line-through">
+              <span className="text-xs text-slate-400 line-through">
                 {formatLKR(product.oldPrice)}
               </span>
             )}
@@ -86,17 +74,17 @@ export function ProductCard({ product }: { product: Product }) {
                 add(product.slug);
                 navigate({ to: "/checkout" });
               }}
-              className="apple-btn-primary min-h-10 rounded-full px-3 text-xs font-bold"
+              className="h-10 rounded-xl bg-[#0066FF] px-3 text-xs font-bold text-white shadow-xs transition-colors hover:bg-[#0055d4] active:scale-[0.98]"
             >
-              Buy Now
+              Buy now
             </button>
             <button
               type="button"
               aria-label={`Add ${product.name} to cart`}
               onClick={() => add(product.slug)}
-              className="grid size-10 place-items-center rounded-full border border-white/80 bg-white/70 text-foreground backdrop-blur-md shadow-xs transition-all hover:border-primary hover:bg-primary hover:text-white active:scale-90"
+              className="grid size-10 place-items-center rounded-xl border border-slate-200 bg-white text-slate-700 shadow-xs transition-colors hover:bg-slate-50 active:scale-95"
             >
-              <ShoppingCart className="size-4" aria-hidden />
+              <ShoppingCart className="size-4.5" aria-hidden />
             </button>
           </div>
         </div>
