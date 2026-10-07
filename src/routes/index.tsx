@@ -160,7 +160,8 @@ function Index() {
           </p>
         </div>
 
-        <div className="mt-8 grid grid-cols-2 gap-3.5 sm:gap-4.5 lg:grid-cols-5">
+        {/* Mobile: horizontal scroll strip | lg+: 5-column grid */}
+        <div className="mt-8 lg:grid lg:grid-cols-5 lg:gap-4.5 flex gap-3.5 overflow-x-auto pb-2 snap-x snap-mandatory scrollbar-none -mx-4 px-4 sm:-mx-6 sm:px-6 lg:mx-0 lg:px-0 lg:overflow-visible lg:pb-0">
           {categories.map((c, i) => {
             const Icon = categoryIcons[i] ?? Cpu;
             return (
@@ -168,7 +169,7 @@ function Index() {
                 key={c.slug}
                 to="/category/$slug"
                 params={{ slug: c.slug }}
-                className="glass-card group relative flex flex-col justify-between overflow-hidden rounded-2xl sm:rounded-3xl border border-white/80 bg-white/70 p-4 sm:p-5.5 shadow-[0_4px_20px_-2px_rgba(12,32,68,0.06),inset_0_1px_0_0_rgba(255,255,255,0.95)] backdrop-blur-xl transition-all duration-300 hover:-translate-y-1.5 hover:border-blue-400/50 hover:bg-white/90 hover:shadow-xl last:col-span-2 sm:last:col-span-1 lg:last:col-span-1"
+                className="glass-card group relative flex flex-col justify-between overflow-hidden rounded-2xl sm:rounded-3xl border border-white/80 bg-white/70 p-4 sm:p-5.5 shadow-[0_4px_20px_-2px_rgba(12,32,68,0.06),inset_0_1px_0_0_rgba(255,255,255,0.95)] backdrop-blur-xl transition-all duration-300 hover:-translate-y-1.5 hover:border-blue-400/50 hover:bg-white/90 hover:shadow-xl snap-start shrink-0 w-[62vw] sm:w-[38vw] lg:w-auto"
               >
                 {/* Specular highlight */}
                 <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white to-transparent opacity-80" />

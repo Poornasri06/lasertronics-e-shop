@@ -299,4 +299,12 @@
   }
 }
 
+/* Hide scrollbar while preserving scroll — used by horizontal scroll strips */
+.scrollbar-none {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE / Edge */
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none; /* Chrome / Safari */
+}
 
