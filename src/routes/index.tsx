@@ -127,7 +127,7 @@ function Index() {
       {/* 2. iOS Widget Benefits Section */}
       <section className="py-4 sm:py-6">
         <div className="container-page">
-          <div className="grid grid-cols-2 gap-2.5 sm:gap-4 lg:grid-cols-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-4 lg:grid-cols-4">
             {benefits.map((b) => (
               <div
                 key={b.title}
@@ -230,7 +230,7 @@ function Index() {
 
       {/* 6. Solutions Section (Apple Pro Workstation Dark Glass) */}
       <section id="solutions" className="container-page py-12 lg:py-16">
-        <div className="relative overflow-hidden rounded-3xl border border-white/15 bg-[#0A192F]/88 p-8 text-white shadow-2xl backdrop-blur-2xl sm:p-12 lg:p-16">
+        <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl border border-white/15 bg-[#0A192F]/88 p-5 sm:p-12 lg:p-16 text-white shadow-2xl backdrop-blur-2xl">
           {/* Ambient inner neon glows */}
           <div className="pointer-events-none absolute -top-24 -right-24 size-80 rounded-full bg-blue-500/25 blur-3xl" aria-hidden />
           <div className="pointer-events-none absolute -bottom-24 -left-24 size-80 rounded-full bg-cyan-400/20 blur-3xl" aria-hidden />
@@ -262,10 +262,10 @@ function Index() {
             ))}
           </div>
 
-          <div className="relative z-10 mt-10 flex flex-wrap items-center gap-4">
+          <div className="relative z-10 mt-8 sm:mt-10 flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-3">
             <Link
               to="/contact"
-              className="apple-btn-primary inline-flex min-h-12 items-center gap-2 rounded-full px-8 text-sm font-bold shadow-lg"
+              className="apple-btn-primary inline-flex min-h-12 w-full sm:w-auto items-center justify-center gap-2 rounded-full px-8 text-sm font-bold shadow-lg"
             >
               Talk to Our Engineering Team <ArrowRight className="size-4" aria-hidden />
             </Link>
@@ -316,7 +316,7 @@ function Index() {
           </h2>
         </div>
 
-        <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-3">
+        <div className="mt-10 grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-3">
           {testimonials.map((t) => (
             <div
               key={t.name}

@@ -6,7 +6,7 @@ import { categories } from "@/data/products";
 export function Footer() {
   return (
     <footer className="mt-20 border-t border-white/10 bg-[#0A192F]/92 text-ink-foreground backdrop-blur-2xl shadow-[0_-8px_32px_rgba(0,0,0,0.12)]">
-      <div className="container-page grid gap-10 py-16 sm:grid-cols-2 lg:grid-cols-5">
+      <div className="container-page grid gap-8 py-10 sm:py-16 grid-cols-1 sm:grid-cols-2 lg:grid-cols-5">
         <div className="lg:col-span-1">
           <div className="flex items-center gap-2.5">
             <img

@@ -46,7 +46,7 @@ function CartPage() {
             </Link>
           </div>
         ) : (
-          <div className="mt-8 grid gap-8 lg:grid-cols-[minmax(0,1fr)_22rem]">
+          <div className="mt-8 grid gap-6 lg:grid-cols-[minmax(0,1fr)_22rem]">
             <ul className="space-y-3.5">
               {items.map(({ product, qty }) => (
                 <li
@@ -113,7 +113,7 @@ function CartPage() {
             </ul>
 
             {/* Apple Floating Glass Summary Panel */}
-            <aside className="h-fit rounded-3xl border border-white/85 bg-white/80 p-6 shadow-[0_12px_40px_-6px_rgba(10,35,80,0.12),inset_0_1px_0_0_rgba(255,255,255,1)] backdrop-blur-2xl lg:sticky lg:top-28">
+            <aside className="h-fit rounded-2xl sm:rounded-3xl border border-white/85 bg-white/80 p-5 sm:p-6 shadow-[0_12px_40px_-6px_rgba(10,35,80,0.12),inset_0_1px_0_0_rgba(255,255,255,1)] backdrop-blur-2xl lg:sticky lg:top-28">
               <h2 className="text-xs font-extrabold uppercase tracking-[0.2em] text-primary">
                 Order Summary
               </h2>

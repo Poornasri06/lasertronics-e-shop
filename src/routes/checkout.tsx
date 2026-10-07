@@ -81,11 +81,11 @@ function CheckoutPage() {
               clear();
               setPlaced(true);
             }}
-            className="mt-8 grid gap-8 lg:grid-cols-[minmax(0,1fr)_22rem]"
+            className="mt-8 grid gap-6 lg:grid-cols-[minmax(0,1fr)_22rem]"
           >
             <div className="space-y-6">
               {/* Delivery Details Glass Card */}
-              <section className="glass-card rounded-3xl border border-white/85 bg-white/80 p-6 shadow-[0_4px_20px_-2px_rgba(12,32,68,0.06),inset_0_1px_0_0_rgba(255,255,255,1)] backdrop-blur-2xl sm:p-7">
+              <section className="glass-card rounded-2xl sm:rounded-3xl border border-white/85 bg-white/80 p-5 sm:p-7 shadow-[0_4px_20px_-2px_rgba(12,32,68,0.06),inset_0_1px_0_0_rgba(255,255,255,1)] backdrop-blur-2xl">
                 <h2 className="text-xs font-extrabold uppercase tracking-[0.2em] text-primary">
                   1. Delivery Details
                 </h2>
@@ -105,7 +105,7 @@ function CheckoutPage() {
               </section>
 
               {/* Payment Method Glass Card */}
-              <section className="glass-card rounded-3xl border border-white/85 bg-white/80 p-6 shadow-[0_4px_20px_-2px_rgba(12,32,68,0.06),inset_0_1px_0_0_rgba(255,255,255,1)] backdrop-blur-2xl sm:p-7">
+              <section className="glass-card rounded-2xl sm:rounded-3xl border border-white/85 bg-white/80 p-5 sm:p-7 shadow-[0_4px_20px_-2px_rgba(12,32,68,0.06),inset_0_1px_0_0_rgba(255,255,255,1)] backdrop-blur-2xl">
                 <h2 className="text-xs font-extrabold uppercase tracking-[0.2em] text-primary">
                   2. Payment Method
                 </h2>
@@ -142,7 +142,7 @@ function CheckoutPage() {
             </div>
 
             {/* Apple Floating Glass Receipt Panel */}
-            <aside className="h-fit rounded-3xl border border-white/85 bg-white/80 p-6 shadow-[0_12px_40px_-6px_rgba(10,35,80,0.12),inset_0_1px_0_0_rgba(255,255,255,1)] backdrop-blur-2xl lg:sticky lg:top-28">
+            <aside className="h-fit rounded-2xl sm:rounded-3xl border border-white/85 bg-white/80 p-5 sm:p-6 shadow-[0_12px_40px_-6px_rgba(10,35,80,0.12),inset_0_1px_0_0_rgba(255,255,255,1)] backdrop-blur-2xl lg:sticky lg:top-28">
               <h2 className="text-xs font-extrabold uppercase tracking-[0.2em] text-primary">
                 Order Summary
               </h2>

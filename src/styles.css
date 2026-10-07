@@ -116,11 +116,18 @@
 @layer base {
   * {
     border-color: var(--color-border);
+    box-sizing: border-box;
+    min-width: 0;
   }
 
   html {
     scroll-behavior: smooth;
     overflow-x: hidden;
+    /* Prevent iOS from bumping font sizes */
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    /* Fluid base font: scales smoothly 14px→16px between 320px and 1280px */
+    font-size: clamp(0.875rem, 0.7rem + 0.625vw, 1rem);
   }
 
   body {
@@ -138,7 +145,24 @@
     font-family: var(--font-display);
     letter-spacing: -0.02em;
   }
+
+  /* Ensure all clickable elements have minimum 44×44px touch target (iOS HIG) */
+  button,
+  [role="button"],
+  a {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Images are block and responsive by default */
+  img,
+  video {
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
 }
+
 
 @utility container-page {
   width: 100%;

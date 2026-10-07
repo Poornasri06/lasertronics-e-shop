@@ -103,7 +103,7 @@ export function Hero() {
     <section className="relative w-full overflow-hidden bg-slate-950 select-none">
       {/* Full-width Slideshow Carousel Container */}
       <div
-        className={`group relative min-h-[520px] sm:min-h-[580px] lg:min-h-[640px] w-full overflow-hidden ${
+        className={`group relative min-h-[420px] xs:min-h-[480px] sm:min-h-[560px] lg:min-h-[640px] w-full overflow-hidden ${
           isDragging ? "cursor-grabbing" : "cursor-grab"
         }`}
         // Mouse drag events
@@ -117,7 +117,7 @@ export function Hero() {
       >
         {/* Horizontal Slide Track */}
         <div
-          className={`flex h-full min-h-[400px] sm:min-h-[520px] lg:min-h-[620px] w-full ${
+          className={`flex h-full min-h-[420px] sm:min-h-[560px] lg:min-h-[620px] w-full ${
             isDragging
               ? "transition-none"
               : "transition-transform duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]"
@@ -131,7 +131,7 @@ export function Hero() {
             return (
               <div
                 key={slide.slug}
-                className="relative flex h-full min-h-[400px] sm:min-h-[520px] lg:min-h-[620px] w-full shrink-0 flex-col justify-between"
+                className="relative flex h-full min-h-[420px] sm:min-h-[560px] lg:min-h-[620px] w-full shrink-0 flex-col justify-between"
               >
                 {/* Slide Background Image with Ken-Burns Motion */}
                 <div className="absolute inset-0 size-full overflow-hidden">
@@ -150,7 +150,7 @@ export function Hero() {
                 </div>
 
                 {/* Main Content Overlay Container */}
-                <div className="container-page relative z-10 flex flex-col justify-center pt-6 sm:pt-14 lg:pt-20 pb-14 sm:pb-24">
+                <div className="container-page relative z-10 flex flex-col justify-center pt-8 sm:pt-14 lg:pt-20 pb-16 sm:pb-24">
                   <div className="max-w-2xl">
                     {/* Eyebrow Pill */}
                     <div className="inline-flex items-center gap-1.5 rounded-full border border-cyan-400/30 bg-cyan-950/50 px-3 py-1 text-[10px] sm:text-xs font-extrabold uppercase tracking-[0.2em] text-cyan-300 shadow-sm backdrop-blur-xl">
@@ -159,7 +159,7 @@ export function Hero() {
                     </div>
 
                     {/* Main Title */}
-                    <h1 className="mt-2.5 sm:mt-4 font-display text-2xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white drop-shadow-md leading-tight">
+                    <h1 className="mt-2.5 sm:mt-4 font-display text-xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white drop-shadow-md leading-tight">
                       {slide.title}
                     </h1>
 
@@ -185,11 +185,11 @@ export function Hero() {
                     </div>
 
                     {/* CTA Buttons */}
-                    <div className="mt-4 sm:mt-8 flex flex-wrap items-center gap-2.5 sm:gap-4">
+                    <div className="mt-4 sm:mt-8 flex flex-wrap items-center gap-2 sm:gap-4">
                       <Link
                         to="/category/$slug"
                         params={{ slug: slide.slug }}
-                        className="inline-flex min-h-10 sm:min-h-12 items-center justify-center gap-2 rounded-full bg-[#0878D1] hover:bg-[#0768b5] px-5 sm:px-8 text-xs sm:text-base font-bold text-white shadow-lg shadow-blue-500/30 transition-all duration-200 active:scale-95 cursor-pointer"
+                        className="inline-flex min-h-10 sm:min-h-12 items-center justify-center gap-2 rounded-full bg-[#0878D1] hover:bg-[#0768b5] px-4 sm:px-8 text-[11px] sm:text-base font-bold text-white shadow-lg shadow-blue-500/30 transition-all duration-200 active:scale-95 cursor-pointer"
                       >
                         {slide.cta}
                         <Plus className="size-4 stroke-[2.5]" aria-hidden />
@@ -197,7 +197,7 @@ export function Hero() {
 
                       <Link
                         to="/shop"
-                        className="inline-flex min-h-10 sm:min-h-12 items-center justify-center rounded-full border border-white/30 bg-white/10 px-4 sm:px-7 text-xs sm:text-base font-bold text-white shadow-sm backdrop-blur-md transition-all duration-200 hover:bg-white/20 active:scale-95 cursor-pointer"
+                        className="inline-flex min-h-10 sm:min-h-12 items-center justify-center rounded-full border border-white/30 bg-white/10 px-3 sm:px-7 text-[11px] sm:text-base font-bold text-white shadow-sm backdrop-blur-md transition-all duration-200 hover:bg-white/20 active:scale-95 cursor-pointer"
                       >
                         Browse All Products
                       </Link>
