@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { createFileRoute, Link, notFound, useNavigate } from "@tanstack/react-router";
 import { ChevronRight, Minus, Plus, ShoppingCart, Star, Truck, ShieldCheck, Undo2 } from "lucide-react";
 import { SiteLayout } from "@/components/layout/SiteLayout";
@@ -38,7 +38,7 @@ function ProductPage() {
 
   return (
     <SiteLayout>
-      <div className="container-page py-6">
+      <div className="container-page py-4 sm:py-6">
         <nav className="flex flex-wrap items-center gap-1.5 text-xs text-muted-foreground">
           <Link to="/" className="hover:text-primary transition-colors">
             Home
@@ -60,10 +60,10 @@ function ProductPage() {
         </nav>
       </div>
 
-      <div className="container-page grid gap-8 pb-16 lg:grid-cols-2 lg:gap-14">
+      <div className="container-page grid gap-6 sm:gap-8 pb-12 sm:pb-16 lg:grid-cols-2 lg:gap-14">
         {/* Apple Showcase Frosted Image Frame */}
-        <div className="relative overflow-hidden rounded-3xl border border-white/90 bg-white/75 p-3 shadow-[0_20px_50px_-10px_rgba(10,35,80,0.14),inset_0_1px_0_0_rgba(255,255,255,1)] backdrop-blur-2xl sm:p-4">
-          <div className="relative aspect-square overflow-hidden rounded-2xl bg-gradient-to-b from-slate-100/90 to-slate-200/60">
+        <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl border border-white/90 bg-white/75 p-3 sm:p-4 shadow-[0_20px_50px_-10px_rgba(10,35,80,0.14),inset_0_1px_0_0_rgba(255,255,255,1)] backdrop-blur-2xl">
+          <div className="relative aspect-square overflow-hidden rounded-xl sm:rounded-2xl bg-gradient-to-b from-slate-100/90 to-slate-200/60">
             <img
               src={product.image}
               alt={product.name}
@@ -75,7 +75,7 @@ function ProductPage() {
         </div>
 
         <div className="min-w-0 flex flex-col">
-          <div className="flex flex-wrap items-center gap-2.5">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-2.5">
             {product.badge && (
               <span className="rounded-full border border-white/40 bg-gradient-to-r from-blue-600 to-indigo-600 px-3 py-1 text-[10px] font-extrabold uppercase tracking-wide text-white shadow-md backdrop-blur-md">
                 {product.badge}
@@ -88,45 +88,45 @@ function ProductPage() {
             </div>
           </div>
 
-          <h1 className="mt-4 font-display text-2xl font-extrabold tracking-tight text-foreground sm:text-3xl lg:text-4xl">
+          <h1 className="mt-3 sm:mt-4 font-display text-xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-foreground">
             {product.name}
           </h1>
-          <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{product.blurb}</p>
+          <p className="mt-2.5 sm:mt-3 text-xs sm:text-sm leading-relaxed text-muted-foreground">{product.blurb}</p>
 
-          <div className="mt-6 flex flex-wrap items-baseline gap-3">
-            <span className="font-display text-3xl font-extrabold text-foreground sm:text-4xl">
+          <div className="mt-5 sm:mt-6 flex flex-wrap items-baseline gap-2.5 sm:gap-3">
+            <span className="font-display text-2xl sm:text-4xl font-extrabold text-foreground">
               {formatLKR(product.price)}
             </span>
             {product.oldPrice && (
-              <span className="text-base text-muted-foreground line-through">
+              <span className="text-sm sm:text-base text-muted-foreground line-through">
                 {formatLKR(product.oldPrice)}
               </span>
             )}
           </div>
           <div className="mt-1.5 flex items-center gap-1.5 text-xs font-bold text-emerald-600">
             <span className="size-2 rounded-full bg-emerald-500 animate-pulse" />
-            In stock — {product.stock} units available in Colombo
+            In stock • {product.stock} units available in Colombo
           </div>
 
           {/* iOS Tactile Quantity Selector */}
-          <div className="mt-7 flex items-center gap-3.5">
-            <div className="flex items-center rounded-full border border-white/80 bg-white/70 p-1 shadow-xs backdrop-blur-md">
+          <div className="mt-6 sm:mt-7 flex items-center gap-3 sm:gap-3.5">
+            <div className="flex items-center rounded-full border border-white/80 bg-white/70 p-0.5 sm:p-1 shadow-xs backdrop-blur-md">
               <button
                 type="button"
                 aria-label="Decrease quantity"
                 onClick={() => setQty((q) => Math.max(1, q - 1))}
-                className="grid size-9.5 place-items-center rounded-full transition-colors hover:bg-white active:scale-90"
+                className="grid size-8 sm:size-9.5 place-items-center rounded-full transition-colors hover:bg-white active:scale-90"
               >
-                <Minus className="size-4" aria-hidden />
+                <Minus className="size-3.5 sm:size-4" aria-hidden />
               </button>
-              <span className="w-8 text-center text-sm font-bold text-foreground">{qty}</span>
+              <span className="w-7 sm:w-8 text-center text-xs sm:text-sm font-bold text-foreground">{qty}</span>
               <button
                 type="button"
                 aria-label="Increase quantity"
                 onClick={() => setQty((q) => q + 1)}
-                className="grid size-9.5 place-items-center rounded-full transition-colors hover:bg-white active:scale-90"
+                className="grid size-8 sm:size-9.5 place-items-center rounded-full transition-colors hover:bg-white active:scale-90"
               >
-                <Plus className="size-4" aria-hidden />
+                <Plus className="size-3.5 sm:size-4" aria-hidden />
               </button>
             </div>
             <span className="text-xs font-semibold text-muted-foreground">
@@ -135,52 +135,52 @@ function ProductPage() {
           </div>
 
           {/* Action Buttons */}
-          <div className="mt-6 grid gap-3 sm:grid-cols-2">
+          <div className="mt-5 sm:mt-6 grid gap-2.5 sm:gap-3 grid-cols-1 xs:grid-cols-2">
             <button
               type="button"
               onClick={() => {
                 add(product.slug, qty);
                 navigate({ to: "/checkout" });
               }}
-              className="apple-btn-primary min-h-12 rounded-full px-7 text-sm font-bold shadow-lg"
+              className="apple-btn-primary min-h-11 sm:min-h-12 rounded-full px-6 text-xs sm:text-sm font-bold shadow-lg text-center"
             >
               Buy Now
             </button>
             <button
               type="button"
               onClick={() => add(product.slug, qty)}
-              className="apple-btn-glass inline-flex min-h-12 items-center justify-center gap-2 rounded-full px-6 text-sm font-bold text-foreground shadow-xs"
+              className="apple-btn-glass inline-flex min-h-11 sm:min-h-12 items-center justify-center gap-2 rounded-full px-5 text-xs sm:text-sm font-bold text-foreground shadow-xs text-center"
             >
-              <ShoppingCart className="size-4.5" aria-hidden /> Add to Cart
+              <ShoppingCart className="size-4 sm:size-4.5" aria-hidden /> Add to Cart
             </button>
           </div>
 
           {/* Perks list as frosted chips */}
-          <div className="mt-8 grid gap-2.5 rounded-2xl border border-white/70 bg-white/60 p-4 text-xs font-medium text-foreground/80 backdrop-blur-md shadow-xs">
+          <div className="mt-7 sm:mt-8 grid gap-2 sm:gap-2.5 rounded-2xl border border-white/70 bg-white/60 p-3.5 sm:p-4 text-xs font-medium text-foreground/80 backdrop-blur-md shadow-xs">
             <div className="flex items-center gap-2">
-              <Truck className="size-4 text-primary" aria-hidden />
+              <Truck className="size-4 text-primary shrink-0" aria-hidden />
               <span>Island-wide delivery, free delivery over LKR 15,000</span>
             </div>
             <div className="flex items-center gap-2">
-              <ShieldCheck className="size-4 text-primary" aria-hidden />
+              <ShieldCheck className="size-4 text-primary shrink-0" aria-hidden />
               <span>Genuine product with local Sri Lanka warranty support</span>
             </div>
             <div className="flex items-center gap-2">
-              <Undo2 className="size-4 text-primary" aria-hidden />
+              <Undo2 className="size-4 text-primary shrink-0" aria-hidden />
               <span>7-day replacement guarantee on defective items</span>
             </div>
           </div>
 
-          {/* iOS Settings Grouped Specs Card */}
-          <div className="mt-8 overflow-hidden rounded-3xl border border-white/80 bg-white/75 p-6 shadow-[0_4px_20px_-2px_rgba(12,32,68,0.06),inset_0_1px_0_0_rgba(255,255,255,0.95)] backdrop-blur-xl">
+          {/* Specs Card */}
+          <div className="mt-7 sm:mt-8 overflow-hidden rounded-2xl sm:rounded-3xl border border-white/80 bg-white/75 p-5 sm:p-6 shadow-[0_4px_20px_-2px_rgba(12,32,68,0.06),inset_0_1px_0_0_rgba(255,255,255,0.95)] backdrop-blur-xl">
             <h2 className="text-xs font-extrabold uppercase tracking-[0.2em] text-primary">
               Specifications
             </h2>
-            <dl className="mt-4 divide-y divide-slate-200/60 text-xs sm:text-sm">
+            <dl className="mt-3.5 sm:mt-4 divide-y divide-slate-200/60 text-xs sm:text-sm">
               {product.specs.map((s: { label: string; value: string }) => (
-                <div key={s.label} className="grid grid-cols-2 gap-3 py-3">
+                <div key={s.label} className="grid grid-cols-1 xs:grid-cols-2 gap-1 xs:gap-3 py-2.5 sm:py-3">
                   <dt className="text-muted-foreground">{s.label}</dt>
-                  <dd className="font-semibold text-foreground text-right sm:text-left">{s.value}</dd>
+                  <dd className="font-semibold text-foreground text-left xs:text-right sm:text-left">{s.value}</dd>
                 </div>
               ))}
             </dl>
@@ -189,12 +189,12 @@ function ProductPage() {
       </div>
 
       {related.length > 0 && (
-        <section className="container-page pb-16">
-          <div className="border-t border-white/80 pt-10">
-            <h2 className="font-display text-xl font-extrabold tracking-tight sm:text-2xl text-foreground">
+        <section className="container-page pb-12 sm:pb-16">
+          <div className="border-t border-white/80 pt-8 sm:pt-10">
+            <h2 className="font-display text-lg sm:text-2xl font-extrabold tracking-tight text-foreground">
               You May Also Like
             </h2>
-            <div className="mt-6 grid grid-cols-2 gap-3.5 sm:gap-4 lg:grid-cols-4">
+            <div className="mt-4 sm:mt-6 grid grid-cols-2 gap-2.5 sm:gap-4 md:grid-cols-3 lg:grid-cols-4">
               {related.map((p) => (
                 <ProductCard key={p.slug} product={p} />
               ))}

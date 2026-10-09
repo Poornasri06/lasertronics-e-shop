@@ -1,4 +1,4 @@
-@import "tailwindcss" source(none);
+﻿@import "tailwindcss" source(none);
 @source "../src";
 @import "tw-animate-css";
 
@@ -12,10 +12,6 @@
  *
  * The :root and .dark blocks define the actual color values using oklch.
  * All colors MUST use oklch format.
- *
- * To add a new semantic color:
- * 1. Add the variable to :root (light value) and .dark (dark value)
- * 2. Register it in @theme inline as --color-<name>: var(--<name>)
  */
 
 @theme inline {
@@ -112,7 +108,6 @@
   --sidebar-ring: oklch(0.55 0.18 240);
 }
 
-
 @layer base {
   * {
     border-color: var(--color-border);
@@ -123,11 +118,10 @@
   html {
     scroll-behavior: smooth;
     overflow-x: hidden;
-    /* Prevent iOS from bumping font sizes */
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
-    /* Fluid base font: scales smoothly 14px→16px between 320px and 1280px */
-    font-size: clamp(0.875rem, 0.7rem + 0.625vw, 1rem);
+    /* Fluid base font: scales smoothly 14px to 16px between 320px and 1280px */
+    font-size: clamp(0.875rem, 0.75rem + 0.5vw, 1rem);
   }
 
   body {
@@ -146,12 +140,12 @@
     letter-spacing: -0.02em;
   }
 
-  /* Ensure all clickable elements have minimum 44×44px touch target (iOS HIG) */
   button,
   [role="button"],
-  a {
-    min-height: 44px;
-    min-width: 44px;
+  input,
+  select,
+  textarea {
+    touch-action: manipulation;
   }
 
   /* Images are block and responsive by default */
@@ -162,7 +156,6 @@
     display: block;
   }
 }
-
 
 @utility container-page {
   width: 100%;
@@ -323,12 +316,11 @@
   }
 }
 
-/* Hide scrollbar while preserving scroll — used by horizontal scroll strips */
+/* Hide scrollbar while preserving scroll - used by horizontal scroll strips */
 .scrollbar-none {
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE / Edge */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 .scrollbar-none::-webkit-scrollbar {
-  display: none; /* Chrome / Safari */
+  display: none;
 }
-

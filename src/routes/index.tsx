@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+﻿import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   ArrowRight,
   Truck,
@@ -124,17 +124,17 @@ function Index() {
       {/* 1. Hero Carousel */}
       <Hero />
 
-      {/* 2. iOS Widget Benefits Section */}
+      {/* 2. Benefits Bar */}
       <section className="py-4 sm:py-6">
         <div className="container-page">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-4 lg:grid-cols-4">
+          <div className="grid grid-cols-1 xs:grid-cols-2 gap-2.5 sm:gap-4 lg:grid-cols-4">
             {benefits.map((b) => (
               <div
                 key={b.title}
-                className="glass-card group relative flex items-start gap-2.5 sm:gap-4 rounded-xl sm:rounded-2xl border border-white/80 bg-white/70 p-3 sm:p-4.5 shadow-[0_4px_20px_-2px_rgba(12,32,68,0.05),inset_0_1px_0_0_rgba(255,255,255,0.95)] backdrop-blur-xl transition-all duration-300 hover:border-blue-400/40 hover:bg-white/85"
+                className="glass-card group relative flex items-start gap-2.5 sm:gap-3.5 rounded-xl sm:rounded-2xl border border-white/80 bg-white/70 p-3 sm:p-4 shadow-[0_4px_20px_-2px_rgba(12,32,68,0.05),inset_0_1px_0_0_rgba(255,255,255,0.95)] backdrop-blur-xl transition-all duration-300 hover:border-blue-400/40 hover:bg-white/85"
               >
-                <div className="grid size-9 sm:size-12 shrink-0 place-items-center rounded-xl sm:rounded-2xl border border-blue-200/50 bg-gradient-to-br from-blue-500/15 via-sky-400/10 to-transparent text-primary shadow-xs transition-transform duration-300 group-hover:scale-105">
-                  <b.icon className="size-4 sm:size-5.5" aria-hidden />
+                <div className="grid size-9 sm:size-11 shrink-0 place-items-center rounded-xl sm:rounded-2xl border border-blue-200/50 bg-gradient-to-br from-blue-500/15 via-sky-400/10 to-transparent text-primary shadow-xs transition-transform duration-300 group-hover:scale-105">
+                  <b.icon className="size-4 sm:size-5" aria-hidden />
                 </div>
                 <div className="min-w-0">
                   <h3 className="text-xs sm:text-sm font-bold tracking-tight text-foreground/90 leading-snug">{b.title}</h3>
@@ -146,22 +146,22 @@ function Index() {
         </div>
       </section>
 
-      {/* 3. Shop by Category (iOS App Store Tiles) */}
-      <section className="container-page py-12 lg:py-16">
+      {/* 3. Shop by Category */}
+      <section className="container-page py-8 sm:py-12 lg:py-16">
         <div className="text-center">
           <span className="inline-block rounded-full border border-white/80 bg-white/70 px-3.5 py-1 text-xs font-extrabold uppercase tracking-[0.2em] text-primary shadow-xs backdrop-blur-md">
             Curated Ranges
           </span>
-          <h2 className="mt-3 font-display text-2xl font-extrabold tracking-tight sm:text-3xl text-foreground">
+          <h2 className="mt-2.5 font-display text-2xl font-extrabold tracking-tight sm:text-3xl text-foreground">
             Shop by Category
           </h2>
-          <p className="mx-auto mt-2 max-w-xl text-xs text-muted-foreground sm:text-sm">
+          <p className="mx-auto mt-1.5 max-w-xl text-xs text-muted-foreground sm:text-sm">
             Five focused ranges for Sri Lankan makers, technicians and households.
           </p>
         </div>
 
         {/* Mobile: horizontal scroll strip | lg+: 5-column grid */}
-        <div className="mt-8 lg:grid lg:grid-cols-5 lg:gap-4.5 flex gap-3.5 overflow-x-auto pb-2 snap-x snap-mandatory scrollbar-none -mx-4 px-4 sm:-mx-6 sm:px-6 lg:mx-0 lg:px-0 lg:overflow-visible lg:pb-0">
+        <div className="mt-6 sm:mt-8 lg:grid lg:grid-cols-5 lg:gap-4 flex gap-3 overflow-x-auto pb-2 snap-x snap-mandatory scrollbar-none -mx-4 px-4 sm:-mx-6 sm:px-6 lg:mx-0 lg:px-0 lg:overflow-visible lg:pb-0">
           {categories.map((c, i) => {
             const Icon = categoryIcons[i] ?? Cpu;
             return (
@@ -169,21 +169,20 @@ function Index() {
                 key={c.slug}
                 to="/category/$slug"
                 params={{ slug: c.slug }}
-                className="glass-card group relative flex flex-col justify-between overflow-hidden rounded-2xl sm:rounded-3xl border border-white/80 bg-white/70 p-4 sm:p-5.5 shadow-[0_4px_20px_-2px_rgba(12,32,68,0.06),inset_0_1px_0_0_rgba(255,255,255,0.95)] backdrop-blur-xl transition-all duration-300 hover:-translate-y-1.5 hover:border-blue-400/50 hover:bg-white/90 hover:shadow-xl snap-start shrink-0 w-[62vw] sm:w-[38vw] lg:w-auto"
+                className="glass-card group relative flex flex-col justify-between overflow-hidden rounded-2xl sm:rounded-3xl border border-white/80 bg-white/70 p-4 sm:p-5 shadow-[0_4px_20px_-2px_rgba(12,32,68,0.06),inset_0_1px_0_0_rgba(255,255,255,0.95)] backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-blue-400/50 hover:bg-white/90 hover:shadow-xl snap-start shrink-0 w-[60vw] xs:w-[48vw] sm:w-[35vw] lg:w-auto"
               >
-                {/* Specular highlight */}
                 <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white to-transparent opacity-80" />
 
                 <div>
-                  <div className="grid size-10 sm:size-12.5 place-items-center rounded-xl sm:rounded-2xl border border-white/30 bg-gradient-to-br from-blue-600 to-indigo-600 text-white shadow-md transition-all duration-300 group-hover:scale-108 group-hover:shadow-lg">
-                    <Icon className="size-5 sm:size-6" aria-hidden />
+                  <div className="grid size-10 sm:size-12 place-items-center rounded-xl sm:rounded-2xl border border-white/30 bg-gradient-to-br from-blue-600 to-indigo-600 text-white shadow-md transition-all duration-300 group-hover:scale-105">
+                    <Icon className="size-5 sm:size-5.5" aria-hidden />
                   </div>
                   <h3 className="mt-3 sm:mt-4 font-display text-sm sm:text-base font-bold leading-snug tracking-tight text-foreground transition-colors group-hover:text-primary">
                     {c.name}
                   </h3>
                   <p className="mt-1 sm:mt-1.5 text-[11px] sm:text-xs text-muted-foreground leading-relaxed line-clamp-2">{c.tagline}</p>
                 </div>
-                <div className="mt-4 sm:mt-6 flex items-center justify-between border-t border-slate-200/50 pt-2.5 sm:pt-3">
+                <div className="mt-4 sm:mt-5 flex items-center justify-between border-t border-slate-200/50 pt-2.5 sm:pt-3">
                   <span className="text-[11px] sm:text-xs font-bold text-primary">Explore</span>
                   <ArrowRight className="size-3.5 text-primary transition-transform duration-300 group-hover:translate-x-1" aria-hidden />
                 </div>
@@ -193,21 +192,21 @@ function Index() {
         </div>
       </section>
 
-      {/* 4. Category Rails (Products per category) */}
+      {/* 4. Category Rails */}
       {categories.map((c) => (
         <CategoryRail key={c.slug} category={c} />
       ))}
 
-      {/* 5. New Arrivals (Amazon-style 2 pictures down by down on mobile) */}
-      <section className="py-12 lg:py-16">
+      {/* 5. New Arrivals */}
+      <section className="py-8 sm:py-12 lg:py-16">
         <div className="container-page">
-          <div className="flex items-center justify-between gap-4 pb-6">
+          <div className="flex items-center justify-between gap-4 pb-4 sm:pb-6">
             <div>
               <div className="inline-flex items-center gap-1.5 rounded-full border border-white/80 bg-white/70 px-3 py-0.5 text-xs font-extrabold uppercase tracking-[0.2em] text-primary shadow-xs backdrop-blur-md">
                 <Sparkles className="size-3.5" />
                 Fresh Stock
               </div>
-              <h2 className="mt-2 font-display text-2xl font-extrabold tracking-tight sm:text-3xl text-foreground">
+              <h2 className="mt-2 font-display text-xl sm:text-3xl font-extrabold tracking-tight text-foreground">
                 New Arrivals
               </h2>
             </div>
@@ -219,8 +218,7 @@ function Index() {
             </Link>
           </div>
 
-          {/* Amazon-style 2-columns (down by down) on mobile/tablet */}
-          <div className="grid grid-cols-2 gap-3.5 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6">
+          <div className="grid grid-cols-2 gap-2.5 sm:gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
             {newArrivals.map((p) => (
               <ProductCard key={p.slug} product={p} />
             ))}
@@ -228,10 +226,9 @@ function Index() {
         </div>
       </section>
 
-      {/* 6. Solutions Section (Apple Pro Workstation Dark Glass) */}
-      <section id="solutions" className="container-page py-12 lg:py-16">
-        <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl border border-white/15 bg-[#0A192F]/88 p-5 sm:p-12 lg:p-16 text-white shadow-2xl backdrop-blur-2xl">
-          {/* Ambient inner neon glows */}
+      {/* 6. Solutions Section */}
+      <section id="solutions" className="container-page py-8 sm:py-12 lg:py-16">
+        <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl border border-white/15 bg-[#0A192F]/90 p-5 sm:p-10 lg:p-14 text-white shadow-2xl backdrop-blur-2xl">
           <div className="pointer-events-none absolute -top-24 -right-24 size-80 rounded-full bg-blue-500/25 blur-3xl" aria-hidden />
           <div className="pointer-events-none absolute -bottom-24 -left-24 size-80 rounded-full bg-cyan-400/20 blur-3xl" aria-hidden />
 
@@ -239,22 +236,22 @@ function Index() {
             <span className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/10 px-3.5 py-1 text-xs font-extrabold uppercase tracking-[0.2em] text-sky-300 backdrop-blur-md">
               Engineering Support
             </span>
-            <h2 className="mt-3 font-display text-2xl font-extrabold tracking-tight text-white sm:text-3xl lg:text-4xl">
+            <h2 className="mt-3 font-display text-xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-white leading-tight">
               Solutions for Makers, Engineers & Businesses
             </h2>
-            <p className="mt-3 text-sm leading-relaxed text-slate-300/90 sm:text-base">
-              LASERTRONICS PVT LTD supplies and supports electronics projects end to end — component sourcing, bulk pricing and technical guidance from experts.
+            <p className="mt-2.5 text-xs sm:text-base leading-relaxed text-slate-300/90">
+              LASERTRONICS PVT LTD supplies and supports electronics projects end to end • component sourcing, bulk pricing and technical guidance from experts.
             </p>
           </div>
 
-          <div className="relative z-10 mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="relative z-10 mt-8 sm:mt-10 grid gap-3.5 sm:gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
             {solutionsList.map((s) => (
               <div
                 key={s.title}
-                className="group rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-md transition-all duration-300 hover:border-sky-400/40 hover:bg-white/10 hover:shadow-lg"
+                className="group rounded-2xl border border-white/10 bg-white/5 p-5 sm:p-6 backdrop-blur-md transition-all duration-300 hover:border-sky-400/40 hover:bg-white/10 hover:shadow-lg"
               >
-                <div className="mb-4 size-2.5 rounded-full bg-sky-400 shadow-[0_0_8px_rgba(56,189,248,0.8)]" />
-                <h3 className="text-base font-bold text-white transition-colors group-hover:text-sky-300">
+                <div className="mb-3.5 size-2.5 rounded-full bg-sky-400 shadow-[0_0_8px_rgba(56,189,248,0.8)]" />
+                <h3 className="text-sm sm:text-base font-bold text-white transition-colors group-hover:text-sky-300">
                   {s.title}
                 </h3>
                 <p className="mt-2 text-xs leading-relaxed text-slate-300/80">{s.copy}</p>
@@ -262,10 +259,10 @@ function Index() {
             ))}
           </div>
 
-          <div className="relative z-10 mt-8 sm:mt-10 flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-3">
+          <div className="relative z-10 mt-7 sm:mt-10 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
             <Link
               to="/contact"
-              className="apple-btn-primary inline-flex min-h-12 w-full sm:w-auto items-center justify-center gap-2 rounded-full px-8 text-sm font-bold shadow-lg"
+              className="apple-btn-primary inline-flex min-h-11 sm:min-h-12 w-full sm:w-auto items-center justify-center gap-2 rounded-full px-7 sm:px-8 text-xs sm:text-sm font-bold shadow-lg text-center"
             >
               Talk to Our Engineering Team <ArrowRight className="size-4" aria-hidden />
             </Link>
@@ -273,31 +270,31 @@ function Index() {
         </div>
       </section>
 
-      {/* 7. Why Choose Us (iOS Frosted Cards) */}
-      <section className="container-page py-12 lg:py-16">
+      {/* 7. Why Choose Us */}
+      <section className="container-page py-8 sm:py-12 lg:py-16">
         <div className="text-center">
           <span className="inline-block rounded-full border border-white/80 bg-white/70 px-3.5 py-1 text-xs font-extrabold uppercase tracking-[0.2em] text-primary shadow-xs backdrop-blur-md">
             Why Lasertronics
           </span>
-          <h2 className="mt-2 font-display text-2xl font-extrabold tracking-tight sm:text-3xl text-foreground">
+          <h2 className="mt-2 font-display text-xl sm:text-3xl font-extrabold tracking-tight text-foreground">
             Why Choose Us
           </h2>
-          <p className="mx-auto mt-2 max-w-xl text-xs text-muted-foreground sm:text-sm">
+          <p className="mx-auto mt-1.5 max-w-xl text-xs text-muted-foreground sm:text-sm">
             Built for Sri Lankan engineers, technicians, makers, and businesses.
           </p>
         </div>
 
-        <div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-7 sm:mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-5">
           {whyChooseUsList.map((item) => (
             <div
               key={item.title}
-              className="glass-card group flex items-start gap-4 rounded-2xl border border-white/80 bg-white/70 p-5 shadow-[0_4px_20px_-2px_rgba(12,32,68,0.05),inset_0_1px_0_0_rgba(255,255,255,0.95)] backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-blue-400/40 hover:bg-white/90 hover:shadow-md"
+              className="glass-card group flex items-start gap-3.5 sm:gap-4 rounded-2xl border border-white/80 bg-white/70 p-4 sm:p-5 shadow-[0_4px_20px_-2px_rgba(12,32,68,0.05),inset_0_1px_0_0_rgba(255,255,255,0.95)] backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-blue-400/40 hover:bg-white/90 hover:shadow-md"
             >
-              <div className="grid size-12 shrink-0 place-items-center rounded-2xl border border-blue-200/50 bg-gradient-to-br from-blue-500/15 via-sky-400/10 to-transparent text-primary shadow-xs transition-transform duration-300 group-hover:scale-105">
-                <item.icon className="size-6" aria-hidden />
+              <div className="grid size-11 sm:size-12 shrink-0 place-items-center rounded-2xl border border-blue-200/50 bg-gradient-to-br from-blue-500/15 via-sky-400/10 to-transparent text-primary shadow-xs transition-transform duration-300 group-hover:scale-105">
+                <item.icon className="size-5 sm:size-6" aria-hidden />
               </div>
-              <div>
-                <h3 className="text-base font-bold tracking-tight text-foreground/90">{item.title}</h3>
+              <div className="min-w-0">
+                <h3 className="text-sm sm:text-base font-bold tracking-tight text-foreground/90">{item.title}</h3>
                 <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{item.desc}</p>
               </div>
             </div>
@@ -305,38 +302,38 @@ function Index() {
         </div>
       </section>
 
-      {/* 8. Customer Testimonials (Frosted Glass Review Widgets) */}
-      <section className="container-page py-12 lg:py-16">
+      {/* 8. Customer Testimonials */}
+      <section className="container-page py-8 sm:py-12 lg:py-16">
         <div className="text-center">
           <span className="inline-block rounded-full border border-white/80 bg-white/70 px-3.5 py-1 text-xs font-extrabold uppercase tracking-[0.2em] text-primary shadow-xs backdrop-blur-md">
             Customer Feedback
           </span>
-          <h2 className="mt-2 font-display text-2xl font-extrabold tracking-tight sm:text-3xl text-foreground">
+          <h2 className="mt-2 font-display text-xl sm:text-3xl font-extrabold tracking-tight text-foreground">
             What Our Customers Say
           </h2>
         </div>
 
-        <div className="mt-10 grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-3">
+        <div className="mt-7 sm:mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3.5 sm:gap-5">
           {testimonials.map((t) => (
             <div
               key={t.name}
-              className="glass-card flex flex-col justify-between rounded-3xl border border-white/80 bg-white/75 p-6 shadow-[0_4px_20px_-2px_rgba(12,32,68,0.06),inset_0_1px_0_0_rgba(255,255,255,0.95)] backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+              className="glass-card flex flex-col justify-between rounded-2xl sm:rounded-3xl border border-white/80 bg-white/75 p-5 sm:p-6 shadow-[0_4px_20px_-2px_rgba(12,32,68,0.06),inset_0_1px_0_0_rgba(255,255,255,0.95)] backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
             >
               <div>
                 <div className="flex gap-1 text-amber-400">
                   {Array.from({ length: t.rating }).map((_, i) => (
-                    <Star key={i} className="size-4 fill-amber-400" />
+                    <Star key={i} className="size-3.5 sm:size-4 fill-amber-400" />
                   ))}
                 </div>
-                <p className="mt-4 text-xs leading-relaxed text-foreground/80 italic">
+                <p className="mt-3.5 sm:mt-4 text-xs sm:text-sm leading-relaxed text-foreground/80 italic">
                   "{t.review}"
                 </p>
               </div>
-              <div className="mt-6 flex items-center gap-2.5 border-t border-slate-200/60 pt-4">
-                <CheckCircle2 className="size-4.5 text-primary" />
+              <div className="mt-5 sm:mt-6 flex items-center gap-2.5 border-t border-slate-200/60 pt-3.5 sm:pt-4">
+                <CheckCircle2 className="size-4 sm:size-4.5 text-primary" />
                 <div>
-                  <h4 className="text-xs font-bold text-foreground">{t.name}</h4>
-                  <p className="text-[11px] text-muted-foreground">{t.role}</p>
+                  <h4 className="text-xs sm:text-sm font-bold text-foreground">{t.name}</h4>
+                  <p className="text-[10px] sm:text-[11px] text-muted-foreground">{t.role}</p>
                 </div>
               </div>
             </div>
@@ -346,4 +343,3 @@ function Index() {
     </SiteLayout>
   );
 }
-

@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { CheckCircle2, Lock } from "lucide-react";
 import { SiteLayout } from "@/components/layout/SiteLayout";
@@ -34,20 +34,20 @@ function CheckoutPage() {
   if (placed) {
     return (
       <SiteLayout>
-        <div className="container-page py-20 text-center">
-          <div className="glass-card mx-auto max-w-lg rounded-3xl border border-white/80 bg-white/80 p-10 shadow-xl backdrop-blur-2xl">
-            <div className="mx-auto grid size-16 place-items-center rounded-full border border-emerald-300/50 bg-emerald-50 text-emerald-600 shadow-sm">
-              <CheckCircle2 className="size-8" aria-hidden />
+        <div className="container-page py-10 sm:py-16 text-center">
+          <div className="glass-card mx-auto max-w-lg rounded-2xl sm:rounded-3xl border border-white/80 bg-white/75 p-6 sm:p-12 shadow-2xl backdrop-blur-2xl">
+            <div className="mx-auto grid size-14 sm:size-16 place-items-center rounded-full bg-emerald-100 text-emerald-600 shadow-sm">
+              <CheckCircle2 className="size-8 sm:size-9" />
             </div>
-            <h1 className="mt-5 font-display text-2xl font-extrabold tracking-tight sm:text-3xl text-foreground">
+            <h1 className="mt-5 font-display text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">
               Order Confirmed
             </h1>
-            <p className="mx-auto mt-3 text-xs sm:text-sm leading-relaxed text-muted-foreground">
+            <p className="mx-auto mt-2.5 sm:mt-3 text-xs sm:text-sm leading-relaxed text-muted-foreground">
               Thank you. Our team will call you on the number provided to verify your order and dispatch from Colombo within 24 hours.
             </p>
             <Link
               to="/shop"
-              className="apple-btn-primary mt-7 inline-flex min-h-12 items-center rounded-full px-8 text-xs font-bold shadow-md"
+              className="apple-btn-primary mt-6 sm:mt-7 inline-flex min-h-11 sm:min-h-12 items-center rounded-full px-7 sm:px-8 text-xs font-bold shadow-md text-center"
             >
               Continue Shopping
             </Link>
@@ -59,17 +59,17 @@ function CheckoutPage() {
 
   return (
     <SiteLayout>
-      <div className="container-page py-10 lg:py-14">
-        <h1 className="font-display text-2xl font-extrabold tracking-tight sm:text-3xl text-foreground">
+      <div className="container-page py-6 sm:py-10 lg:py-14">
+        <h1 className="font-display text-xl sm:text-3xl font-extrabold tracking-tight text-foreground">
           Secure Checkout
         </h1>
 
         {items.length === 0 ? (
-          <div className="glass-card mt-10 rounded-3xl border border-white/80 bg-white/70 p-12 text-center backdrop-blur-xl">
+          <div className="glass-card mt-8 sm:mt-10 rounded-2xl sm:rounded-3xl border border-white/80 bg-white/70 p-8 sm:p-12 text-center backdrop-blur-xl">
             <p className="text-sm font-semibold text-muted-foreground">There is nothing in your cart to checkout yet.</p>
             <Link
               to="/shop"
-              className="apple-btn-primary mt-6 inline-flex min-h-12 items-center rounded-full px-8 text-xs font-bold shadow-md"
+              className="apple-btn-primary mt-6 inline-flex min-h-11 sm:min-h-12 items-center rounded-full px-7 sm:px-8 text-xs font-bold shadow-md text-center"
             >
               Browse Products
             </Link>
@@ -81,15 +81,15 @@ function CheckoutPage() {
               clear();
               setPlaced(true);
             }}
-            className="mt-8 grid gap-6 lg:grid-cols-[minmax(0,1fr)_22rem]"
+            className="mt-6 sm:mt-8 grid gap-6 lg:grid-cols-[minmax(0,1fr)_22rem]"
           >
-            <div className="space-y-6">
+            <div className="space-y-5 sm:space-y-6">
               {/* Delivery Details Glass Card */}
-              <section className="glass-card rounded-2xl sm:rounded-3xl border border-white/85 bg-white/80 p-5 sm:p-7 shadow-[0_4px_20px_-2px_rgba(12,32,68,0.06),inset_0_1px_0_0_rgba(255,255,255,1)] backdrop-blur-2xl">
+              <section className="glass-card rounded-2xl sm:rounded-3xl border border-white/85 bg-white/80 p-4.5 sm:p-7 shadow-[0_4px_20px_-2px_rgba(12,32,68,0.06),inset_0_1px_0_0_rgba(255,255,255,1)] backdrop-blur-2xl">
                 <h2 className="text-xs font-extrabold uppercase tracking-[0.2em] text-primary">
                   1. Delivery Details
                 </h2>
-                <div className="mt-5 grid gap-4 sm:grid-cols-2">
+                <div className="mt-4 sm:mt-5 grid gap-3.5 sm:gap-4 sm:grid-cols-2">
                   {fields.map((f) => (
                     <label key={f.id} className="block min-w-0">
                       <span className="text-xs font-bold text-foreground/80">{f.label}</span>
@@ -97,7 +97,7 @@ function CheckoutPage() {
                         required
                         type={f.type}
                         autoComplete={f.autoComplete}
-                        className="glass-input mt-1.5 min-h-12 w-full rounded-xl border border-white/80 bg-white/70 px-4 text-sm text-foreground shadow-xs outline-none focus:border-blue-500 focus:bg-white"
+                        className="glass-input mt-1.5 min-h-11 sm:min-h-12 w-full rounded-xl border border-white/80 bg-white/70 px-3.5 sm:px-4 text-xs sm:text-sm text-foreground shadow-xs outline-none focus:border-blue-500 focus:bg-white"
                       />
                     </label>
                   ))}
@@ -105,11 +105,11 @@ function CheckoutPage() {
               </section>
 
               {/* Payment Method Glass Card */}
-              <section className="glass-card rounded-2xl sm:rounded-3xl border border-white/85 bg-white/80 p-5 sm:p-7 shadow-[0_4px_20px_-2px_rgba(12,32,68,0.06),inset_0_1px_0_0_rgba(255,255,255,1)] backdrop-blur-2xl">
+              <section className="glass-card rounded-2xl sm:rounded-3xl border border-white/85 bg-white/80 p-4.5 sm:p-7 shadow-[0_4px_20px_-2px_rgba(12,32,68,0.06),inset_0_1px_0_0_rgba(255,255,255,1)] backdrop-blur-2xl">
                 <h2 className="text-xs font-extrabold uppercase tracking-[0.2em] text-primary">
                   2. Payment Method
                 </h2>
-                <div className="mt-5 space-y-2.5">
+                <div className="mt-4 sm:mt-5 space-y-2 sm:space-y-2.5">
                   {[
                     { id: "cod", label: "Cash on Delivery", note: "Pay the courier safely on doorstep arrival" },
                     { id: "bank", label: "Direct Bank Transfer", note: "Account details sent via email & SMS after order" },
@@ -117,7 +117,7 @@ function CheckoutPage() {
                   ].map((o) => (
                     <label
                       key={o.id}
-                      className={`flex min-h-14 cursor-pointer items-center gap-3.5 rounded-2xl border px-4.5 py-3 transition-all ${
+                      className={`flex min-h-12 sm:min-h-14 cursor-pointer items-center gap-3 sm:gap-3.5 rounded-2xl border px-3.5 sm:px-4.5 py-2.5 sm:py-3 transition-all ${
                         payment === o.id
                           ? "border-blue-500/80 bg-blue-50/70 shadow-[0_2px_12px_rgba(8,120,209,0.12)]"
                           : "border-white/80 bg-white/60 hover:bg-white/90"
@@ -129,11 +129,11 @@ function CheckoutPage() {
                         value={o.id}
                         checked={payment === o.id}
                         onChange={() => setPayment(o.id)}
-                        className="size-4 accent-blue-600 text-blue-600"
+                        className="size-4 shrink-0 accent-blue-600 text-blue-600"
                       />
                       <span className="min-w-0">
-                        <span className="block text-sm font-bold text-foreground">{o.label}</span>
-                        <span className="block text-xs text-muted-foreground">{o.note}</span>
+                        <span className="block text-xs sm:text-sm font-bold text-foreground">{o.label}</span>
+                        <span className="block text-[11px] sm:text-xs text-muted-foreground leading-tight">{o.note}</span>
                       </span>
                     </label>
                   ))}
@@ -142,24 +142,24 @@ function CheckoutPage() {
             </div>
 
             {/* Apple Floating Glass Receipt Panel */}
-            <aside className="h-fit rounded-2xl sm:rounded-3xl border border-white/85 bg-white/80 p-5 sm:p-6 shadow-[0_12px_40px_-6px_rgba(10,35,80,0.12),inset_0_1px_0_0_rgba(255,255,255,1)] backdrop-blur-2xl lg:sticky lg:top-28">
+            <aside className="h-fit rounded-2xl sm:rounded-3xl border border-white/85 bg-white/80 p-4.5 sm:p-6 shadow-[0_12px_40px_-6px_rgba(10,35,80,0.12),inset_0_1px_0_0_rgba(255,255,255,1)] backdrop-blur-2xl lg:sticky lg:top-28">
               <h2 className="text-xs font-extrabold uppercase tracking-[0.2em] text-primary">
                 Order Summary
               </h2>
-              <ul className="mt-4 space-y-3.5 divide-y divide-slate-200/50">
+              <ul className="mt-3.5 sm:mt-4 space-y-3 sm:space-y-3.5 divide-y divide-slate-200/50">
                 {items.map(({ product, qty }) => (
-                  <li key={product.slug} className="flex gap-3 pt-3.5 first:pt-0">
+                  <li key={product.slug} className="flex gap-2.5 sm:gap-3 pt-3 sm:pt-3.5 first:pt-0">
                     <img
                       src={product.image}
                       alt={product.name}
                       width={800}
                       height={800}
                       loading="lazy"
-                      className="size-12 shrink-0 rounded-xl object-cover ring-1 ring-black/5"
+                      className="size-10 sm:size-12 shrink-0 rounded-xl object-cover ring-1 ring-black/5"
                     />
                     <span className="min-w-0 flex-1">
-                      <span className="line-clamp-2 text-xs font-bold text-foreground">{product.name}</span>
-                      <span className="block text-[11px] text-muted-foreground font-medium">Qty: {qty}</span>
+                      <span className="line-clamp-2 text-xs font-bold text-foreground leading-snug">{product.name}</span>
+                      <span className="block text-[10.5px] sm:text-[11px] text-muted-foreground font-medium">Qty: {qty}</span>
                     </span>
                     <span className="shrink-0 text-xs font-extrabold text-foreground">
                       {formatLKR(product.price * qty)}
@@ -168,7 +168,7 @@ function CheckoutPage() {
                 ))}
               </ul>
 
-              <dl className="mt-5 space-y-3 border-t border-slate-200/60 pt-4 text-xs sm:text-sm">
+              <dl className="mt-4 sm:mt-5 space-y-2.5 sm:space-y-3 border-t border-slate-200/60 pt-3.5 sm:pt-4 text-xs sm:text-sm">
                 <div className="flex justify-between text-muted-foreground">
                   <dt>Subtotal</dt>
                   <dd className="font-semibold text-foreground">{formatLKR(subtotal)}</dd>
@@ -179,7 +179,7 @@ function CheckoutPage() {
                     {shipping === 0 ? <span className="font-bold text-emerald-600">FREE</span> : formatLKR(shipping)}
                   </dd>
                 </div>
-                <div className="flex justify-between border-t border-slate-200/60 pt-3 text-base">
+                <div className="flex justify-between border-t border-slate-200/60 pt-2.5 sm:pt-3 text-sm sm:text-base">
                   <dt className="font-bold text-foreground">Total</dt>
                   <dd className="font-display font-extrabold text-foreground">{formatLKR(total)}</dd>
                 </div>
@@ -187,12 +187,12 @@ function CheckoutPage() {
 
               <button
                 type="submit"
-                className="apple-btn-primary mt-6 flex min-h-12 w-full items-center justify-center gap-2 rounded-full text-sm font-bold shadow-lg"
+                className="apple-btn-primary mt-5 sm:mt-6 flex min-h-11 sm:min-h-12 w-full items-center justify-center gap-2 rounded-full text-xs sm:text-sm font-bold shadow-lg text-center"
               >
                 <Lock className="size-4" aria-hidden /> Confirm & Place Order
               </button>
-              <p className="mt-3 text-center text-[11px] text-muted-foreground">
-                🔒 256-Bit Encrypted · Authentic Sri Lanka Store
+              <p className="mt-3 text-center text-[10.5px] sm:text-[11px] text-muted-foreground">
+                🔒 256-Bit Encrypted • Authentic Sri Lanka Store
               </p>
             </aside>
           </form>
