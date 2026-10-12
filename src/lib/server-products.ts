@@ -6,15 +6,45 @@ import {
 } from "./intouch-api";
 import { products as fallbackProducts, type Product } from "@/data/products";
 
-// In-memory cache on the server so we don't query 16k items repeatedly
-let cachedProducts: Product[] | null = null;
-let lastFetchTime = 0;
-const CACHE_TTL_MS = 10 * 60 * 1000; // 10 minutes cache
+import { loadCatalogStore, type ProductRecord } from "./catalog-store";
+
+// Helper to convert catalog store record into storefront Product
+function mapRecordToProduct(r: ProductRecord): Product {
+  return {
+    slug: r.slug,
+    name: r.name,
+    category: r.categoryId,
+    price: r.sellingPrice,
+    image: r.image && r.image.trim() !== "" ? r.image : "/favicon.png",
+    blurb: r.blurb,
+    ...(r.badge ? { badge: r.badge } : {}),
+    specs: [
+      { label: "SKU", value: r.sku },
+      { label: "Base Price", value: `₹${r.basePrice.toLocaleString("en-IN")}` },
+      { label: "Markup", value: `${r.markupPercentage ?? 0}%` },
+      ...(r.isPriceOverridden ? [{ label: "Pricing Note", value: "Manual Admin Price Override" }] : []),
+      ...r.specs,
+    ],
+    rating: 4.8,
+    reviews: 14,
+    stock: r.stock,
+  };
+}
 
 export async function getLiveStoreProducts(): Promise<Product[]> {
+  // 1. Get managed products from catalog store
+  const store = loadCatalogStore();
+  const managedProducts = store.products.map(mapRecordToProduct);
+
   const now = Date.now();
   if (cachedProducts && cachedProducts.length > 0 && now - lastFetchTime < CACHE_TTL_MS) {
-    return cachedProducts;
+    // Merge managed products with cached ERP products
+    const managedSkus = new Set(store.products.map((p) => p.sku.toLowerCase()));
+    const nonDuplicatedErp = cachedProducts.filter((p) => {
+      const sku = p.specs?.find((s) => s.label === "SKU")?.value?.toLowerCase();
+      return !sku || !managedSkus.has(sku);
+    });
+    return [...managedProducts, ...nonDuplicatedErp];
   }
 
   try {
@@ -22,15 +52,19 @@ export async function getLiveStoreProducts(): Promise<Product[]> {
     if (rawItems && rawItems.length > 0) {
       cachedProducts = rawItems.map((item) => mapInTouchProductToStoreProduct(item));
       lastFetchTime = now;
-      return cachedProducts;
+      const managedSkus = new Set(store.products.map((p) => p.sku.toLowerCase()));
+      const nonDuplicatedErp = cachedProducts.filter((p) => {
+        const sku = p.specs?.find((s) => s.label === "SKU")?.value?.toLowerCase();
+        return !sku || !managedSkus.has(sku);
+      });
+      return [...managedProducts, ...nonDuplicatedErp];
     }
   } catch (err) {
     console.error("Failed to load products from InTouch ERP:", err);
-    if (cachedProducts && cachedProducts.length > 0) return cachedProducts;
   }
 
-  // Graceful fallback to static catalogue if ERP network is down
-  return fallbackProducts;
+  // Gracefully return managed products + fallback products if ERP is unavailable
+  return managedProducts.length > 0 ? managedProducts : fallbackProducts;
 }
 
 export type CatalogQueryParams = {

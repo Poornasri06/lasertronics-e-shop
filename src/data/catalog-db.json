@@ -1,0 +1,658 @@
+{
+  "categories": [
+    {
+      "id": "mobile-accessories",
+      "name": "Mobile Accessories",
+      "tagline": "Charge, carry, connect",
+      "description": "Fast chargers, braided cables, power banks and audio gear.",
+      "markupPercentage": 20,
+      "createdAt": "2026-10-12T10:21:34.793Z",
+      "updatedAt": "2026-10-12T10:21:34.793Z"
+    },
+    {
+      "id": "electronics",
+      "name": "Electronics",
+      "tagline": "Components & modules",
+      "description": "Passive components, motors, relays and power modules.",
+      "markupPercentage": 15,
+      "createdAt": "2026-10-12T10:21:34.793Z",
+      "updatedAt": "2026-10-12T10:21:34.793Z"
+    },
+    {
+      "id": "tv-accessories",
+      "name": "TV Accessories",
+      "tagline": "Every screen, connected",
+      "description": "HDMI, optical and streaming accessories.",
+      "markupPercentage": 10,
+      "createdAt": "2026-10-12T10:21:34.793Z",
+      "updatedAt": "2026-10-12T10:21:34.793Z"
+    },
+    {
+      "id": "iot-and-microcontrollers",
+      "name": "IoT & Microcontrollers",
+      "tagline": "Build connected things",
+      "description": "Dev boards, sensors and starter kits for makers.",
+      "markupPercentage": 25,
+      "createdAt": "2026-10-12T10:21:34.793Z",
+      "updatedAt": "2026-10-12T10:21:34.793Z"
+    },
+    {
+      "id": "repair-kits",
+      "name": "Repair Kits",
+      "tagline": "Bench-grade tooling",
+      "description": "Soldering stations, precision drivers and ESD-safe tools.",
+      "markupPercentage": 18,
+      "createdAt": "2026-10-12T10:21:34.793Z",
+      "updatedAt": "2026-10-12T10:21:34.793Z"
+    }
+  ],
+  "products": [
+    {
+      "sku": "BULK-mv53t0l7-2",
+      "slug": "bulk-cable-type-b-bulk-mv53t0l7-2",
+      "name": "Bulk Cable Type B",
+      "categoryId": "electronics",
+      "basePrice": 120,
+      "markupPercentage": 15,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 138,
+      "image": null,
+      "stock": 0,
+      "blurb": "Bulk Cable Type B genuine component.",
+      "specs": [],
+      "createdAt": "2026-10-12T10:23:06.044Z",
+      "updatedAt": "2026-10-12T10:23:06.045Z"
+    },
+    {
+      "sku": "BULK-mv53t0l7-1",
+      "slug": "bulk-cable-type-a-bulk-mv53t0l7-1",
+      "name": "Bulk Cable Type A",
+      "categoryId": "electronics",
+      "basePrice": 80,
+      "markupPercentage": 15,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 92,
+      "image": null,
+      "stock": 0,
+      "blurb": "Bulk Cable Type A genuine component.",
+      "specs": [],
+      "createdAt": "2026-10-12T10:23:06.044Z",
+      "updatedAt": "2026-10-12T10:23:06.046Z"
+    },
+    {
+      "sku": "BULK-2",
+      "slug": "bulk-cable-type-b-bulk-2",
+      "name": "Bulk Cable Type B",
+      "categoryId": "electronics",
+      "basePrice": 120,
+      "markupPercentage": 15,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 138,
+      "image": null,
+      "stock": 0,
+      "blurb": "Bulk Cable Type B genuine component.",
+      "specs": [],
+      "createdAt": "2026-10-12T10:21:34.822Z",
+      "updatedAt": "2026-10-12T10:23:06.046Z"
+    },
+    {
+      "sku": "BULK-1",
+      "slug": "bulk-cable-type-a-bulk-1",
+      "name": "Bulk Cable Type A",
+      "categoryId": "electronics",
+      "basePrice": 80,
+      "markupPercentage": 15,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 92,
+      "image": null,
+      "stock": 0,
+      "blurb": "Bulk Cable Type A genuine component.",
+      "specs": [],
+      "createdAt": "2026-10-12T10:21:34.821Z",
+      "updatedAt": "2026-10-12T10:23:06.046Z"
+    },
+    {
+      "sku": "TEST-NOIMG",
+      "slug": "micro-resistor-pack-test-noimg",
+      "name": "Micro Resistor Pack",
+      "categoryId": "electronics",
+      "basePrice": 50,
+      "markupPercentage": 15,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 57.5,
+      "image": null,
+      "stock": 0,
+      "blurb": "Micro Resistor Pack genuine component.",
+      "specs": [],
+      "createdAt": "2026-10-12T10:21:34.820Z",
+      "updatedAt": "2026-10-12T10:23:06.046Z"
+    },
+    {
+      "sku": "TEST-002",
+      "slug": "special-deal-rover-motor-test-002",
+      "name": "Special Deal Rover Motor",
+      "categoryId": "electronics",
+      "basePrice": 500,
+      "markupPercentage": 15,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 575,
+      "image": null,
+      "stock": 20,
+      "blurb": "Special Deal Rover Motor genuine component.",
+      "specs": [],
+      "createdAt": "2026-10-12T10:21:34.817Z",
+      "updatedAt": "2026-10-12T10:23:06.046Z"
+    },
+    {
+      "sku": "TEST-001",
+      "slug": "autonomous-rover-kit-test-001",
+      "name": "Autonomous Rover Kit",
+      "categoryId": "electronics",
+      "basePrice": 1000,
+      "markupPercentage": 15,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 1150,
+      "image": null,
+      "stock": 15,
+      "blurb": "Autonomous Rover Kit genuine component.",
+      "specs": [],
+      "createdAt": "2026-10-12T10:21:34.816Z",
+      "updatedAt": "2026-10-12T10:23:06.046Z"
+    },
+    {
+      "sku": "LT-1001",
+      "slug": "65w-gan-fast-charger",
+      "name": "65W GaN Fast Charger Dual USB-C + USB-A",
+      "categoryId": "mobile-accessories",
+      "basePrice": 1200,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "image": "/assets/p/gan-charger.jpg",
+      "stock": 45,
+      "blurb": "Compact Gallium Nitride wall charger with dynamic Power Delivery 3.0.",
+      "badge": "Bestseller",
+      "specs": [
+        {
+          "label": "Power Output",
+          "value": "65W Max"
+        },
+        {
+          "label": "Ports",
+          "value": "2x USB-C, 1x USB-A"
+        },
+        {
+          "label": "Technology",
+          "value": "GaN III SafeCharge"
+        }
+      ],
+      "createdAt": "2026-10-12T10:21:34.793Z",
+      "updatedAt": "2026-10-12T10:21:34.793Z",
+      "markupPercentage": 20,
+      "sellingPrice": 1440
+    },
+    {
+      "sku": "LT-1002",
+      "slug": "braided-usb-c-to-usb-c-cable-2m",
+      "name": "Braided USB-C to USB-C Cable (2m, 100W PD)",
+      "categoryId": "mobile-accessories",
+      "basePrice": 350,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "image": "/assets/p/usbc-cable.jpg",
+      "stock": 120,
+      "blurb": "High-durability Kevlar-reinforced braided charging cable supporting up to 100W PD.",
+      "badge": "Popular",
+      "specs": [
+        {
+          "label": "Length",
+          "value": "2.0 Meters"
+        },
+        {
+          "label": "Power Rating",
+          "value": "100W (20V/5A)"
+        },
+        {
+          "label": "Data Transfer",
+          "value": "480 Mbps"
+        }
+      ],
+      "createdAt": "2026-10-12T10:21:34.793Z",
+      "updatedAt": "2026-10-12T10:21:34.793Z",
+      "markupPercentage": 20,
+      "sellingPrice": 420
+    },
+    {
+      "sku": "LT-1003",
+      "slug": "20000mah-magsafe-power-bank",
+      "name": "20,000mAh Magnetic Wireless Power Bank",
+      "categoryId": "mobile-accessories",
+      "basePrice": 2200,
+      "isPriceOverridden": true,
+      "overridePrice": 2499,
+      "image": "/assets/p/magsafe-powerbank.jpg",
+      "stock": 28,
+      "blurb": "High-capacity slim magnetic power bank with digital battery indicator.",
+      "badge": "Special Deal",
+      "specs": [
+        {
+          "label": "Capacity",
+          "value": "20,000 mAh / 74Wh"
+        },
+        {
+          "label": "Wireless Output",
+          "value": "15W MagSafe"
+        },
+        {
+          "label": "Wired Output",
+          "value": "22.5W QC / 20W PD"
+        }
+      ],
+      "createdAt": "2026-10-12T10:21:34.793Z",
+      "updatedAt": "2026-10-12T10:21:34.793Z",
+      "markupPercentage": 20,
+      "sellingPrice": 2499
+    },
+    {
+      "sku": "LT-1004",
+      "slug": "lightning-to-usb-c-cable-1m",
+      "name": "MFi Certified Lightning to USB-C Cable (1.2m)",
+      "categoryId": "mobile-accessories",
+      "basePrice": 400,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "image": "/assets/p/lightning-cable.jpg",
+      "stock": 85,
+      "blurb": "Original C94 chip Apple certified fast charging sync cable.",
+      "specs": [
+        {
+          "label": "Certification",
+          "value": "Apple MFi"
+        },
+        {
+          "label": "Length",
+          "value": "1.2 Meters"
+        }
+      ],
+      "createdAt": "2026-10-12T10:21:34.793Z",
+      "updatedAt": "2026-10-12T10:21:34.793Z",
+      "markupPercentage": 20,
+      "sellingPrice": 480
+    },
+    {
+      "sku": "LT-2001",
+      "slug": "esp32-wroom-32d-dev-board",
+      "name": "ESP32-WROOM-32D Dual-Core Wi-Fi + BLE Dev Board",
+      "categoryId": "iot-and-microcontrollers",
+      "basePrice": 420,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "image": "/assets/p/esp32.jpg",
+      "stock": 140,
+      "blurb": "Versatile 38-pin ESP32 development board with onboard antenna and CP2102.",
+      "badge": "Maker Choice",
+      "specs": [
+        {
+          "label": "SoC",
+          "value": "ESP32-D0WDQ6 Dual-Core 240MHz"
+        },
+        {
+          "label": "Wireless",
+          "value": "Wi-Fi 802.11 b/g/n + BT 4.2 BR/EDR & BLE"
+        },
+        {
+          "label": "Flash",
+          "value": "4MB SPI Flash"
+        }
+      ],
+      "createdAt": "2026-10-12T10:21:34.793Z",
+      "updatedAt": "2026-10-12T10:21:34.793Z",
+      "markupPercentage": 25,
+      "sellingPrice": 525
+    },
+    {
+      "sku": "LT-2002",
+      "slug": "arduino-uno-r3-atmega328p",
+      "name": "Arduino Uno R3 Compatible Board (DIP ATmega328P)",
+      "categoryId": "iot-and-microcontrollers",
+      "basePrice": 380,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "image": "/assets/p/uno.jpg",
+      "stock": 95,
+      "blurb": "Standard Arduino Uno microcontroller development board with 14 digital I/O pins.",
+      "specs": [
+        {
+          "label": "Microcontroller",
+          "value": "ATmega328P (Removable DIP)"
+        },
+        {
+          "label": "Operating Voltage",
+          "value": "5V DC"
+        },
+        {
+          "label": "Analog Inputs",
+          "value": "6 Channels (10-bit)"
+        }
+      ],
+      "createdAt": "2026-10-12T10:21:34.793Z",
+      "updatedAt": "2026-10-12T10:21:34.793Z",
+      "markupPercentage": 25,
+      "sellingPrice": 475
+    },
+    {
+      "sku": "LT-2003",
+      "slug": "ultrasonic-distance-sensor-hcsr04",
+      "name": "HC-SR04 Ultrasonic Distance Sensor Module",
+      "categoryId": "iot-and-microcontrollers",
+      "basePrice": 90,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "image": "/assets/p/ultrasonic.jpg",
+      "stock": 250,
+      "blurb": "Non-contact 2cm to 400cm distance measurement sensor module.",
+      "specs": [
+        {
+          "label": "Range",
+          "value": "2cm – 400cm"
+        },
+        {
+          "label": "Operating Current",
+          "value": "15mA"
+        },
+        {
+          "label": "Trigger Input",
+          "value": "10µs TTL Pulse"
+        }
+      ],
+      "createdAt": "2026-10-12T10:21:34.793Z",
+      "updatedAt": "2026-10-12T10:21:34.793Z",
+      "markupPercentage": 25,
+      "sellingPrice": 112.5
+    },
+    {
+      "sku": "LT-3001",
+      "slug": "60w-temperature-controlled-soldering-station",
+      "name": "60W Digital Temperature Controlled Soldering Station",
+      "categoryId": "repair-kits",
+      "basePrice": 2800,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "image": "/assets/p/soldering-station.jpg",
+      "stock": 22,
+      "blurb": "Precision ceramic heating element with digital PID temperature stabilization (200°C–480°C).",
+      "badge": "Pro Grade",
+      "specs": [
+        {
+          "label": "Power",
+          "value": "60W (ESD Safe)"
+        },
+        {
+          "label": "Temp Range",
+          "value": "200°C – 480°C"
+        },
+        {
+          "label": "Stability",
+          "value": "±2°C"
+        }
+      ],
+      "createdAt": "2026-10-12T10:21:34.793Z",
+      "updatedAt": "2026-10-12T10:21:34.793Z",
+      "markupPercentage": 18,
+      "sellingPrice": 3304
+    },
+    {
+      "sku": "LT-3002",
+      "slug": "128-in-1-precision-screwdriver-kit",
+      "name": "128-in-1 Precision Magnetic Screwdriver Repair Toolkit",
+      "categoryId": "repair-kits",
+      "basePrice": 1100,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "image": "/assets/p/screwdriver-set.jpg",
+      "stock": 60,
+      "blurb": "Complete repair kit for smartphones, laptops, electronics, and small home appliances.",
+      "specs": [
+        {
+          "label": "Bits Material",
+          "value": "CR-V Steel (HRC58-62)"
+        },
+        {
+          "label": "Includes",
+          "value": "Flexible shaft, tweezers, magnetizer, pry tools"
+        }
+      ],
+      "createdAt": "2026-10-12T10:21:34.793Z",
+      "updatedAt": "2026-10-12T10:21:34.793Z",
+      "markupPercentage": 18,
+      "sellingPrice": 1298
+    },
+    {
+      "sku": "LT-4001",
+      "slug": "4k-ultra-hd-hdmi-2-0-cable-3m",
+      "name": "Ultra HD 4K 60Hz Braided HDMI 2.0 Cable (3m)",
+      "categoryId": "tv-accessories",
+      "basePrice": 320,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "image": "/assets/p/hdmi-cable.jpg",
+      "stock": 80,
+      "blurb": "Gold-plated 18Gbps high speed HDMI cable with HDR and ARC support.",
+      "specs": [
+        {
+          "label": "Bandwidth",
+          "value": "18 Gbps"
+        },
+        {
+          "label": "Resolution",
+          "value": "4K @ 60Hz / 2K @ 144Hz"
+        },
+        {
+          "label": "Connectors",
+          "value": "24K Gold-Plated Type A"
+        }
+      ],
+      "createdAt": "2026-10-12T10:21:34.793Z",
+      "updatedAt": "2026-10-12T10:21:34.793Z",
+      "markupPercentage": 10,
+      "sellingPrice": 352
+    },
+    {
+      "sku": "LT-4002",
+      "slug": "universal-smart-tv-remote-control",
+      "name": "Universal Smart TV Remote with Voice & Netflix Shortcut",
+      "categoryId": "tv-accessories",
+      "basePrice": 450,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "image": "/assets/p/remote.jpg",
+      "stock": 65,
+      "blurb": "Pre-programmed for Samsung, LG, Sony, TCL, Hisense, and Android Smart TVs.",
+      "specs": [
+        {
+          "label": "Transmission",
+          "value": "Infrared 38kHz + Bluetooth"
+        },
+        {
+          "label": "Operating Distance",
+          "value": "> 10 Meters"
+        }
+      ],
+      "createdAt": "2026-10-12T10:21:34.793Z",
+      "updatedAt": "2026-10-12T10:21:34.793Z",
+      "markupPercentage": 10,
+      "sellingPrice": 495
+    },
+    {
+      "sku": "LT-5001",
+      "slug": "breadboard-friendly-3-3v-5v-power-module",
+      "name": "Breadboard Power Supply Module 3.3V / 5V DC (MB102)",
+      "categoryId": "electronics",
+      "basePrice": 110,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "image": "/assets/p/psu-module.jpg",
+      "stock": 150,
+      "blurb": "Plugs directly into standard 830/400 tie point breadboards with dual rail selection.",
+      "specs": [
+        {
+          "label": "Input Voltage",
+          "value": "6.5V – 12V (DC Barrel) or USB"
+        },
+        {
+          "label": "Output Voltage",
+          "value": "3.3V or 5V (Switch selectable)"
+        },
+        {
+          "label": "Max Current",
+          "value": "700 mA"
+        }
+      ],
+      "createdAt": "2026-10-12T10:21:34.793Z",
+      "updatedAt": "2026-10-12T10:21:34.793Z",
+      "markupPercentage": 15,
+      "sellingPrice": 126.5
+    },
+    {
+      "sku": "LT-5002",
+      "slug": "electrolytic-capacitor-kit-500pcs",
+      "name": "500-Piece Electrolytic Capacitor Assortment Kit (24 Values)",
+      "categoryId": "electronics",
+      "basePrice": 650,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "image": "/assets/p/capacitor-kit.jpg",
+      "stock": 40,
+      "blurb": "Comprehensive assortment of radial aluminum capacitors from 0.1µF to 1000µF (10V-50V).",
+      "specs": [
+        {
+          "label": "Range",
+          "value": "0.1µF to 1000µF"
+        },
+        {
+          "label": "Tolerance",
+          "value": "±20%"
+        },
+        {
+          "label": "Quantity",
+          "value": "500 Pieces with organizer case"
+        }
+      ],
+      "createdAt": "2026-10-12T10:21:34.793Z",
+      "updatedAt": "2026-10-12T10:21:34.793Z",
+      "markupPercentage": 15,
+      "sellingPrice": 747.5
+    },
+    {
+      "sku": "LT-5003",
+      "slug": "1-4w-metal-film-resistor-kit-600pcs",
+      "name": "1/4W 1% Metal Film Resistors Assortment (600 Pieces)",
+      "categoryId": "electronics",
+      "basePrice": 280,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "image": null,
+      "stock": 90,
+      "blurb": "High precision 1% tolerance metal film resistors across 30 common E12 values.",
+      "specs": [
+        {
+          "label": "Power Rating",
+          "value": "0.25 Watt"
+        },
+        {
+          "label": "Tolerance",
+          "value": "±1%"
+        },
+        {
+          "label": "Values",
+          "value": "10Ω to 1MΩ (20pcs each)"
+        }
+      ],
+      "createdAt": "2026-10-12T10:21:34.793Z",
+      "updatedAt": "2026-10-12T10:21:34.793Z",
+      "markupPercentage": 15,
+      "sellingPrice": 322
+    },
+    {
+      "sku": "LT-5004",
+      "slug": "5v-dual-channel-relay-module-optocoupler",
+      "name": "5V Dual Channel Relay Module with Optocoupler Isolation",
+      "categoryId": "electronics",
+      "basePrice": 150,
+      "isPriceOverridden": true,
+      "overridePrice": 185,
+      "image": "/assets/p/relay.jpg",
+      "stock": 110,
+      "blurb": "High current relay module capable of switching 250V AC / 10A or 30V DC / 10A.",
+      "badge": "Overridden Price",
+      "specs": [
+        {
+          "label": "Control Voltage",
+          "value": "5V DC"
+        },
+        {
+          "label": "Switching Capacity",
+          "value": "10A @ 250VAC / 30VDC"
+        },
+        {
+          "label": "Isolation",
+          "value": "Optical Optocoupler"
+        }
+      ],
+      "createdAt": "2026-10-12T10:21:34.793Z",
+      "updatedAt": "2026-10-12T10:21:34.793Z",
+      "markupPercentage": 15,
+      "sellingPrice": 185
+    }
+  ],
+  "media": [
+    {
+      "id": "med-1",
+      "filename": "gan-charger.jpg",
+      "url": "/assets/p/gan-charger.jpg",
+      "sizeBytes": 42000,
+      "mimeType": "image/jpeg",
+      "categoryId": "mobile-accessories",
+      "productSku": "LT-1001",
+      "uploadedAt": "2026-10-12T10:21:34.814Z"
+    },
+    {
+      "id": "med-2",
+      "filename": "usbc-cable.jpg",
+      "url": "/assets/p/usbc-cable.jpg",
+      "sizeBytes": 41460,
+      "mimeType": "image/jpeg",
+      "categoryId": "mobile-accessories",
+      "productSku": "LT-1002",
+      "uploadedAt": "2026-10-12T10:21:34.814Z"
+    },
+    {
+      "id": "med-3",
+      "filename": "esp32.jpg",
+      "url": "/assets/p/esp32.jpg",
+      "sizeBytes": 46910,
+      "mimeType": "image/jpeg",
+      "categoryId": "iot-and-microcontrollers",
+      "productSku": "LT-2001",
+      "uploadedAt": "2026-10-12T10:21:34.814Z"
+    },
+    {
+      "id": "med-4",
+      "filename": "soldering-station.jpg",
+      "url": "/assets/p/soldering-station.jpg",
+      "sizeBytes": 40020,
+      "mimeType": "image/jpeg",
+      "categoryId": "repair-kits",
+      "productSku": "LT-3001",
+      "uploadedAt": "2026-10-12T10:21:34.814Z"
+    }
+  ],
+  "version": 1,
+  "lastUpdated": "2026-10-12T10:23:06.046Z"
+}

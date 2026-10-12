@@ -1,0 +1,1140 @@
+/**
+ * Catalog Store & Category-Based Pricing Engine
+ * Persistent catalog data management with category markup rules,
+ * individual product overrides, image media library, and ₹ (INR) currency support.
+ */
+
+import { createServerFn } from "@tanstack/react-start";
+import * as fs from "node:fs";
+import * as path from "node:path";
+
+export interface CategoryRecord {
+  id: string; // unique slug e.g. "mobile-accessories"
+  name: string;
+  tagline: string;
+  description: string;
+  markupPercentage: number; // e.g. 20 for 20% markup
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ProductSpec {
+  label: string;
+  value: string;
+}
+
+export interface ProductRecord {
+  sku: string; // unique identifier e.g. "LT-1001"
+  slug: string;
+  name: string;
+  categoryId: string;
+  basePrice: number; // ₹ base cost/purchase price
+  markupPercentage?: number; // snapshot or product-specific markup %
+  isPriceOverridden: boolean; // if true, overridePrice is used instead of category rule
+  overridePrice: number | null; // manual selling price override
+  sellingPrice: number; // final calculated or overridden selling price
+  image: string | null; // image URL or relative path (null if no image)
+  stock: number;
+  blurb: string;
+  badge?: string;
+  specs: ProductSpec[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface MediaRecord {
+  id: string;
+  filename: string;
+  url: string;
+  sizeBytes: number;
+  mimeType: string;
+  categoryId?: string;
+  productSku?: string;
+  uploadedAt: string;
+}
+
+export interface CatalogData {
+  categories: CategoryRecord[];
+  products: ProductRecord[];
+  media: MediaRecord[];
+  version: number;
+  lastUpdated: string;
+}
+
+/**
+ * Pricing Calculation Formula:
+ * Selling Price = Base Price + (Base Price * Category Markup Percentage / 100)
+ */
+export function calculateSellingPrice(basePrice: number, markupPercentage: number): number {
+  if (isNaN(basePrice) || basePrice < 0) return 0;
+  const pct = isNaN(markupPercentage) ? 0 : markupPercentage;
+  const markupAmount = (basePrice * pct) / 100;
+  const total = basePrice + markupAmount;
+  // Round to 2 decimal places
+  return Math.round(total * 100) / 100;
+}
+
+export function computeProductPricing(
+  product: Pick<ProductRecord, "basePrice" | "isPriceOverridden" | "overridePrice">,
+  categoryMarkup: number
+) {
+  const base = Math.max(0, Number(product.basePrice) || 0);
+  const markupPct = Number(categoryMarkup) || 0;
+  const markupAmount = Math.round(((base * markupPct) / 100) * 100) / 100;
+  const calculatedPrice = Math.round((base + markupAmount) * 100) / 100;
+  const isOverridden = Boolean(product.isPriceOverridden && product.overridePrice != null && product.overridePrice > 0);
+  const finalPrice = isOverridden ? Math.round(Number(product.overridePrice) * 100) / 100 : calculatedPrice;
+
+  return {
+    basePrice: base,
+    markupPercentage: markupPct,
+    markupAmount,
+    calculatedPrice,
+    isOverridden,
+    overridePrice: product.overridePrice ?? null,
+    finalPrice,
+  };
+}
+
+/**
+ * Format currency in Indian Rupees (₹)
+ */
+export function formatINR(value: number): string {
+  if (isNaN(value)) return "₹0.00";
+  return new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(value);
+}
+
+// Initial Default Categories with Category-Based Markup Rules
+const initialCategories: CategoryRecord[] = [
+  {
+    id: "mobile-accessories",
+    name: "Mobile Accessories",
+    tagline: "Charge, carry, connect",
+    description: "Fast chargers, braided cables, power banks and audio gear.",
+    markupPercentage: 20, // 20% markup
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    id: "electronics",
+    name: "Electronics",
+    tagline: "Components & modules",
+    description: "Passive components, motors, relays and power modules.",
+    markupPercentage: 15, // 15% markup
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    id: "tv-accessories",
+    name: "TV Accessories",
+    tagline: "Every screen, connected",
+    description: "HDMI, optical and streaming accessories.",
+    markupPercentage: 10, // 10% markup
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    id: "iot-and-microcontrollers",
+    name: "IoT & Microcontrollers",
+    tagline: "Build connected things",
+    description: "Dev boards, sensors and starter kits for makers.",
+    markupPercentage: 25, // 25% markup
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    id: "repair-kits",
+    name: "Repair Kits",
+    tagline: "Bench-grade tooling",
+    description: "Soldering stations, precision drivers and ESD-safe tools.",
+    markupPercentage: 18, // 18% markup
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+];
+
+// Initial Rich Catalog Seed with realistic base prices in INR, specs, and stock
+const initialProductsSeed: Omit<ProductRecord, "sellingPrice">[] = [
+  {
+    sku: "LT-1001",
+    slug: "65w-gan-fast-charger",
+    name: "65W GaN Fast Charger Dual USB-C + USB-A",
+    categoryId: "mobile-accessories",
+    basePrice: 1200, // Base ₹1,200 + 20% = ₹1,440
+    isPriceOverridden: false,
+    overridePrice: null,
+    image: "/assets/p/gan-charger.jpg",
+    stock: 45,
+    blurb: "Compact Gallium Nitride wall charger with dynamic Power Delivery 3.0.",
+    badge: "Bestseller",
+    specs: [
+      { label: "Power Output", value: "65W Max" },
+      { label: "Ports", value: "2x USB-C, 1x USB-A" },
+      { label: "Technology", value: "GaN III SafeCharge" },
+    ],
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    sku: "LT-1002",
+    slug: "braided-usb-c-to-usb-c-cable-2m",
+    name: "Braided USB-C to USB-C Cable (2m, 100W PD)",
+    categoryId: "mobile-accessories",
+    basePrice: 350, // Base ₹350 + 20% = ₹420
+    isPriceOverridden: false,
+    overridePrice: null,
+    image: "/assets/p/usbc-cable.jpg",
+    stock: 120,
+    blurb: "High-durability Kevlar-reinforced braided charging cable supporting up to 100W PD.",
+    badge: "Popular",
+    specs: [
+      { label: "Length", value: "2.0 Meters" },
+      { label: "Power Rating", value: "100W (20V/5A)" },
+      { label: "Data Transfer", value: "480 Mbps" },
+    ],
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    sku: "LT-1003",
+    slug: "20000mah-magsafe-power-bank",
+    name: "20,000mAh Magnetic Wireless Power Bank",
+    categoryId: "mobile-accessories",
+    basePrice: 2200, // Base ₹2,200 + 20% = ₹2,640 (Overridden to ₹2,499 special deal)
+    isPriceOverridden: true,
+    overridePrice: 2499, // Special deal override
+    image: "/assets/p/magsafe-powerbank.jpg",
+    stock: 28,
+    blurb: "High-capacity slim magnetic power bank with digital battery indicator.",
+    badge: "Special Deal",
+    specs: [
+      { label: "Capacity", value: "20,000 mAh / 74Wh" },
+      { label: "Wireless Output", value: "15W MagSafe" },
+      { label: "Wired Output", value: "22.5W QC / 20W PD" },
+    ],
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    sku: "LT-1004",
+    slug: "lightning-to-usb-c-cable-1m",
+    name: "MFi Certified Lightning to USB-C Cable (1.2m)",
+    categoryId: "mobile-accessories",
+    basePrice: 400, // Base ₹400 + 20% = ₹480
+    isPriceOverridden: false,
+    overridePrice: null,
+    image: "/assets/p/lightning-cable.jpg",
+    stock: 85,
+    blurb: "Original C94 chip Apple certified fast charging sync cable.",
+    specs: [
+      { label: "Certification", value: "Apple MFi" },
+      { label: "Length", value: "1.2 Meters" },
+    ],
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    sku: "LT-2001",
+    slug: "esp32-wroom-32d-dev-board",
+    name: "ESP32-WROOM-32D Dual-Core Wi-Fi + BLE Dev Board",
+    categoryId: "iot-and-microcontrollers",
+    basePrice: 420, // Base ₹420 + 25% = ₹525
+    isPriceOverridden: false,
+    overridePrice: null,
+    image: "/assets/p/esp32.jpg",
+    stock: 140,
+    blurb: "Versatile 38-pin ESP32 development board with onboard antenna and CP2102.",
+    badge: "Maker Choice",
+    specs: [
+      { label: "SoC", value: "ESP32-D0WDQ6 Dual-Core 240MHz" },
+      { label: "Wireless", value: "Wi-Fi 802.11 b/g/n + BT 4.2 BR/EDR & BLE" },
+      { label: "Flash", value: "4MB SPI Flash" },
+    ],
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    sku: "LT-2002",
+    slug: "arduino-uno-r3-atmega328p",
+    name: "Arduino Uno R3 Compatible Board (DIP ATmega328P)",
+    categoryId: "iot-and-microcontrollers",
+    basePrice: 380, // Base ₹380 + 25% = ₹475
+    isPriceOverridden: false,
+    overridePrice: null,
+    image: "/assets/p/uno.jpg",
+    stock: 95,
+    blurb: "Standard Arduino Uno microcontroller development board with 14 digital I/O pins.",
+    specs: [
+      { label: "Microcontroller", value: "ATmega328P (Removable DIP)" },
+      { label: "Operating Voltage", value: "5V DC" },
+      { label: "Analog Inputs", value: "6 Channels (10-bit)" },
+    ],
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    sku: "LT-2003",
+    slug: "ultrasonic-distance-sensor-hcsr04",
+    name: "HC-SR04 Ultrasonic Distance Sensor Module",
+    categoryId: "iot-and-microcontrollers",
+    basePrice: 90, // Base ₹90 + 25% = ₹112.50
+    isPriceOverridden: false,
+    overridePrice: null,
+    image: "/assets/p/ultrasonic.jpg",
+    stock: 250,
+    blurb: "Non-contact 2cm to 400cm distance measurement sensor module.",
+    specs: [
+      { label: "Range", value: "2cm – 400cm" },
+      { label: "Operating Current", value: "15mA" },
+      { label: "Trigger Input", value: "10µs TTL Pulse" },
+    ],
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    sku: "LT-3001",
+    slug: "60w-temperature-controlled-soldering-station",
+    name: "60W Digital Temperature Controlled Soldering Station",
+    categoryId: "repair-kits",
+    basePrice: 2800, // Base ₹2,800 + 18% = ₹3,304
+    isPriceOverridden: false,
+    overridePrice: null,
+    image: "/assets/p/soldering-station.jpg",
+    stock: 22,
+    blurb: "Precision ceramic heating element with digital PID temperature stabilization (200°C–480°C).",
+    badge: "Pro Grade",
+    specs: [
+      { label: "Power", value: "60W (ESD Safe)" },
+      { label: "Temp Range", value: "200°C – 480°C" },
+      { label: "Stability", value: "±2°C" },
+    ],
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    sku: "LT-3002",
+    slug: "128-in-1-precision-screwdriver-kit",
+    name: "128-in-1 Precision Magnetic Screwdriver Repair Toolkit",
+    categoryId: "repair-kits",
+    basePrice: 1100, // Base ₹1,100 + 18% = ₹1,298
+    isPriceOverridden: false,
+    overridePrice: null,
+    image: "/assets/p/screwdriver-set.jpg",
+    stock: 60,
+    blurb: "Complete repair kit for smartphones, laptops, electronics, and small home appliances.",
+    specs: [
+      { label: "Bits Material", value: "CR-V Steel (HRC58-62)" },
+      { label: "Includes", value: "Flexible shaft, tweezers, magnetizer, pry tools" },
+    ],
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    sku: "LT-4001",
+    slug: "4k-ultra-hd-hdmi-2-0-cable-3m",
+    name: "Ultra HD 4K 60Hz Braided HDMI 2.0 Cable (3m)",
+    categoryId: "tv-accessories",
+    basePrice: 320, // Base ₹320 + 10% = ₹352
+    isPriceOverridden: false,
+    overridePrice: null,
+    image: "/assets/p/hdmi-cable.jpg",
+    stock: 80,
+    blurb: "Gold-plated 18Gbps high speed HDMI cable with HDR and ARC support.",
+    specs: [
+      { label: "Bandwidth", value: "18 Gbps" },
+      { label: "Resolution", value: "4K @ 60Hz / 2K @ 144Hz" },
+      { label: "Connectors", value: "24K Gold-Plated Type A" },
+    ],
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    sku: "LT-4002",
+    slug: "universal-smart-tv-remote-control",
+    name: "Universal Smart TV Remote with Voice & Netflix Shortcut",
+    categoryId: "tv-accessories",
+    basePrice: 450, // Base ₹450 + 10% = ₹495
+    isPriceOverridden: false,
+    overridePrice: null,
+    image: "/assets/p/remote.jpg",
+    stock: 65,
+    blurb: "Pre-programmed for Samsung, LG, Sony, TCL, Hisense, and Android Smart TVs.",
+    specs: [
+      { label: "Transmission", value: "Infrared 38kHz + Bluetooth" },
+      { label: "Operating Distance", value: "> 10 Meters" },
+    ],
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    sku: "LT-5001",
+    slug: "breadboard-friendly-3-3v-5v-power-module",
+    name: "Breadboard Power Supply Module 3.3V / 5V DC (MB102)",
+    categoryId: "electronics",
+    basePrice: 110, // Base ₹110 + 15% = ₹126.50
+    isPriceOverridden: false,
+    overridePrice: null,
+    image: "/assets/p/psu-module.jpg",
+    stock: 150,
+    blurb: "Plugs directly into standard 830/400 tie point breadboards with dual rail selection.",
+    specs: [
+      { label: "Input Voltage", value: "6.5V – 12V (DC Barrel) or USB" },
+      { label: "Output Voltage", value: "3.3V or 5V (Switch selectable)" },
+      { label: "Max Current", value: "700 mA" },
+    ],
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    sku: "LT-5002",
+    slug: "electrolytic-capacitor-kit-500pcs",
+    name: "500-Piece Electrolytic Capacitor Assortment Kit (24 Values)",
+    categoryId: "electronics",
+    basePrice: 650, // Base ₹650 + 15% = ₹747.50
+    isPriceOverridden: false,
+    overridePrice: null,
+    image: "/assets/p/capacitor-kit.jpg",
+    stock: 40,
+    blurb: "Comprehensive assortment of radial aluminum capacitors from 0.1µF to 1000µF (10V-50V).",
+    specs: [
+      { label: "Range", value: "0.1µF to 1000µF" },
+      { label: "Tolerance", value: "±20%" },
+      { label: "Quantity", value: "500 Pieces with organizer case" },
+    ],
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    // Product deliberately without image to test placeholder requirement
+    sku: "LT-5003",
+    slug: "1-4w-metal-film-resistor-kit-600pcs",
+    name: "1/4W 1% Metal Film Resistors Assortment (600 Pieces)",
+    categoryId: "electronics",
+    basePrice: 280, // Base ₹280 + 15% = ₹322
+    isPriceOverridden: false,
+    overridePrice: null,
+    image: null, // NO IMAGE - Tests placeholder requirement
+    stock: 90,
+    blurb: "High precision 1% tolerance metal film resistors across 30 common E12 values.",
+    specs: [
+      { label: "Power Rating", value: "0.25 Watt" },
+      { label: "Tolerance", value: "±1%" },
+      { label: "Values", value: "10Ω to 1MΩ (20pcs each)" },
+    ],
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    // Product with manual price override
+    sku: "LT-5004",
+    slug: "5v-dual-channel-relay-module-optocoupler",
+    name: "5V Dual Channel Relay Module with Optocoupler Isolation",
+    categoryId: "electronics",
+    basePrice: 150, // Base ₹150 + 15% = ₹172.50. Manual override to ₹185.00
+    isPriceOverridden: true,
+    overridePrice: 185,
+    image: "/assets/p/relay.jpg",
+    stock: 110,
+    blurb: "High current relay module capable of switching 250V AC / 10A or 30V DC / 10A.",
+    badge: "Overridden Price",
+    specs: [
+      { label: "Control Voltage", value: "5V DC" },
+      { label: "Switching Capacity", value: "10A @ 250VAC / 30VDC" },
+      { label: "Isolation", value: "Optical Optocoupler" },
+    ],
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+];
+
+// Helper to build initial data
+function buildInitialData(): CatalogData {
+  const catMap = new Map<string, number>();
+  for (const c of initialCategories) {
+    catMap.set(c.id, c.markupPercentage);
+  }
+
+  const products: ProductRecord[] = initialProductsSeed.map((p) => {
+    const markup = catMap.get(p.categoryId) ?? 15;
+    const computed = computeProductPricing(p, markup);
+    return {
+      ...p,
+      markupPercentage: markup,
+      sellingPrice: computed.finalPrice,
+    };
+  });
+
+  const media: MediaRecord[] = [
+    {
+      id: "med-1",
+      filename: "gan-charger.jpg",
+      url: "/assets/p/gan-charger.jpg",
+      sizeBytes: 42000,
+      mimeType: "image/jpeg",
+      categoryId: "mobile-accessories",
+      productSku: "LT-1001",
+      uploadedAt: new Date().toISOString(),
+    },
+    {
+      id: "med-2",
+      filename: "usbc-cable.jpg",
+      url: "/assets/p/usbc-cable.jpg",
+      sizeBytes: 41460,
+      mimeType: "image/jpeg",
+      categoryId: "mobile-accessories",
+      productSku: "LT-1002",
+      uploadedAt: new Date().toISOString(),
+    },
+    {
+      id: "med-3",
+      filename: "esp32.jpg",
+      url: "/assets/p/esp32.jpg",
+      sizeBytes: 46910,
+      mimeType: "image/jpeg",
+      categoryId: "iot-and-microcontrollers",
+      productSku: "LT-2001",
+      uploadedAt: new Date().toISOString(),
+    },
+    {
+      id: "med-4",
+      filename: "soldering-station.jpg",
+      url: "/assets/p/soldering-station.jpg",
+      sizeBytes: 40020,
+      mimeType: "image/jpeg",
+      categoryId: "repair-kits",
+      productSku: "LT-3001",
+      uploadedAt: new Date().toISOString(),
+    },
+  ];
+
+  return {
+    categories: initialCategories,
+    products,
+    media,
+    version: 1,
+    lastUpdated: new Date().toISOString(),
+  };
+}
+
+// In-Memory store for fast server execution
+let memoryStore: CatalogData | null = null;
+
+const DB_FILE_PATH = path.resolve(process.cwd(), "src/data/catalog-db.json");
+
+/**
+ * Load or initialize catalog data from storage
+ */
+export function loadCatalogStore(): CatalogData {
+  if (memoryStore) {
+    return memoryStore;
+  }
+
+  try {
+    if (fs.existsSync(DB_FILE_PATH)) {
+      const raw = fs.readFileSync(DB_FILE_PATH, "utf-8");
+      const parsed = JSON.parse(raw) as CatalogData;
+      if (parsed && Array.isArray(parsed.categories) && Array.isArray(parsed.products)) {
+        memoryStore = parsed;
+        return memoryStore;
+      }
+    }
+  } catch (err) {
+    console.warn("Could not read catalog-db.json from disk, initializing defaults:", err);
+  }
+
+  // Initialize and write to disk
+  memoryStore = buildInitialData();
+  saveCatalogStore(memoryStore);
+  return memoryStore;
+}
+
+/**
+ * Persist catalog data
+ */
+export function saveCatalogStore(data: CatalogData): void {
+  memoryStore = {
+    ...data,
+    lastUpdated: new Date().toISOString(),
+  };
+
+  try {
+    const dir = path.dirname(DB_FILE_PATH);
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+    fs.writeFileSync(DB_FILE_PATH, JSON.stringify(memoryStore, null, 2), "utf-8");
+  } catch (err) {
+    console.warn("Could not write catalog-db.json to disk (e.g. read-only env):", err);
+  }
+}
+
+// ==========================================
+// Catalog Query & Modification Methods
+// ==========================================
+
+export function getCategories(): CategoryRecord[] {
+  return loadCatalogStore().categories;
+}
+
+export function getProducts(): ProductRecord[] {
+  return loadCatalogStore().products;
+}
+
+export function getMedia(): MediaRecord[] {
+  return loadCatalogStore().media;
+}
+
+export function getCategoryById(id: string): CategoryRecord | undefined {
+  return loadCatalogStore().categories.find((c) => c.id === id);
+}
+
+export function getProductBySku(sku: string): ProductRecord | undefined {
+  return loadCatalogStore().products.find(
+    (p) => p.sku === sku || p.slug === sku || p.sku.toLowerCase() === sku.toLowerCase()
+  );
+}
+
+/**
+ * Save or Update a Product
+ */
+export function saveProduct(input: {
+  sku: string;
+  name: string;
+  categoryId: string;
+  basePrice: number;
+  isPriceOverridden?: boolean;
+  overridePrice?: number | null;
+  image?: string | null;
+  stock?: number;
+  blurb?: string;
+  badge?: string;
+  specs?: ProductSpec[];
+}): ProductRecord {
+  const store = loadCatalogStore();
+  const category = store.categories.find((c) => c.id === input.categoryId);
+  const catMarkup = category ? category.markupPercentage : 15;
+
+  const basePrice = Math.max(0, Number(input.basePrice) || 0);
+  const isOverridden = Boolean(input.isPriceOverridden && input.overridePrice != null && input.overridePrice > 0);
+  const overridePrice = isOverridden ? Math.max(0, Number(input.overridePrice) || 0) : null;
+
+  const pricing = computeProductPricing(
+    {
+      basePrice,
+      isPriceOverridden: isOverridden,
+      overridePrice,
+    },
+    catMarkup
+  );
+
+  const cleanName = input.name.trim();
+  const slug = cleanName
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+
+  const existingIndex = store.products.findIndex(
+    (p) => p.sku.toLowerCase() === input.sku.trim().toLowerCase()
+  );
+
+  const now = new Date().toISOString();
+
+  const record: ProductRecord = {
+    sku: input.sku.trim(),
+    slug: slug ? `${slug}-${input.sku.trim().toLowerCase()}` : `item-${input.sku.trim().toLowerCase()}`,
+    name: cleanName,
+    categoryId: input.categoryId,
+    basePrice,
+    markupPercentage: catMarkup,
+    isPriceOverridden: isOverridden,
+    overridePrice,
+    sellingPrice: pricing.finalPrice,
+    image: input.image ? input.image.trim() : null,
+    stock: Math.max(0, Math.floor(Number(input.stock) || 0)),
+    blurb: input.blurb?.trim() || `${cleanName} genuine component.`,
+    badge: input.badge?.trim() || undefined,
+    specs: Array.isArray(input.specs) ? input.specs : [],
+    createdAt: existingIndex >= 0 ? store.products[existingIndex].createdAt : now,
+    updatedAt: now,
+  };
+
+  if (existingIndex >= 0) {
+    store.products[existingIndex] = record;
+  } else {
+    store.products.unshift(record);
+  }
+
+  saveCatalogStore(store);
+  return record;
+}
+
+/**
+ * Delete a Product
+ */
+export function deleteProduct(sku: string): boolean {
+  const store = loadCatalogStore();
+  const initialLength = store.products.length;
+  store.products = store.products.filter(
+    (p) => p.sku.toLowerCase() !== sku.toLowerCase()
+  );
+  if (store.products.length !== initialLength) {
+    saveCatalogStore(store);
+    return true;
+  }
+  return false;
+}
+
+/**
+ * Save or Update a Category
+ * When category markup percentage changes, all products in that category
+ * are automatically recalculated EXCEPT those with active manual price overrides!
+ */
+export function saveCategory(input: {
+  id?: string;
+  name: string;
+  tagline?: string;
+  description?: string;
+  markupPercentage: number;
+}): CategoryRecord {
+  const store = loadCatalogStore();
+  const now = new Date().toISOString();
+
+  const id = (input.id || input.name)
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+
+  const markupPct = Math.max(0, Number(input.markupPercentage) || 0);
+
+  const existingIndex = store.categories.findIndex((c) => c.id === id);
+
+  const record: CategoryRecord = {
+    id,
+    name: input.name.trim(),
+    tagline: input.tagline?.trim() || "Quality components",
+    description: input.description?.trim() || "",
+    markupPercentage: markupPct,
+    createdAt: existingIndex >= 0 ? store.categories[existingIndex].createdAt : now,
+    updatedAt: now,
+  };
+
+  if (existingIndex >= 0) {
+    store.categories[existingIndex] = record;
+  } else {
+    store.categories.push(record);
+  }
+
+  // CRITICAL REQUIREMENT: Automatically recalculate product selling prices for this category.
+  // DO NOT overwrite products with manual price overrides (isPriceOverridden === true).
+  store.products = store.products.map((p) => {
+    if (p.categoryId === id) {
+      const pricing = computeProductPricing(p, markupPct);
+      return {
+        ...p,
+        markupPercentage: markupPct,
+        sellingPrice: pricing.finalPrice, // Maintains overridePrice if overridden!
+        updatedAt: now,
+      };
+    }
+    return p;
+  });
+
+  saveCatalogStore(store);
+  return record;
+}
+
+/**
+ * Update Category Markup Percentage directly
+ */
+export function updateCategoryMarkup(categoryId: string, newMarkupPercentage: number): CategoryRecord {
+  const store = loadCatalogStore();
+  const category = store.categories.find((c) => c.id === categoryId);
+  if (!category) {
+    throw new Error(`Category "${categoryId}" not found.`);
+  }
+
+  const markupPct = Math.max(0, Number(newMarkupPercentage) || 0);
+  const now = new Date().toISOString();
+
+  category.markupPercentage = markupPct;
+  category.updatedAt = now;
+
+  // Recalculate selling price for all products in this category while preserving individual overrides
+  store.products = store.products.map((p) => {
+    if (p.categoryId === categoryId) {
+      const pricing = computeProductPricing(p, markupPct);
+      return {
+        ...p,
+        markupPercentage: markupPct,
+        sellingPrice: pricing.finalPrice,
+        updatedAt: now,
+      };
+    }
+    return p;
+  });
+
+  saveCatalogStore(store);
+  return category;
+}
+
+/**
+ * Delete a Category
+ */
+export function deleteCategory(categoryId: string, reassignToCategoryId?: string): boolean {
+  const store = loadCatalogStore();
+  const exists = store.categories.some((c) => c.id === categoryId);
+  if (!exists) return false;
+
+  store.categories = store.categories.filter((c) => c.id !== categoryId);
+
+  // If reassigning products:
+  const targetCategory = reassignToCategoryId
+    ? store.categories.find((c) => c.id === reassignToCategoryId)
+    : store.categories[0];
+
+  const targetMarkup = targetCategory ? targetCategory.markupPercentage : 15;
+  const targetId = targetCategory ? targetCategory.id : "uncategorized";
+
+  store.products = store.products.map((p) => {
+    if (p.categoryId === categoryId) {
+      const updated = {
+        ...p,
+        categoryId: targetId,
+        markupPercentage: targetMarkup,
+      };
+      const pricing = computeProductPricing(updated, targetMarkup);
+      return {
+        ...updated,
+        sellingPrice: pricing.finalPrice,
+        updatedAt: new Date().toISOString(),
+      };
+    }
+    return p;
+  });
+
+  saveCatalogStore(store);
+  return true;
+}
+
+/**
+ * Reset an individual product's manual price override back to category markup formula
+ */
+export function resetProductPriceOverride(sku: string): ProductRecord {
+  const store = loadCatalogStore();
+  const product = store.products.find((p) => p.sku.toLowerCase() === sku.toLowerCase());
+  if (!product) {
+    throw new Error(`Product with SKU "${sku}" not found.`);
+  }
+
+  const category = store.categories.find((c) => c.id === product.categoryId);
+  const markup = category ? category.markupPercentage : (product.markupPercentage || 15);
+
+  product.isPriceOverridden = false;
+  product.overridePrice = null;
+  product.markupPercentage = markup;
+  product.sellingPrice = calculateSellingPrice(product.basePrice, markup);
+  product.updatedAt = new Date().toISOString();
+
+  saveCatalogStore(store);
+  return product;
+}
+
+/**
+ * Add or Record Media File
+ */
+export function addMediaRecord(media: Omit<MediaRecord, "id" | "uploadedAt">): MediaRecord {
+  const store = loadCatalogStore();
+  const id = `med-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
+  const record: MediaRecord = {
+    ...media,
+    id,
+    uploadedAt: new Date().toISOString(),
+  };
+
+  store.media.unshift(record);
+  saveCatalogStore(store);
+  return record;
+}
+
+/**
+ * Delete Media Record
+ */
+export function deleteMediaRecord(id: string): boolean {
+  const store = loadCatalogStore();
+  const item = store.media.find((m) => m.id === id);
+  if (!item) return false;
+
+  // Unlink from products using this image
+  store.products = store.products.map((p) => {
+    if (p.image === item.url) {
+      return { ...p, image: null, updatedAt: new Date().toISOString() };
+    }
+    return p;
+  });
+
+  store.media = store.media.filter((m) => m.id !== id);
+
+  // If local file in public/uploads, try deleting
+  if (item.url.startsWith("/uploads/")) {
+    try {
+      const filePath = path.resolve(process.cwd(), "public", item.url.replace(/^\//, ""));
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+      }
+    } catch (e) {
+      console.warn("Could not delete file from disk:", e);
+    }
+  }
+
+  saveCatalogStore(store);
+  return true;
+}
+
+/**
+ * Bulk Import or Update Products
+ */
+export function bulkImportProducts(productsToImport: Array<{
+  sku: string;
+  name: string;
+  categoryId: string;
+  basePrice: number;
+  isPriceOverridden?: boolean;
+  overridePrice?: number | null;
+  image?: string | null;
+  stock?: number;
+  blurb?: string;
+  badge?: string;
+}>): { imported: number; updated: number } {
+  let imported = 0;
+  let updated = 0;
+
+  for (const item of productsToImport) {
+    if (!item.sku || !item.name) continue;
+    const existing = getProductBySku(item.sku);
+    if (existing) {
+      updated++;
+    } else {
+      imported++;
+    }
+    saveProduct({
+      sku: item.sku,
+      name: item.name,
+      categoryId: item.categoryId || "electronics",
+      basePrice: Number(item.basePrice) || 0,
+      isPriceOverridden: Boolean(item.isPriceOverridden),
+      overridePrice: item.overridePrice != null ? Number(item.overridePrice) : null,
+      image: item.image || null,
+      stock: Number(item.stock) || 0,
+      blurb: item.blurb,
+      badge: item.badge,
+    });
+  }
+
+  return { imported, updated };
+}
+
+// ==========================================
+// TanStack Start Server Functions (RPC)
+// ==========================================
+
+export interface AdminCatalogResponse {
+  categories: CategoryRecord[];
+  products: ProductRecord[];
+  media: MediaRecord[];
+  stats: {
+    totalProducts: number;
+    totalCategories: number;
+    productsWithoutImages: number;
+    overriddenPriceCount: number;
+    totalStockValue: number;
+    averageMarkupPercentage: number;
+  };
+}
+
+export const fetchAdminCatalogFn = createServerFn({ method: "GET" }).handler(
+  async (): Promise<AdminCatalogResponse> => {
+    const store = loadCatalogStore();
+    const categories = store.categories;
+    const products = store.products;
+    const media = store.media;
+
+    const productsWithoutImages = products.filter((p) => !p.image || p.image.trim() === "").length;
+    const overriddenPriceCount = products.filter((p) => p.isPriceOverridden).length;
+    const totalStockValue = products.reduce((acc, p) => acc + p.sellingPrice * p.stock, 0);
+
+    const avgMarkup =
+      categories.length > 0
+        ? Math.round(
+            (categories.reduce((acc, c) => acc + c.markupPercentage, 0) / categories.length) * 10
+          ) / 10
+        : 0;
+
+    return {
+      categories,
+      products,
+      media,
+      stats: {
+        totalProducts: products.length,
+        totalCategories: categories.length,
+        productsWithoutImages,
+        overriddenPriceCount,
+        totalStockValue,
+        averageMarkupPercentage: avgMarkup,
+      },
+    };
+  }
+);
+
+export const saveProductFn = createServerFn({ method: "POST" })
+  .validator((data: {
+    sku: string;
+    name: string;
+    categoryId: string;
+    basePrice: number;
+    isPriceOverridden?: boolean;
+    overridePrice?: number | null;
+    image?: string | null;
+    stock?: number;
+    blurb?: string;
+    badge?: string;
+    specs?: ProductSpec[];
+  }) => data)
+  .handler(async ({ data }) => {
+    return saveProduct(data);
+  });
+
+export const deleteProductFn = createServerFn({ method: "POST" })
+  .validator((sku: string) => sku)
+  .handler(async ({ data: sku }) => {
+    return deleteProduct(sku);
+  });
+
+export const saveCategoryFn = createServerFn({ method: "POST" })
+  .validator((data: {
+    id?: string;
+    name: string;
+    tagline?: string;
+    description?: string;
+    markupPercentage: number;
+  }) => data)
+  .handler(async ({ data }) => {
+    return saveCategory(data);
+  });
+
+export const updateCategoryMarkupFn = createServerFn({ method: "POST" })
+  .validator((data: { categoryId: string; markupPercentage: number }) => data)
+  .handler(async ({ data }) => {
+    return updateCategoryMarkup(data.categoryId, data.markupPercentage);
+  });
+
+export const deleteCategoryFn = createServerFn({ method: "POST" })
+  .validator((data: { categoryId: string; reassignTo?: string }) => data)
+  .handler(async ({ data }) => {
+    return deleteCategory(data.categoryId, data.reassignTo);
+  });
+
+export const resetProductOverrideFn = createServerFn({ method: "POST" })
+  .validator((sku: string) => sku)
+  .handler(async ({ data: sku }) => {
+    return resetProductPriceOverride(sku);
+  });
+
+export const deleteMediaFn = createServerFn({ method: "POST" })
+  .validator((id: string) => id)
+  .handler(async ({ data: id }) => {
+    return deleteMediaRecord(id);
+  });
+
+export const bulkImportFn = createServerFn({ method: "POST" })
+  .validator((data: Array<{
+    sku: string;
+    name: string;
+    categoryId: string;
+    basePrice: number;
+    isPriceOverridden?: boolean;
+    overridePrice?: number | null;
+    image?: string | null;
+    stock?: number;
+    blurb?: string;
+    badge?: string;
+  }>) => data)
+  .handler(async ({ data }) => {
+    return bulkImportProducts(data);
+  });
+
+export const uploadImageFn = createServerFn({ method: "POST" })
+  .validator((data: {
+    filename: string;
+    dataUrl: string; // Base64 data URI
+    categoryId?: string;
+    productSku?: string;
+  }) => data)
+  .handler(async ({ data }) => {
+    // 1. Validate data URI
+    const match = data.dataUrl.match(/^data:([a-zA-Z0-9]+\/[a-zA-Z0-9-.+]+);base64,(.+)$/);
+    if (!match) {
+      throw new Error("Invalid base64 image data.");
+    }
+
+    const mimeType = match[1];
+    const base64Data = match[2];
+    const buffer = Buffer.from(base64Data, "base64");
+
+    // 2. Validate file size (max 5MB)
+    const MAX_SIZE = 5 * 1024 * 1024;
+    if (buffer.length > MAX_SIZE) {
+      throw new Error("Image file exceeds the 5MB size limit.");
+    }
+
+    // 3. Validate supported MIME type
+    const validTypes = ["image/jpeg", "image/png", "image/webp", "image/gif", "image/svg+xml"];
+    if (!validTypes.includes(mimeType)) {
+      throw new Error(`Unsupported image type: ${mimeType}. Allowed: JPEG, PNG, WebP, GIF, SVG.`);
+    }
+
+    // 4. Save file to public/uploads/
+    const uploadsDir = path.resolve(process.cwd(), "public/uploads");
+    if (!fs.existsSync(uploadsDir)) {
+      fs.mkdirSync(uploadsDir, { recursive: true });
+    }
+
+    const ext = mimeType === "image/png" ? ".png" :
+                mimeType === "image/webp" ? ".webp" :
+                mimeType === "image/gif" ? ".gif" :
+                mimeType === "image/svg+xml" ? ".svg" : ".jpg";
+
+    const cleanBase = data.filename.replace(/[^a-zA-Z0-9_-]/g, "_").replace(/\.[^.]+$/, "");
+    const safeFilename = `${cleanBase}_${Date.now()}${ext}`;
+    const filePath = path.join(uploadsDir, safeFilename);
+
+    fs.writeFileSync(filePath, buffer);
+    const publicUrl = `/uploads/${safeFilename}`;
+
+    // 5. Create media record
+    const record = addMediaRecord({
+      filename: safeFilename,
+      url: publicUrl,
+      sizeBytes: buffer.length,
+      mimeType,
+      categoryId: data.categoryId,
+      productSku: data.productSku,
+    });
+
+    // 6. If productSku provided, attach to product immediately
+    if (data.productSku) {
+      const prod = getProductBySku(data.productSku);
+      if (prod) {
+        saveProduct({
+          ...prod,
+          image: publicUrl,
+        });
+      }
+    }
+
+    return record;
+  });

@@ -1,4 +1,4 @@
-﻿import { Link } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 import {
   ShoppingCart,
   Search,
@@ -10,6 +10,7 @@ import {
   ChevronRight,
   Home,
   LayoutGrid,
+  Shield,
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import logoAsset from "@/assets/logo.jpg";
@@ -175,6 +176,15 @@ export function Header() {
               <User className="size-4.5" aria-hidden />
             </Link>
 
+            <Link
+              to="/admin"
+              aria-label="Admin Dashboard"
+              title="Admin Dashboard (PWA)"
+              className="grid size-8.5 sm:size-10 place-items-center rounded-full border border-blue-500/30 bg-blue-500/10 text-blue-600 shadow-[0_2px_8px_rgba(8,120,209,0.15)] backdrop-blur-md transition-all hover:bg-blue-600 hover:text-white hover:shadow-md active:scale-95"
+            >
+              <Shield className="size-4 sm:size-4.5" aria-hidden />
+            </Link>
+
             {/* Mobile Menu Button - visible on screens < xl */}
             <button
               type="button"
@@ -240,6 +250,17 @@ export function Header() {
               </nav>
 
               <div className="mt-4 pt-4 border-t border-slate-100 space-y-2">
+                <Link
+                  to="/admin"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center justify-between rounded-xl bg-blue-600 p-3 text-xs font-bold text-white shadow-md shadow-blue-600/20 hover:bg-blue-700 transition-colors"
+                >
+                  <span className="flex items-center gap-2">
+                    <Shield className="size-4" /> Admin Dashboard (PWA)
+                  </span>
+                  <ChevronRight className="size-3.5" />
+                </Link>
+
                 <a
                   href="tel:+94777882156"
                   className="flex items-center justify-between rounded-xl bg-blue-50/70 p-3 text-xs font-bold text-primary hover:bg-blue-100/70 transition-colors"
