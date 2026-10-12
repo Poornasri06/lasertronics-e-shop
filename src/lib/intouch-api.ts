@@ -160,44 +160,147 @@ function detectCategory(name: string): string {
   return "electronics";
 }
 
-function selectProductImage(name: string, category: string): string {
+const categoryImagePools: Record<string, string[]> = {
+  "mobile-accessories": [
+    imageCatalog.usbcCable,
+    imageCatalog.carHolder,
+    imageCatalog.powerbank,
+    imageCatalog.magsafePowerbank,
+    imageCatalog.ganCharger,
+    imageCatalog.usbcCharger,
+    imageCatalog.earbuds,
+    imageCatalog.neckband,
+    imageCatalog.lightningCable,
+    imageCatalog.tripod,
+  ],
+  "electronics": [
+    imageCatalog.psuModule,
+    imageCatalog.capacitorKit,
+    imageCatalog.resistorKit,
+    imageCatalog.ledKit,
+    imageCatalog.relay,
+    imageCatalog.dcmotor,
+    imageCatalog.servo,
+    imageCatalog.breadboard,
+    imageCatalog.roboticsKit,
+    imageCatalog.bluetoothModule,
+  ],
+  "tv-accessories": [
+    imageCatalog.hdmiCable,
+    imageCatalog.remote,
+    imageCatalog.hdmiSplitter,
+    imageCatalog.hdmiSwitch,
+    imageCatalog.opticalCable,
+    imageCatalog.avConverter,
+    imageCatalog.displayport,
+    imageCatalog.wallmount,
+    imageCatalog.tvKeyboard,
+    imageCatalog.streamingAdapter,
+  ],
+  "iot-and-microcontrollers": [
+    imageCatalog.esp32,
+    imageCatalog.nodemcu,
+    imageCatalog.uno,
+    imageCatalog.nano,
+    imageCatalog.piCase,
+    imageCatalog.piAdapter,
+    imageCatalog.iotKit,
+    imageCatalog.wifiSensor,
+    imageCatalog.pir,
+    imageCatalog.ultrasonic,
+  ],
+  "repair-kits": [
+    imageCatalog.solderingStation,
+    imageCatalog.screwdriverSet,
+    imageCatalog.multimeter,
+    imageCatalog.repairToolkit,
+    imageCatalog.desolderPump,
+    imageCatalog.antistatic,
+    imageCatalog.solderWire,
+    imageCatalog.tweezers,
+    imageCatalog.heatGun,
+    imageCatalog.pryTools,
+  ],
+};
+
+function selectProductImage(name: string, category: string, uniqueKey: string = ""): string {
   const n = name.toLowerCase();
-  if (n.includes("capacitor")) return imageCatalog.capacitorKit;
-  if (n.includes("resistor")) return imageCatalog.resistorKit;
-  if (n.includes("led") || n.includes("green") || n.includes("red") || n.includes("blue") || n.includes("white")) return imageCatalog.ledKit;
+
+  // 1. Mobile, Power & Audio
+  if (n.includes("stand") || n.includes("holder")) return imageCatalog.carHolder;
+  if (n.includes("tripod") || n.includes("monopod") || n.includes("selfie")) return imageCatalog.tripod;
+  if (n.includes("magsafe") || n.includes("magnetic power") || n.includes("wireless")) return imageCatalog.magsafePowerbank;
+  if (n.includes("battery") || n.includes("rechargeable") || n.includes("18650") || n.includes("cell") || n.includes("power bank") || n.includes("powerbank")) return imageCatalog.powerbank;
+  if (n.includes("charger") || n.includes("gan") || n.includes("adapter")) return imageCatalog.ganCharger;
+  if (n.includes("earbud") || n.includes("airpod") || n.includes("tws")) return imageCatalog.earbuds;
+  if (n.includes("neckband") || n.includes("headphone") || n.includes("audio")) return imageCatalog.neckband;
+  if (n.includes("lightning") || n.includes("apple cable")) return imageCatalog.lightningCable;
+  if (n.includes("type-c") || n.includes("usbc")) return imageCatalog.usbcCable;
+
+  // 2. Electronics Components
+  if (n.includes("capacitor") || n.includes("uf") || n.includes("pf") || n.includes("cap ")) return imageCatalog.capacitorKit;
+  if (n.includes("resistor") || n.includes("ohm")) return imageCatalog.resistorKit;
+  if (n.includes("led") || n.includes("3mm") || n.includes("5mm") || n.includes("diode")) return imageCatalog.ledKit;
   if (n.includes("relay")) return imageCatalog.relay;
   if (n.includes("motor")) return imageCatalog.dcmotor;
   if (n.includes("servo")) return imageCatalog.servo;
+  if (n.includes("breadboard")) return imageCatalog.breadboard;
+  if (n.includes("ic") || n.includes("7805") || n.includes("4440") || n.includes("chip") || n.includes("regulator")) return imageCatalog.psuModule;
+  if (n.includes("bluetooth")) return imageCatalog.bluetoothModule;
+
+  // 3. TV Accessories
   if (n.includes("remote")) return imageCatalog.remote;
   if (n.includes("hdmi")) return imageCatalog.hdmiCable;
+  if (n.includes("splitter")) return imageCatalog.hdmiSplitter;
   if (n.includes("switch")) return imageCatalog.hdmiSwitch;
-  if (n.includes("charger")) return imageCatalog.ganCharger;
-  if (n.includes("power") || n.includes("bank")) return imageCatalog.powerbank;
-  if (n.includes("earbud") || n.includes("neckband") || n.includes("audio")) return imageCatalog.earbuds;
-  if (n.includes("solder")) return imageCatalog.solderingStation;
-  if (n.includes("meter")) return imageCatalog.multimeter;
-  if (n.includes("tweezer")) return imageCatalog.tweezers;
-  if (n.includes("heat") || n.includes("gun")) return imageCatalog.heatGun;
-  if (n.includes("screwdriver") || n.includes("driver")) return imageCatalog.screwdriverSet;
-  if (n.includes("pry")) return imageCatalog.pryTools;
-  if (n.includes("tool")) return imageCatalog.repairToolkit;
+  if (n.includes("optical") || n.includes("toslink")) return imageCatalog.opticalCable;
+  if (n.includes("converter") || n.includes("av ")) return imageCatalog.avConverter;
+  if (n.includes("displayport") || n.includes("dp ")) return imageCatalog.displayport;
+  if (n.includes("wallmount") || n.includes("bracket")) return imageCatalog.wallmount;
+  if (n.includes("keyboard")) return imageCatalog.tvKeyboard;
+  if (n.includes("streaming") || n.includes("dongle")) return imageCatalog.streamingAdapter;
+
+  // 4. IoT & Microcontrollers
   if (n.includes("esp32") || n.includes("esp8266")) return imageCatalog.esp32;
   if (n.includes("nodemcu")) return imageCatalog.nodemcu;
   if (n.includes("uno")) return imageCatalog.uno;
   if (n.includes("nano")) return imageCatalog.nano;
-  if (n.includes("pi")) return imageCatalog.piAdapter;
-  if (n.includes("breadboard")) return imageCatalog.breadboard;
-  if (n.includes("sensor") || n.includes("pir")) return imageCatalog.pir;
+  if (n.includes("pi") || n.includes("raspberry")) return imageCatalog.piAdapter;
   if (n.includes("ultrasonic")) return imageCatalog.ultrasonic;
-  if (n.includes("cable") || n.includes("wire")) return imageCatalog.solderWire;
+  if (n.includes("sensor") || n.includes("pir")) return imageCatalog.pir;
 
-  switch (category) {
-    case "mobile-accessories": return imageCatalog.usbcCable;
-    case "tv-accessories": return imageCatalog.hdmiCable;
-    case "iot-and-microcontrollers": return imageCatalog.esp32;
-    case "repair-kits": return imageCatalog.repairToolkit;
-    default: return imageCatalog.psuModule;
+  // 5. Repair Kits
+  if (n.includes("solder") || n.includes("iron") || n.includes("station")) return imageCatalog.solderingStation;
+  if (n.includes("meter") || n.includes("tester")) return imageCatalog.multimeter;
+  if (n.includes("desolder") || n.includes("pump") || n.includes("sucker")) return imageCatalog.desolderPump;
+  if (n.includes("tweezer")) return imageCatalog.tweezers;
+  if (n.includes("heat") || n.includes("gun")) return imageCatalog.heatGun;
+  if (n.includes("screwdriver") || n.includes("driver")) return imageCatalog.screwdriverSet;
+  if (n.includes("pry")) return imageCatalog.pryTools;
+  if (n.includes("wire")) return imageCatalog.solderWire;
+  if (n.includes("mat") || n.includes("antistatic") || n.includes("esd")) return imageCatalog.antistatic;
+  if (n.includes("tool")) return imageCatalog.repairToolkit;
+
+  // Fallback: Pick deterministically from pool using uniqueKey or name hash
+  const defaultPool = [
+    imageCatalog.psuModule,
+    imageCatalog.capacitorKit,
+    imageCatalog.resistorKit,
+    imageCatalog.ledKit,
+    imageCatalog.relay,
+    imageCatalog.dcmotor,
+    imageCatalog.usbcCable,
+    imageCatalog.powerbank,
+  ];
+  const pool = categoryImagePools[category] ?? defaultPool;
+  let hash = 0;
+  const str = uniqueKey || name;
+  for (let i = 0; i < str.length; i++) {
+    hash = (hash << 5) - hash + str.charCodeAt(i);
+    hash |= 0;
   }
+  const index = Math.abs(hash) % pool.length;
+  return pool[index] ?? imageCatalog.psuModule;
 }
 
 /**
@@ -223,7 +326,9 @@ export function mapInTouchProductToStoreProduct(
   const displayName = override?.name || item.product_name;
   const displayPrice = override?.price !== undefined ? override.price : rawPrice;
   const category = override?.category || defaultCategory || detectCategory(displayName);
-  const image = override?.image || selectProductImage(displayName, category);
+  const image =
+    override?.image ||
+    selectProductImage(displayName, category, item.sub_sku || item.sku || item.product_id);
 
   const cleanName = displayName
     .toLowerCase()
