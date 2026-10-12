@@ -1,4 +1,4 @@
-﻿import { Link } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import { ProductCard } from "@/components/ProductCard";
 import { productsByCategory, type Category } from "@/data/products";
@@ -25,7 +25,7 @@ export function CategoryRail({ category }: { category: Category }) {
           params={{ slug: category.slug }}
           className="hidden sm:inline-flex shrink-0 items-center gap-1.5 rounded-full border border-slate-200 bg-white/80 px-4 py-2 text-xs font-bold text-foreground shadow-xs hover:border-[#0066FF] hover:text-[#0066FF] transition-colors"
         >
-          View all 10 products <ArrowRight className="size-3.5" aria-hidden />
+          View all products <ArrowRight className="size-3.5" aria-hidden />
         </Link>
       </div>
 

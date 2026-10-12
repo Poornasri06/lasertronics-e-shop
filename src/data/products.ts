@@ -53,6 +53,59 @@ import tweezers from "@/assets/p/tweezers.jpg";
 import heatGun from "@/assets/p/heat-gun.jpg";
 import pryTools from "@/assets/p/pry-tools.jpg";
 
+export const imageCatalog = {
+  usbcCable,
+  lightningCable,
+  powerbank,
+  magsafePowerbank,
+  ganCharger,
+  usbcCharger,
+  earbuds,
+  neckband,
+  carHolder,
+  tripod,
+  psuModule,
+  capacitorKit,
+  resistorKit,
+  ledKit,
+  relay,
+  dcmotor,
+  servo,
+  breadboard,
+  roboticsKit,
+  bluetoothModule,
+  hdmiCable,
+  hdmiSplitter,
+  hdmiSwitch,
+  opticalCable,
+  avConverter,
+  displayport,
+  remote,
+  wallmount,
+  tvKeyboard,
+  streamingAdapter,
+  esp32,
+  nodemcu,
+  uno,
+  nano,
+  piCase,
+  piAdapter,
+  iotKit,
+  wifiSensor,
+  pir,
+  ultrasonic,
+  screwdriverSet,
+  multimeter,
+  solderingStation,
+  repairToolkit,
+  desolderPump,
+  antistatic,
+  solderWire,
+  tweezers,
+  heatGun,
+  pryTools,
+};
+
 export type Category = {
   slug: string;
   name: string;
@@ -999,19 +1052,49 @@ export const products: Product[] = [
   },
 ];
 
+// Dynamic InTouch ERP live products cache
+const liveProductsMap = new Map<string, Product>();
+
+export function registerLiveProducts(items: Product[]) {
+  for (const item of items) {
+    liveProductsMap.set(item.slug, item);
+    const skuSpec = item.specs?.find((s) => s.label === "SKU");
+    if (skuSpec?.value) {
+      liveProductsMap.set(skuSpec.value, item);
+      liveProductsMap.set(skuSpec.value.toLowerCase(), item);
+    }
+  }
+}
+
+export function getRegisteredLiveProducts(): Product[] {
+  return Array.from(new Set(liveProductsMap.values()));
+}
+
 export const formatLKR = (value: number) =>
   `LKR ${value.toLocaleString("en-LK", { maximumFractionDigits: 0 })}`;
 
 export const getCategory = (slug: string) => categories.find((c) => c.slug === slug);
 
 export const productsByCategory = (slug: string, limit?: number) => {
-  const list = products.filter((p) => p.category === slug);
+  const liveList = getRegisteredLiveProducts().filter((p) => p.category === slug);
+  const list = liveList.length > 0 ? liveList : products.filter((p) => p.category === slug);
   return limit ? list.slice(0, limit) : list;
 };
 
-export const getProduct = (slug: string) => products.find((p) => p.slug === slug);
+export const getProduct = (slug: string) => {
+  return (
+    liveProductsMap.get(slug) ||
+    liveProductsMap.get(slug.toLowerCase()) ||
+    products.find((p) => p.slug === slug || p.slug.toLowerCase() === slug.toLowerCase())
+  );
+};
 
-export const relatedProducts = (product: Product, limit = 4) =>
-  products
-    .filter((p) => p.category === product.category && p.slug !== product.slug)
-    .slice(0, limit);
+export const relatedProducts = (product: Product, limit = 4) => {
+  const liveList = getRegisteredLiveProducts().filter(
+    (p) => p.category === product.category && p.slug !== product.slug,
+  );
+  const list = liveList.length > 0 ? liveList : products.filter(
+    (p) => p.category === product.category && p.slug !== product.slug,
+  );
+  return list.slice(0, limit);
+};

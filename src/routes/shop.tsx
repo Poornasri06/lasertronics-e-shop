@@ -1,23 +1,36 @@
-﻿import { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { Search } from "lucide-react";
+import { ChevronLeft, ChevronRight, Search } from "lucide-react";
 import { SiteLayout } from "@/components/layout/SiteLayout";
 import { ProductCard } from "@/components/ProductCard";
-import { categories, products } from "@/data/products";
+import { categories, products as defaultFallbackProducts, registerLiveProducts } from "@/data/products";
+import { fetchAllProductsFn } from "@/lib/server-products";
 
 export const Route = createFileRoute("/shop")({
+  loader: async () => {
+    try {
+      const live = await fetchAllProductsFn();
+      if (live && live.length > 0) {
+        registerLiveProducts(live);
+        return { liveProducts: live };
+      }
+    } catch (err) {
+      console.error("Failed to fetch live products in /shop loader:", err);
+    }
+    return { liveProducts: defaultFallbackProducts };
+  },
   head: () => ({
     meta: [
       { title: "All Products | LASERTRONICS PVT LTD Sri Lanka" },
       {
         name: "description",
         content:
-          "Browse every LASERTRONICS PVT LTD product: mobile accessories, components, TV accessories, IoT boards and repair kits with LKR pricing.",
+          "Browse LASERTRONICS PVT LTD genuine live inventory: mobile accessories, components, TV accessories, IoT boards and repair kits with live LKR pricing and stock.",
       },
       { property: "og:title", content: "All Products | LASERTRONICS PVT LTD" },
       {
         property: "og:description",
-        content: "The full LASERTRONICS PVT LTD electronics catalogue, priced in LKR.",
+        content: "The full LASERTRONICS PVT LTD electronics catalogue, live from InTouch ERP.",
       },
     ],
   }),
@@ -25,23 +38,54 @@ export const Route = createFileRoute("/shop")({
 });
 
 type Sort = "featured" | "price-asc" | "price-desc" | "rating";
+const PAGE_SIZE = 36;
 
 function ShopPage() {
+  const { liveProducts } = Route.useLoaderData();
+  const allProducts = liveProducts && liveProducts.length > 0 ? liveProducts : defaultFallbackProducts;
+
   const [query, setQuery] = useState("");
   const [active, setActive] = useState<string>("all");
   const [sort, setSort] = useState<Sort>("featured");
+  const [page, setPage] = useState(1);
 
-  const results = useMemo(() => {
-    let list = products.filter(
-      (p) =>
-        (active === "all" || p.category === active) &&
-        (query.trim() === "" || p.name.toLowerCase().includes(query.trim().toLowerCase())),
-    );
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    let list = allProducts.filter((p) => {
+      const matchesCategory = active === "all" || p.category === active;
+      if (!matchesCategory) return false;
+      if (!q) return true;
+      return (
+        p.name.toLowerCase().includes(q) ||
+        p.slug.toLowerCase().includes(q) ||
+        p.specs.some((s) => s.value.toLowerCase().includes(q))
+      );
+    });
+
     if (sort === "price-asc") list = [...list].sort((a, b) => a.price - b.price);
     if (sort === "price-desc") list = [...list].sort((a, b) => b.price - a.price);
     if (sort === "rating") list = [...list].sort((a, b) => b.rating - a.rating);
+
     return list;
-  }, [query, active, sort]);
+  }, [allProducts, query, active, sort]);
+
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const currentPage = Math.min(page, totalPages);
+
+  const paginatedResults = useMemo(() => {
+    const start = (currentPage - 1) * PAGE_SIZE;
+    return filtered.slice(start, start + PAGE_SIZE);
+  }, [filtered, currentPage]);
+
+  const handleCategoryChange = (catSlug: string) => {
+    setActive(catSlug);
+    setPage(1);
+  };
+
+  const handleQueryChange = (val: string) => {
+    setQuery(val);
+    setPage(1);
+  };
 
   return (
     <SiteLayout>
@@ -49,13 +93,13 @@ function ShopPage() {
       <div className="relative overflow-hidden border-b border-white/60 bg-gradient-to-b from-blue-50/40 via-white/50 to-white/70 py-8 sm:py-12 backdrop-blur-xl lg:py-14">
         <div className="container-page">
           <span className="inline-block rounded-full border border-white/80 bg-white/70 px-3.5 py-1 text-xs font-extrabold uppercase tracking-[0.2em] text-primary shadow-xs backdrop-blur-md">
-            Product Catalogue
+            Live ERP Inventory
           </span>
           <h1 className="mt-2.5 font-display text-2xl sm:text-4xl font-extrabold tracking-tight text-foreground">
             All Products
           </h1>
           <p className="mt-1.5 max-w-xl text-xs sm:text-sm text-muted-foreground">
-            {products.length} products across five categories, priced in Sri Lankan rupees.
+            {allProducts.length.toLocaleString()} genuine products synchronized live from InTouch ERP, priced in Sri Lankan rupees.
           </p>
         </div>
       </div>
@@ -71,8 +115,8 @@ function ShopPage() {
             <span className="sr-only">Search products</span>
             <input
               value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search components, accessories, tools..."
+              onChange={(e) => handleQueryChange(e.target.value)}
+              placeholder="Search components, SKU, ICs, accessories, tools..."
               className="glass-input min-h-11 sm:min-h-12 w-full rounded-full border border-white/80 bg-white/75 pl-11 pr-4 text-xs sm:text-sm text-foreground shadow-[0_2px_12px_rgba(10,30,60,0.04)] backdrop-blur-xl outline-none transition-all placeholder:text-muted-foreground/70 focus:border-blue-500 focus:bg-white"
             />
           </label>
@@ -95,7 +139,7 @@ function ShopPage() {
             <button
               key={c.slug}
               type="button"
-              onClick={() => setActive(c.slug)}
+              onClick={() => handleCategoryChange(c.slug)}
               className={`min-h-9 sm:min-h-10 shrink-0 rounded-full px-3.5 sm:px-4 text-xs font-bold transition-all active:scale-95 cursor-pointer ${
                 active === c.slug
                   ? "apple-btn-primary border border-transparent shadow-md"
@@ -109,18 +153,57 @@ function ShopPage() {
 
         <div className="mt-5 sm:mt-7 flex items-center justify-between">
           <p className="text-xs font-semibold text-muted-foreground">
-            Showing <span className="font-bold text-foreground">{results.length}</span> items
+            Showing <span className="font-bold text-foreground">{paginatedResults.length}</span> of{" "}
+            <span className="font-bold text-foreground">{filtered.length.toLocaleString()}</span> items
           </p>
+          {totalPages > 1 && (
+            <p className="text-xs font-semibold text-muted-foreground">
+              Page {currentPage} of {totalPages}
+            </p>
+          )}
         </div>
 
         {/* Responsive Grid */}
         <div className="mt-3.5 sm:mt-4 grid grid-cols-2 gap-2.5 sm:gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-          {results.map((p) => (
+          {paginatedResults.map((p) => (
             <ProductCard key={p.slug} product={p} />
           ))}
         </div>
 
-        {results.length === 0 && (
+        {/* Pagination controls */}
+        {totalPages > 1 && (
+          <div className="mt-8 flex items-center justify-center gap-2">
+            <button
+              type="button"
+              disabled={currentPage <= 1}
+              onClick={() => {
+                setPage((prev) => Math.max(1, prev - 1));
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }}
+              className="flex items-center gap-1 rounded-full border border-white/80 bg-white/70 px-4 py-2 text-xs font-bold text-foreground shadow-xs backdrop-blur-md disabled:opacity-40 disabled:pointer-events-none hover:bg-white hover:text-primary"
+            >
+              <ChevronLeft className="size-4" /> Previous
+            </button>
+
+            <span className="px-3 text-xs font-bold text-muted-foreground">
+              {currentPage} / {totalPages}
+            </span>
+
+            <button
+              type="button"
+              disabled={currentPage >= totalPages}
+              onClick={() => {
+                setPage((prev) => Math.min(totalPages, prev + 1));
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }}
+              className="flex items-center gap-1 rounded-full border border-white/80 bg-white/70 px-4 py-2 text-xs font-bold text-foreground shadow-xs backdrop-blur-md disabled:opacity-40 disabled:pointer-events-none hover:bg-white hover:text-primary"
+            >
+              Next <ChevronRight className="size-4" />
+            </button>
+          </div>
+        )}
+
+        {filtered.length === 0 && (
           <div className="glass-card mt-8 rounded-2xl sm:rounded-3xl border border-white/80 bg-white/70 py-12 sm:py-16 text-center backdrop-blur-xl">
             <p className="text-sm font-semibold text-muted-foreground">
               No products found matching "{query}".
@@ -130,6 +213,7 @@ function ShopPage() {
               onClick={() => {
                 setQuery("");
                 setActive("all");
+                setPage(1);
               }}
               className="apple-btn-glass mt-4 rounded-full px-6 py-2.5 text-xs font-bold cursor-pointer"
             >

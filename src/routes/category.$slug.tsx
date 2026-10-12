@@ -1,13 +1,22 @@
-﻿import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ChevronRight } from "lucide-react";
 import { SiteLayout } from "@/components/layout/SiteLayout";
 import { ProductCard } from "@/components/ProductCard";
-import { categories, getCategory, productsByCategory } from "@/data/products";
+import { categories, getCategory, productsByCategory, registerLiveProducts } from "@/data/products";
+import { fetchAllProductsFn } from "@/lib/server-products";
 
 export const Route = createFileRoute("/category/$slug")({
-  loader: ({ params }) => {
+  loader: async ({ params }) => {
     const category = getCategory(params.slug);
     if (!category) throw notFound();
+    try {
+      const live = await fetchAllProductsFn();
+      if (live && live.length > 0) {
+        registerLiveProducts(live);
+      }
+    } catch (err) {
+      console.error("Failed to load live products in category loader:", err);
+    }
     return { category };
   },
   head: ({ loaderData }) => {

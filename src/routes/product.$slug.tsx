@@ -1,14 +1,26 @@
-﻿import { useState } from "react";
+import { useState } from "react";
 import { createFileRoute, Link, notFound, useNavigate } from "@tanstack/react-router";
 import { ChevronRight, Minus, Plus, ShoppingCart, Star, Truck, ShieldCheck, Undo2 } from "lucide-react";
 import { SiteLayout } from "@/components/layout/SiteLayout";
 import { ProductCard } from "@/components/ProductCard";
-import { formatLKR, getCategory, getProduct, relatedProducts } from "@/data/products";
+import { formatLKR, getCategory, getProduct, registerLiveProducts, relatedProducts } from "@/data/products";
+import { fetchProductBySlugOrSkuFn } from "@/lib/server-products";
 import { useCart } from "@/lib/cart";
 
 export const Route = createFileRoute("/product/$slug")({
-  loader: ({ params }) => {
-    const product = getProduct(params.slug);
+  loader: async ({ params }) => {
+    let product = getProduct(params.slug);
+    if (!product) {
+      try {
+        const live = await fetchProductBySlugOrSkuFn({ data: params.slug });
+        if (live) {
+          registerLiveProducts([live]);
+          product = live;
+        }
+      } catch (err) {
+        console.error("Failed to load product by slug/SKU from ERP:", err);
+      }
+    }
     if (!product) throw notFound();
     return { product };
   },

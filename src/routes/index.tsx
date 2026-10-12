@@ -1,4 +1,4 @@
-﻿import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   ArrowRight,
   Truck,
@@ -20,9 +20,22 @@ import { SiteLayout } from "@/components/layout/SiteLayout";
 import { Hero } from "@/components/home/Hero";
 import { CategoryRail } from "@/components/home/CategoryRail";
 import { ProductCard } from "@/components/ProductCard";
-import { categories, products } from "@/data/products";
+import { categories, products as defaultFallbackProducts, registerLiveProducts } from "@/data/products";
+import { fetchAllProductsFn } from "@/lib/server-products";
 
 export const Route = createFileRoute("/")({
+  loader: async () => {
+    try {
+      const live = await fetchAllProductsFn();
+      if (live && live.length > 0) {
+        registerLiveProducts(live);
+        return { liveProducts: live };
+      }
+    } catch (err) {
+      console.error("Index route live fetch error:", err);
+    }
+    return { liveProducts: defaultFallbackProducts };
+  },
   head: () => ({
     meta: [
       { title: "LASERTRONICS PVT LTD | Electronics, IoT & Repair Store Sri Lanka" },
@@ -117,7 +130,9 @@ const testimonials = [
 ];
 
 function Index() {
-  const newArrivals = products.slice(0, 6);
+  const { liveProducts } = Route.useLoaderData();
+  const allProducts = liveProducts && liveProducts.length > 0 ? liveProducts : defaultFallbackProducts;
+  const newArrivals = allProducts.slice(0, 6);
 
   return (
     <SiteLayout>
