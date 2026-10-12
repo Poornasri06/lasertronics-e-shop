@@ -132,6 +132,7 @@ const testimonials = [
 function Index() {
   const { liveProducts } = Route.useLoaderData();
   const allProducts = liveProducts && liveProducts.length > 0 ? liveProducts : defaultFallbackProducts;
+  registerLiveProducts(allProducts);
   const newArrivals = allProducts.slice(0, 6);
 
   return (
@@ -208,9 +209,10 @@ function Index() {
       </section>
 
       {/* 4. Category Rails */}
-      {categories.map((c) => (
-        <CategoryRail key={c.slug} category={c} />
-      ))}
+      {categories.map((c) => {
+        const catItems = allProducts.filter((p) => p.category === c.slug).slice(0, 6);
+        return <CategoryRail key={c.slug} category={c} products={catItems} />;
+      })}
 
       {/* 5. New Arrivals */}
       <section className="py-8 sm:py-12 lg:py-16">

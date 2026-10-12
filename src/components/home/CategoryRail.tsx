@@ -1,10 +1,18 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import { ProductCard } from "@/components/ProductCard";
-import { productsByCategory, type Category } from "@/data/products";
+import { productsByCategory, type Category, type Product } from "@/data/products";
 
-export function CategoryRail({ category }: { category: Category }) {
-  const items = productsByCategory(category.slug, 6);
+export function CategoryRail({
+  category,
+  products,
+}: {
+  category: Category;
+  products?: Product[];
+}) {
+  const items = products && products.length > 0 ? products : productsByCategory(category.slug, 6);
+
+  if (items.length === 0) return null;
 
   return (
     <section className="container-page py-6 sm:py-10 lg:py-14">
