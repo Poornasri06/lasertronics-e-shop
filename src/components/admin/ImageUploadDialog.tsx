@@ -16,7 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { CategoryRecord, ProductRecord } from "@/lib/catalog-store";
+import { CategoryRecord, ProductRecord } from "@/lib/catalog-types";
 import { Upload, AlertCircle, ImageIcon, CheckCircle2, X } from "lucide-react";
 
 interface ImageUploadDialogProps {

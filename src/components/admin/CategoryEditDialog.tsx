@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { CategoryRecord, calculateSellingPrice, formatINR } from "@/lib/catalog-store";
+import { CategoryRecord, calculateSellingPrice, formatINR } from "@/lib/catalog-types";
 import { AlertCircle, Percent, ArrowRight } from "lucide-react";
 
 interface CategoryEditDialogProps {

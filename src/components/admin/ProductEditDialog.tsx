@@ -24,7 +24,7 @@ import {
   MediaRecord,
   calculateSellingPrice,
   formatINR,
-} from "@/lib/catalog-store";
+} from "@/lib/catalog-types";
 import { ProductImage } from "./ProductImage";
 import { Plus, Trash2, Upload, AlertCircle, Sparkles, Check } from "lucide-react";
 

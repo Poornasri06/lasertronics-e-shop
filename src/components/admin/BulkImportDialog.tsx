@@ -9,7 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { CategoryRecord } from "@/lib/catalog-store";
+import { CategoryRecord } from "@/lib/catalog-types";
 import { Upload, Download, FileText, CheckCircle2, AlertCircle } from "lucide-react";
 
 interface BulkImportDialogProps {

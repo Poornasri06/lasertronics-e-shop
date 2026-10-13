@@ -12,12 +12,14 @@ import {
   deleteMediaFn,
   bulkImportFn,
   uploadImageFn,
+} from "@/lib/catalog-store";
+import {
   type ProductRecord,
   type CategoryRecord,
   type MediaRecord,
   formatINR,
   calculateSellingPrice,
-} from "@/lib/catalog-store";
+} from "@/lib/catalog-types";
 import { usePWA } from "@/hooks/usePWA";
 import { ProductImage } from "@/components/admin/ProductImage";
 import { ProductEditDialog } from "@/components/admin/ProductEditDialog";
@@ -129,44 +131,20 @@ function AdminDashboard() {
   const [mediaAssignmentFilter, setMediaAssignmentFilter] = useState<"all" | "assigned" | "unassigned">("all");
 
   // Refresh data from server
-  const refreshData = async (notify = false) => {
+  const refreshData = async () => {
     try {
       setIsRefreshing(true);
       const res = await fetchAdminCatalogFn();
-      if (res && Array.isArray(res.products)) {
-        setCategories(res.categories);
-        setProducts(res.products);
-        setMedia(res.media);
-        if (notify) {
-          toast.success("Catalog synced with backend server.");
-        }
-      }
-    } catch (err: unknown) {
-      if (notify) {
-        toast.error("Failed to sync with backend server.");
-      }
+      setCategories(res.categories);
+      setProducts(res.products);
+      setMedia(res.media);
+      toast.success("Catalog synced with backend server.");
+    } catch {
+      toast.error("Failed to sync with backend server.");
     } finally {
       setIsRefreshing(false);
     }
   };
-
-  useEffect(() => {
-    if (initialData) {
-      setCategories(initialData.categories);
-      setProducts(initialData.products);
-      setMedia(initialData.media);
-    }
-  }, [initialData]);
-
-  useEffect(() => {
-    // Purge any old browser caches
-    if (typeof window !== "undefined" && "caches" in window) {
-      caches.keys().then((keys) => {
-        keys.forEach((k) => caches.delete(k));
-      });
-    }
-    refreshData(false);
-  }, []);
 
   // Stats calculation
   const stats = useMemo(() => {
@@ -417,7 +395,7 @@ function AdminDashboard() {
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => refreshData(true)}
+              onClick={refreshData}
               disabled={isRefreshing}
               className="size-8 p-0 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800"
               title="Refresh Catalog Data"

@@ -8,7 +8,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { CategoryRecord, calculateSellingPrice, formatINR } from "@/lib/catalog-store";
+import { CategoryRecord, calculateSellingPrice, formatINR } from "@/lib/catalog-types";
 import { Calculator, ArrowRight, CheckCircle2, TrendingUp } from "lucide-react";
 
 interface PricingCalculatorModalProps {
