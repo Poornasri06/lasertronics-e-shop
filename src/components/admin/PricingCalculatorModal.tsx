@@ -15,12 +15,14 @@ interface PricingCalculatorModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   categories: CategoryRecord[];
+  onGoToRules?: () => void;
 }
 
 export function PricingCalculatorModal({
   open,
   onOpenChange,
   categories,
+  onGoToRules,
 }: PricingCalculatorModalProps) {
   const [testBasePrice, setTestBasePrice] = useState<number>(100);
 
@@ -144,7 +146,21 @@ export function PricingCalculatorModal({
           </div>
         </div>
 
-        <div className="p-4 px-6 border-t border-slate-100 bg-slate-50/50 flex justify-end">
+        <div className="p-4 px-6 border-t border-slate-100 bg-slate-50/50 flex items-center justify-between">
+          {onGoToRules ? (
+            <Button
+              type="button"
+              onClick={() => {
+                onOpenChange(false);
+                onGoToRules();
+              }}
+              className="rounded-xl h-9 text-xs bg-blue-600 hover:bg-blue-700 text-white font-semibold gap-1.5 shadow-sm"
+            >
+              <span>Manage Category Rules</span>
+              <ArrowRight className="size-3.5" />
+            </Button>
+          ) : <div />}
+
           <Button
             type="button"
             variant="outline"

@@ -6,12 +6,8 @@ interface BeforeInstallPromptEvent extends Event {
 }
 
 export function usePWA() {
-  const isLocalHost =
-    typeof window !== "undefined" &&
-    (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1");
-
   const [isOnline, setIsOnline] = useState(
-    isLocalHost ? true : typeof navigator !== "undefined" ? navigator.onLine : true
+    typeof navigator !== "undefined" ? navigator.onLine : true
   );
   const [installPrompt, setInstallPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [isInstalled, setIsInstalled] = useState(false);
@@ -22,14 +18,7 @@ export function usePWA() {
 
     // 1. Online / Offline state
     const handleOnline = () => setIsOnline(true);
-    const handleOffline = () => {
-      // If we are on localhost, the server is local so we are still online
-      if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
-        setIsOnline(true);
-      } else {
-        setIsOnline(false);
-      }
-    };
+    const handleOffline = () => setIsOnline(false);
 
     window.addEventListener("online", handleOnline);
     window.addEventListener("offline", handleOffline);

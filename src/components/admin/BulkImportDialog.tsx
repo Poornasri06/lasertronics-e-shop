@@ -9,14 +9,13 @@ import {
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { CategoryRecord, ProductRecord } from "@/lib/catalog-store";
-import { Upload, Download, FileText, CheckCircle2, AlertCircle, FileDown } from "lucide-react";
+import { CategoryRecord } from "@/lib/catalog-store";
+import { Upload, Download, FileText, CheckCircle2, AlertCircle } from "lucide-react";
 
 interface BulkImportDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   categories: CategoryRecord[];
-  products?: ProductRecord[];
   onImport: (products: Array<{
     sku: string;
     name: string;
@@ -35,7 +34,6 @@ export function BulkImportDialog({
   open,
   onOpenChange,
   categories,
-  products = [],
   onImport,
 }: BulkImportDialogProps) {
   const [csvContent, setCsvContent] = useState("");
@@ -44,10 +42,9 @@ export function BulkImportDialog({
   const [error, setError] = useState<string | null>(null);
 
   const sampleCsv = `sku,name,categoryId,basePrice,isPriceOverridden,overridePrice,stock,badge,blurb
-13069,W/GREEN 3MM SUPER LED,electronics,1.93,false,,250,Popular,3mm Super Bright Green LED component for PCB & maker projects.
-17556,#AD663 TCL/SINGER REMOTE,tv-accessories,190,false,,60,Genuine,Pre-configured universal infrared remote for TCL and Singer TVs.
-12157,100G 0.8M SOLDER SKC,repair-kits,400,true,450,45,Bestseller,Premium 60/40 rosin core soldering wire for electronics repair.
-003PH,003PH PHONE STAND,mobile-accessories,144,false,,40,Popular,Adjustable desktop mobile phone stand with anti-slip base.`;
+13070,3MM RED DIFFUSED LED,electronics,2.50,false,,100,New,High luminance 3mm red diffused indicator LED.
+2048,ESP8266 ESP-12F MODULE,iot-and-microcontrollers,185,false,,40,,Wi-Fi SoC module with integrated PCB antenna.
+15890,PRO 60W SOLDERING IRON HEATING ELEMENT,repair-kits,220,true,249,25,Special Deal,Ceramic core replacement heating element for 60W stations.`;
 
   const handleDownloadTemplate = () => {
     const blob = new Blob([sampleCsv], { type: "text/csv;charset=utf-8;" });
@@ -55,26 +52,6 @@ export function BulkImportDialog({
     const link = document.createElement("a");
     link.setAttribute("href", url);
     link.setAttribute("download", "lasertronics_product_import_template.csv");
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
-
-  const handleExportCatalog = () => {
-    if (products.length === 0) return;
-    const header = "sku,name,categoryId,basePrice,isPriceOverridden,overridePrice,stock,badge,blurb\n";
-    const rows = products.map((p) => {
-      const cleanName = (p.name || "").replace(/"/g, '""');
-      const cleanBlurb = (p.blurb || "").replace(/"/g, '""');
-      return `"${p.sku}","${cleanName}","${p.categoryId}",${p.basePrice},${p.isPriceOverridden},${p.overridePrice ?? ""},${p.stock},"${p.badge || ""}","${cleanBlurb}"`;
-    }).join("\n");
-
-    const fullCsv = header + rows;
-    const blob = new Blob([fullCsv], { type: "text/csv;charset=utf-8;" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.setAttribute("href", url);
-    link.setAttribute("download", `lasertronics_catalog_export_${Date.now()}.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -182,28 +159,15 @@ export function BulkImportDialog({
                 Quickly add new products or batch update base prices and categories using CSV.
               </p>
             </div>
-            <div className="flex items-center gap-2">
-              {products.length > 0 && (
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={handleExportCatalog}
-                  className="gap-1.5 text-xs rounded-xl h-8 border-slate-200 text-slate-700 hover:bg-slate-100"
-                >
-                  <FileDown className="size-3.5" /> Export Catalog ({products.length})
-                </Button>
-              )}
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                onClick={handleDownloadTemplate}
-                className="gap-1.5 text-xs rounded-xl h-8 border-slate-200 text-blue-700 hover:bg-blue-50"
-              >
-                <Download className="size-3.5" /> Template
-              </Button>
-            </div>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={handleDownloadTemplate}
+              className="gap-1.5 text-xs rounded-xl h-8 border-slate-200 text-blue-700 hover:bg-blue-50"
+            >
+              <Download className="size-3.5" /> Download Template
+            </Button>
           </div>
         </DialogHeader>
 

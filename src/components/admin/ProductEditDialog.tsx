@@ -92,7 +92,7 @@ export function ProductEditDialog({
       setSpecs(product.specs || []);
     } else {
       const defaultCat = categories[0]?.id || "electronics";
-      setSku(`LT-${Math.floor(1000 + Math.random() * 9000)}`);
+      setSku("");
       setName("");
       setCategoryId(defaultCat);
       setBasePrice(100);
@@ -257,7 +257,7 @@ export function ProductEditDialog({
                 </Label>
                 <Input
                   id="product-sku"
-                  placeholder="e.g. LT-1001"
+                  placeholder="e.g. 13069 or SKU-101"
                   value={sku}
                   onChange={(e) => setSku(e.target.value)}
                   disabled={isEditing}

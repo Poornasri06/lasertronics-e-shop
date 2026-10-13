@@ -530,10 +530,6 @@ const DB_FILE_PATH = path.resolve(process.cwd(), "src/data/catalog-db.json");
  * Load or initialize catalog data from storage
  */
 export function loadCatalogStore(): CatalogData {
-  if (memoryStore) {
-    return memoryStore;
-  }
-
   try {
     if (fs.existsSync(DB_FILE_PATH)) {
       const raw = fs.readFileSync(DB_FILE_PATH, "utf-8");
@@ -544,7 +540,11 @@ export function loadCatalogStore(): CatalogData {
       }
     }
   } catch (err) {
-    console.warn("Could not read catalog-db.json from disk, initializing defaults:", err);
+    console.warn("Could not read catalog-db.json from disk, fallback to memory:", err);
+  }
+
+  if (memoryStore) {
+    return memoryStore;
   }
 
   // Initialize and write to disk

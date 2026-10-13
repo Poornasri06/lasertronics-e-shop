@@ -239,9 +239,10 @@ function AdminDashboard() {
         }
         return [updated, ...prev];
       });
-      toast.success(`Product "${updated.name}" saved successfully to catalog!`);
-    } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Failed to save product.");
+      toast.success(`Product "${updated.name}" saved successfully!`);
+      await refreshData();
+    } catch (err: unknown) {
+      toast.error(err instanceof Error ? err.message : "Failed to save product");
     }
   };
 
@@ -250,8 +251,9 @@ function AdminDashboard() {
       await deleteProductFn({ data: sku });
       setProducts((prev) => prev.filter((p) => p.sku !== sku));
       toast.success("Product deleted successfully.");
-    } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Failed to delete product.");
+      await refreshData();
+    } catch (err: unknown) {
+      toast.error(err instanceof Error ? err.message : "Failed to delete product");
     }
   };
 
@@ -260,8 +262,9 @@ function AdminDashboard() {
       const updated = await resetProductOverrideFn({ data: sku });
       setProducts((prev) => prev.map((p) => (p.sku === sku ? updated : p)));
       toast.success(`Price for ${updated.name} reset to category rule (${formatINR(updated.sellingPrice)})`);
-    } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Failed to reset price override.");
+      await refreshData();
+    } catch (err: unknown) {
+      toast.error(err instanceof Error ? err.message : "Failed to reset price");
     }
   };
 
@@ -271,8 +274,8 @@ function AdminDashboard() {
       const updated = await saveCategoryFn({ data });
       toast.success(`Category "${updated.name}" configured with ${updated.markupPercentage}% markup!`);
       await refreshData();
-    } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Failed to save category.");
+    } catch (err: unknown) {
+      toast.error(err instanceof Error ? err.message : "Failed to save category");
     }
   };
 
@@ -281,8 +284,8 @@ function AdminDashboard() {
       await updateCategoryMarkupFn({ data: { categoryId, markupPercentage } });
       toast.success(`Category markup updated to ${markupPercentage}%. Selling prices recalculated!`);
       await refreshData();
-    } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Failed to update category markup.");
+    } catch (err: unknown) {
+      toast.error(err instanceof Error ? err.message : "Failed to update category markup");
     }
   };
 
@@ -291,8 +294,8 @@ function AdminDashboard() {
       await deleteCategoryFn({ data: { categoryId } });
       toast.success("Category deleted. Products reassigned safely.");
       await refreshData();
-    } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Failed to delete category.");
+    } catch (err: unknown) {
+      toast.error(err instanceof Error ? err.message : "Failed to delete category");
     }
   };
 
@@ -301,9 +304,7 @@ function AdminDashboard() {
     const record = await uploadImageFn({ data });
     setMedia((prev) => [record, ...prev]);
     toast.success(`Image "${record.filename}" uploaded successfully!`);
-    if (data.productSku) {
-      await refreshData();
-    }
+    await refreshData();
   };
 
   const handleDeleteMedia = async (id: string) => {
@@ -311,8 +312,9 @@ function AdminDashboard() {
       await deleteMediaFn({ data: id });
       setMedia((prev) => prev.filter((m) => m.id !== id));
       toast.success("Media file deleted and unlinked from products.");
-    } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Failed to delete media.");
+      await refreshData();
+    } catch (err: unknown) {
+      toast.error(err instanceof Error ? err.message : "Failed to delete media");
     }
   };
 
@@ -338,6 +340,7 @@ function AdminDashboard() {
 
   return (
     <div className="min-h-screen bg-slate-900 text-slate-100 flex flex-col antialiased selection:bg-blue-600 selection:text-white">
+
       {/* Top Application Bar */}
       <header className="sticky top-0 z-40 border-b border-slate-800 bg-slate-950/80 backdrop-blur-xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
@@ -366,10 +369,11 @@ function AdminDashboard() {
 
           {/* Right Header Utilities */}
           <div className="flex items-center gap-2 sm:gap-3">
-            {/* Online / Server Synced Indicator */}
-            <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium border bg-emerald-950/50 border-emerald-800 text-emerald-400">
+            {/* Online / Offline Indicator */}
+            {/* Live Server Indicator */}
+            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium border bg-emerald-950/50 border-emerald-800 text-emerald-400">
               <span className="size-2 rounded-full bg-emerald-400 animate-pulse" />
-              <span>InTouch ERP & Server Connected</span>
+              <span>Live Catalog Connected</span>
             </div>
 
             {/* PWA Install Button */}
@@ -1506,6 +1510,7 @@ function AdminDashboard() {
         open={pricingCalculatorOpen}
         onOpenChange={setPricingCalculatorOpen}
         categories={categories}
+        onGoToRules={() => setActiveTab("pricing")}
       />
 
       {/* Bulk Import CSV Dialog */}
@@ -1513,7 +1518,6 @@ function AdminDashboard() {
         open={bulkImportOpen}
         onOpenChange={setBulkImportOpen}
         categories={categories}
-        products={products}
         onImport={handleBulkImport}
       />
 
