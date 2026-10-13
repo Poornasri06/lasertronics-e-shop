@@ -50,17 +50,17 @@ export function getInTouchConfig(): InTouchCredentials {
   const webipan =
     env?.["VITE_INTOUCH_WEBIPAN"] ||
     procEnv?.["INTOUCH_WEBIPAN"] ||
-    "1234";
+    "dsfgdsg446fads2414dfs14521#((*&GHBADHS";
 
   const clientid =
     env?.["VITE_INTOUCH_CLIENT_ID"] ||
     procEnv?.["INTOUCH_CLIENT_ID"] ||
-    "client_001";
+    "9edba68d-2fa4-4ade-b926-54a59fdbcd80";
 
   const clientsecret =
     env?.["VITE_INTOUCH_CLIENT_SECRET"] ||
     procEnv?.["INTOUCH_CLIENT_SECRET"] ||
-    "secret_key";
+    "e218b1a9-be1c-406a-abb6-d0abcadf375d";
 
   return { baseUrl, webipan, clientid, clientsecret };
 }
@@ -88,7 +88,7 @@ export async function fetchInTouchAllProducts(
       Accept: "application/json",
     },
     body: formParams.toString(),
-    signal: AbortSignal.timeout(3000),
+    signal: AbortSignal.timeout(15000),
   });
 
   if (!response.ok) {

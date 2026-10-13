@@ -31,44 +31,52 @@ function mapRecordToProduct(r: ProductRecord): Product {
   };
 }
 
-const CACHE_TTL_MS = 60 * 1000;
+const CACHE_TTL_MS = 10 * 60 * 1000; // 10 minutes cache
 let cachedProducts: Product[] | null = null;
 let lastFetchTime = 0;
+let isFetchingPromise: Promise<Product[]> | null = null;
 
 export async function getLiveStoreProducts(): Promise<Product[]> {
-  // 1. Get managed products from catalog store
-  const store = loadCatalogStore();
-  const managedProducts = (store?.products || []).map(mapRecordToProduct);
-
   const now = Date.now();
   if (cachedProducts && cachedProducts.length > 0 && now - lastFetchTime < CACHE_TTL_MS) {
-    // Merge managed products with cached ERP products
-    const managedSkus = new Set(managedProducts.map((p) => p.slug.toLowerCase()));
-    const nonDuplicatedErp = cachedProducts.filter((p) => {
-      const sku = p.specs?.find((s) => s.label === "SKU")?.value?.toLowerCase() || p.slug.toLowerCase();
-      return !managedSkus.has(sku);
-    });
-    return [...managedProducts, ...nonDuplicatedErp];
+    return cachedProducts;
   }
 
-  try {
-    const rawItems = await fetchInTouchAllProducts();
-    if (rawItems && rawItems.length > 0) {
-      cachedProducts = rawItems.map((item) => mapInTouchProductToStoreProduct(item));
-      lastFetchTime = now;
-      const managedSkus = new Set(managedProducts.map((p) => p.slug.toLowerCase()));
-      const nonDuplicatedErp = cachedProducts.filter((p) => {
-        const sku = p.specs?.find((s) => s.label === "SKU")?.value?.toLowerCase() || p.slug.toLowerCase();
-        return !managedSkus.has(sku);
-      });
-      return [...managedProducts, ...nonDuplicatedErp];
+  if (isFetchingPromise) {
+    return isFetchingPromise;
+  }
+
+  isFetchingPromise = (async () => {
+    try {
+      const rawItems = await fetchInTouchAllProducts();
+      if (rawItems && rawItems.length > 0) {
+        // Filter strictly for ACTIVE IN-STOCK products from InTouch ERP API (stock_qty > 0, price > 0)
+        const activeInStock = rawItems.filter((item) => {
+          const qty = parseFloat(item.stock_qty || "0");
+          const price = parseFloat(item.selling_price || "0");
+          const hasName = Boolean(item.product_name && item.product_name.trim().length > 0);
+          return qty > 0 && price > 0 && hasName;
+        });
+
+        if (activeInStock.length > 0) {
+          cachedProducts = activeInStock.map((item) => mapInTouchProductToStoreProduct(item));
+          lastFetchTime = Date.now();
+          return cachedProducts;
+        }
+      }
+    } catch (err) {
+      console.warn("Could not fetch active products from InTouch ERP, using catalog store:", err);
+    } finally {
+      isFetchingPromise = null;
     }
-  } catch (err) {
-    // InTouch ERP offline or credentials not active - safely proceed with catalog store
-  }
 
-  // Gracefully return managed products (75 authentic items) + fallback products
-  return managedProducts.length > 0 ? managedProducts : fallbackProducts;
+    // Graceful fallback to catalog store if API offline
+    const store = loadCatalogStore();
+    const managed = (store?.products || []).map(mapRecordToProduct);
+    return managed.length > 0 ? managed : fallbackProducts;
+  })();
+
+  return isFetchingPromise;
 }
 
 export type CatalogQueryParams = {
