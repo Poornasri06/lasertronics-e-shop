@@ -45,16 +45,20 @@ export function usePWA() {
 
     window.addEventListener("appinstalled", handleAppInstalled);
 
-    // 5. Register Service Worker in production/supporting environments
-    if ("serviceWorker" in navigator && process.env.NODE_ENV !== "development") {
-      navigator.serviceWorker
-        .register("/sw.js")
-        .then((reg) => {
-          console.log("PWA Service Worker registered:", reg.scope);
-        })
-        .catch((err) => {
-          console.warn("PWA Service Worker registration skipped:", err);
+    // 5. Clean up any stale service workers and caches
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.getRegistrations().then((registrations) => {
+        for (const reg of registrations) {
+          reg.unregister();
+        }
+      });
+      if ("caches" in window) {
+        caches.keys().then((names) => {
+          for (const name of names) {
+            caches.delete(name);
+          }
         });
+      }
     }
 
     return () => {
