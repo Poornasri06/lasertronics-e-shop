@@ -1,6 +1,6 @@
 const res = await fetch("http://127.0.0.1:9222/json");
 const pages = await res.json();
-const adminPage = pages.find((p) => p.url.includes("/admin"));
+const adminPage = pages.find((p) => p.url.includes("8080"));
 
 if (!adminPage) {
   console.log("No admin page found. Open pages:", pages);

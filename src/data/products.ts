@@ -166,11 +166,37 @@ export const categories: Category[] = [
   },
 ];
 
-// No hardcoded products — all products come dynamically from InTouch ERP POS API!
-export const products: Product[] = [];
+import catalogDb from "./catalog-db.json";
 
-// Dynamic InTouch ERP live products cache
+// Authentic Lasertronics products from catalog database
+export const products: Product[] = (catalogDb.products || []).map((r: any) => ({
+  slug: r.slug,
+  name: r.name,
+  category: r.categoryId,
+  price: r.sellingPrice,
+  image: r.image && r.image.trim() !== "" ? r.image : "/favicon.png",
+  blurb: r.blurb,
+  ...(r.badge ? { badge: r.badge } : {}),
+  specs: [
+    { label: "SKU", value: r.sku },
+    { label: "Base Price", value: `₹${r.basePrice.toLocaleString("en-IN")}` },
+    { label: "Markup", value: `${r.markupPercentage ?? 0}%` },
+    ...(r.isPriceOverridden ? [{ label: "Pricing Note", value: "Manual Admin Price Override" }] : []),
+    ...(r.specs || []),
+  ],
+  rating: 4.8,
+  reviews: 14,
+  stock: r.stock,
+}));
+
+// Dynamic InTouch ERP & catalog live products cache
 const liveProductsMap = new Map<string, Product>();
+
+// Seed cache with the authentic catalog products
+for (const item of products) {
+  liveProductsMap.set(item.slug, item);
+  liveProductsMap.set(item.slug.toLowerCase(), item);
+}
 
 export function registerLiveProducts(items: Product[]) {
   if (!items || !Array.isArray(items)) return;

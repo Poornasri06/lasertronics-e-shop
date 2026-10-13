@@ -88,6 +88,7 @@ export async function fetchInTouchAllProducts(
       Accept: "application/json",
     },
     body: formParams.toString(),
+    signal: AbortSignal.timeout(3000),
   });
 
   if (!response.ok) {
