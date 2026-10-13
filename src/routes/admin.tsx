@@ -228,79 +228,76 @@ function AdminDashboard() {
 
   // Product Actions
   const handleSaveProduct = async (data: Parameters<typeof saveProductFn>[0]["data"]) => {
-    if (!isOnline) {
-      toast.error("Offline: Cannot save product without internet connection.");
-      return;
+    try {
+      const updated = await saveProductFn({ data });
+      setProducts((prev) => {
+        const idx = prev.findIndex((p) => p.sku === updated.sku);
+        if (idx >= 0) {
+          const next = [...prev];
+          next[idx] = updated;
+          return next;
+        }
+        return [updated, ...prev];
+      });
+      toast.success(`Product "${updated.name}" saved successfully to catalog!`);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Failed to save product.");
     }
-    const updated = await saveProductFn({ data });
-    setProducts((prev) => {
-      const idx = prev.findIndex((p) => p.sku === updated.sku);
-      if (idx >= 0) {
-        const next = [...prev];
-        next[idx] = updated;
-        return next;
-      }
-      return [updated, ...prev];
-    });
-    toast.success(`Product "${updated.name}" saved successfully!`);
   };
 
   const handleDeleteProduct = async (sku: string) => {
-    if (!isOnline) {
-      toast.error("Offline: Cannot delete product without internet connection.");
-      return;
+    try {
+      await deleteProductFn({ data: sku });
+      setProducts((prev) => prev.filter((p) => p.sku !== sku));
+      toast.success("Product deleted successfully.");
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Failed to delete product.");
     }
-    await deleteProductFn({ data: sku });
-    setProducts((prev) => prev.filter((p) => p.sku !== sku));
-    toast.success("Product deleted successfully.");
   };
 
   const handleResetOverride = async (sku: string) => {
-    if (!isOnline) {
-      toast.error("Offline: Cannot modify price rules without internet connection.");
-      return;
+    try {
+      const updated = await resetProductOverrideFn({ data: sku });
+      setProducts((prev) => prev.map((p) => (p.sku === sku ? updated : p)));
+      toast.success(`Price for ${updated.name} reset to category rule (${formatINR(updated.sellingPrice)})`);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Failed to reset price override.");
     }
-    const updated = await resetProductOverrideFn({ data: sku });
-    setProducts((prev) => prev.map((p) => (p.sku === sku ? updated : p)));
-    toast.success(`Price for ${updated.name} reset to category rule (${formatINR(updated.sellingPrice)})`);
   };
 
   // Category Actions
   const handleSaveCategory = async (data: Parameters<typeof saveCategoryFn>[0]["data"]) => {
-    if (!isOnline) {
-      toast.error("Offline: Cannot save category without internet connection.");
-      return;
+    try {
+      const updated = await saveCategoryFn({ data });
+      toast.success(`Category "${updated.name}" configured with ${updated.markupPercentage}% markup!`);
+      await refreshData();
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Failed to save category.");
     }
-    const updated = await saveCategoryFn({ data });
-    toast.success(`Category "${updated.name}" configured with ${updated.markupPercentage}% markup!`);
-    await refreshData();
   };
 
   const handleUpdateCategoryMarkup = async (categoryId: string, markupPercentage: number) => {
-    if (!isOnline) {
-      toast.error("Offline: Cannot update pricing without internet connection.");
-      return;
+    try {
+      await updateCategoryMarkupFn({ data: { categoryId, markupPercentage } });
+      toast.success(`Category markup updated to ${markupPercentage}%. Selling prices recalculated!`);
+      await refreshData();
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Failed to update category markup.");
     }
-    await updateCategoryMarkupFn({ data: { categoryId, markupPercentage } });
-    toast.success(`Category markup updated to ${markupPercentage}%. Selling prices recalculated!`);
-    await refreshData();
   };
 
   const handleDeleteCategory = async (categoryId: string) => {
-    if (!isOnline) {
-      toast.error("Offline: Cannot delete category without internet connection.");
-      return;
+    try {
+      await deleteCategoryFn({ data: { categoryId } });
+      toast.success("Category deleted. Products reassigned safely.");
+      await refreshData();
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Failed to delete category.");
     }
-    await deleteCategoryFn({ data: { categoryId } });
-    toast.success("Category deleted. Products reassigned safely.");
-    await refreshData();
   };
 
   // Image Upload Action
   const handleUploadImage = async (data: Parameters<typeof uploadImageFn>[0]["data"]) => {
-    if (!isOnline) {
-      throw new Error("Offline: Image upload requires an active internet connection.");
-    }
     const record = await uploadImageFn({ data });
     setMedia((prev) => [record, ...prev]);
     toast.success(`Image "${record.filename}" uploaded successfully!`);
@@ -310,20 +307,17 @@ function AdminDashboard() {
   };
 
   const handleDeleteMedia = async (id: string) => {
-    if (!isOnline) {
-      toast.error("Offline: Cannot delete media without internet connection.");
-      return;
+    try {
+      await deleteMediaFn({ data: id });
+      setMedia((prev) => prev.filter((m) => m.id !== id));
+      toast.success("Media file deleted and unlinked from products.");
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Failed to delete media.");
     }
-    await deleteMediaFn({ data: id });
-    setMedia((prev) => prev.filter((m) => m.id !== id));
-    toast.success("Media file deleted and unlinked from products.");
   };
 
   // Bulk Import Action
   const handleBulkImport = async (importedList: Parameters<typeof bulkImportFn>[0]["data"]) => {
-    if (!isOnline) {
-      throw new Error("Offline: Bulk import requires an active internet connection.");
-    }
     const res = await bulkImportFn({ data: importedList });
     await refreshData();
     return res;
@@ -344,18 +338,6 @@ function AdminDashboard() {
 
   return (
     <div className="min-h-screen bg-slate-900 text-slate-100 flex flex-col antialiased selection:bg-blue-600 selection:text-white">
-      {/* Offline Status Warning Banner */}
-      {!isOnline && (
-        <div className="bg-amber-500 text-amber-950 px-4 py-2 text-xs font-semibold flex items-center justify-between sticky top-0 z-50 shadow-md">
-          <div className="flex items-center gap-2 max-w-4xl mx-auto">
-            <WifiOff className="size-4 shrink-0 text-amber-900" />
-            <span>
-              You are currently offline. Cached catalog is visible in read-only mode. Changes and uploads require an internet connection to save to the server.
-            </span>
-          </div>
-        </div>
-      )}
-
       {/* Top Application Bar */}
       <header className="sticky top-0 z-40 border-b border-slate-800 bg-slate-950/80 backdrop-blur-xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
@@ -384,20 +366,10 @@ function AdminDashboard() {
 
           {/* Right Header Utilities */}
           <div className="flex items-center gap-2 sm:gap-3">
-            {/* Online / Offline Indicator */}
-            <div
-              className={`hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium border ${
-                isOnline
-                  ? "bg-emerald-950/50 border-emerald-800 text-emerald-400"
-                  : "bg-amber-950/50 border-amber-800 text-amber-400"
-              }`}
-            >
-              <span
-                className={`size-2 rounded-full ${
-                  isOnline ? "bg-emerald-400 animate-pulse" : "bg-amber-400"
-                }`}
-              />
-              <span>{isOnline ? "Server Synced" : "Offline"}</span>
+            {/* Online / Server Synced Indicator */}
+            <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium border bg-emerald-950/50 border-emerald-800 text-emerald-400">
+              <span className="size-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span>InTouch ERP & Server Connected</span>
             </div>
 
             {/* PWA Install Button */}
@@ -1541,6 +1513,7 @@ function AdminDashboard() {
         open={bulkImportOpen}
         onOpenChange={setBulkImportOpen}
         categories={categories}
+        products={products}
         onImport={handleBulkImport}
       />
 

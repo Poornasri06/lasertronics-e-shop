@@ -6,8 +6,8 @@
       "tagline": "Charge, carry, connect",
       "description": "Fast chargers, braided cables, power banks and audio gear.",
       "markupPercentage": 20,
-      "createdAt": "2026-10-12T10:21:34.793Z",
-      "updatedAt": "2026-10-12T10:21:34.793Z"
+      "createdAt": "2026-10-12T15:48:22.272Z",
+      "updatedAt": "2026-10-12T15:48:22.274Z"
     },
     {
       "id": "electronics",
@@ -15,8 +15,8 @@
       "tagline": "Components & modules",
       "description": "Passive components, motors, relays and power modules.",
       "markupPercentage": 15,
-      "createdAt": "2026-10-12T10:21:34.793Z",
-      "updatedAt": "2026-10-12T10:21:34.793Z"
+      "createdAt": "2026-10-12T15:48:22.274Z",
+      "updatedAt": "2026-10-12T15:48:22.274Z"
     },
     {
       "id": "tv-accessories",
@@ -24,8 +24,8 @@
       "tagline": "Every screen, connected",
       "description": "HDMI, optical and streaming accessories.",
       "markupPercentage": 10,
-      "createdAt": "2026-10-12T10:21:34.793Z",
-      "updatedAt": "2026-10-12T10:21:34.793Z"
+      "createdAt": "2026-10-12T15:48:22.274Z",
+      "updatedAt": "2026-10-12T15:48:22.274Z"
     },
     {
       "id": "iot-and-microcontrollers",
@@ -33,8 +33,8 @@
       "tagline": "Build connected things",
       "description": "Dev boards, sensors and starter kits for makers.",
       "markupPercentage": 25,
-      "createdAt": "2026-10-12T10:21:34.793Z",
-      "updatedAt": "2026-10-12T10:21:34.793Z"
+      "createdAt": "2026-10-12T15:48:22.274Z",
+      "updatedAt": "2026-10-12T15:48:22.274Z"
     },
     {
       "id": "repair-kits",
@@ -42,617 +42,2946 @@
       "tagline": "Bench-grade tooling",
       "description": "Soldering stations, precision drivers and ESD-safe tools.",
       "markupPercentage": 18,
-      "createdAt": "2026-10-12T10:21:34.793Z",
-      "updatedAt": "2026-10-12T10:21:34.793Z"
+      "createdAt": "2026-10-12T15:48:22.274Z",
+      "updatedAt": "2026-10-12T15:48:22.274Z"
     }
   ],
   "products": [
     {
-      "sku": "BULK-mv53t0l7-2",
-      "slug": "bulk-cable-type-b-bulk-mv53t0l7-2",
-      "name": "Bulk Cable Type B",
+      "sku": "13069",
+      "slug": "w-green-3mm-super-13069",
+      "name": "W/GREEN 3MM SUPER",
       "categoryId": "electronics",
-      "basePrice": 120,
+      "basePrice": 1.93,
       "markupPercentage": 15,
-      "isPriceOverridden": false,
-      "overridePrice": null,
-      "sellingPrice": 138,
-      "image": null,
-      "stock": 0,
-      "blurb": "Bulk Cable Type B genuine component.",
-      "specs": [],
-      "createdAt": "2026-10-12T10:23:06.044Z",
-      "updatedAt": "2026-10-12T10:23:06.045Z"
+      "isPriceOverridden": true,
+      "overridePrice": 2,
+      "sellingPrice": 2.22,
+      "image": "/assets/p/psu-module.jpg",
+      "stock": 15,
+      "blurb": "W/GREEN 3MM SUPER (Pc(s)). Genuine InTouch ERP SKU: 13069",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "13069"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2400"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.577Z",
+      "updatedAt": "2026-10-12T15:48:25.578Z",
+      "badge": "Special Deal"
     },
     {
-      "sku": "BULK-mv53t0l7-1",
-      "slug": "bulk-cable-type-a-bulk-mv53t0l7-1",
-      "name": "Bulk Cable Type A",
-      "categoryId": "electronics",
-      "basePrice": 80,
-      "markupPercentage": 15,
+      "sku": "1537",
+      "slug": "t-type-ab-switch-1537",
+      "name": "T'' TYPE AB SWITCH",
+      "categoryId": "tv-accessories",
+      "basePrice": 10,
+      "markupPercentage": 10,
       "isPriceOverridden": false,
       "overridePrice": null,
-      "sellingPrice": 92,
+      "sellingPrice": 11,
       "image": null,
-      "stock": 0,
-      "blurb": "Bulk Cable Type A genuine component.",
-      "specs": [],
-      "createdAt": "2026-10-12T10:23:06.044Z",
-      "updatedAt": "2026-10-12T10:23:06.046Z"
+      "stock": 15,
+      "blurb": "T'' TYPE AB SWITCH (Pc(s)). Genuine InTouch ERP SKU: 1537",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "1537"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2442"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.578Z",
+      "updatedAt": "2026-10-12T15:48:25.578Z"
     },
     {
-      "sku": "BULK-2",
-      "slug": "bulk-cable-type-b-bulk-2",
-      "name": "Bulk Cable Type B",
-      "categoryId": "electronics",
-      "basePrice": 120,
-      "markupPercentage": 15,
-      "isPriceOverridden": false,
-      "overridePrice": null,
-      "sellingPrice": 138,
-      "image": null,
-      "stock": 0,
-      "blurb": "Bulk Cable Type B genuine component.",
-      "specs": [],
-      "createdAt": "2026-10-12T10:21:34.822Z",
-      "updatedAt": "2026-10-12T10:23:06.046Z"
-    },
-    {
-      "sku": "BULK-1",
-      "slug": "bulk-cable-type-a-bulk-1",
-      "name": "Bulk Cable Type A",
-      "categoryId": "electronics",
-      "basePrice": 80,
-      "markupPercentage": 15,
-      "isPriceOverridden": false,
-      "overridePrice": null,
-      "sellingPrice": 92,
-      "image": null,
-      "stock": 0,
-      "blurb": "Bulk Cable Type A genuine component.",
-      "specs": [],
-      "createdAt": "2026-10-12T10:21:34.821Z",
-      "updatedAt": "2026-10-12T10:23:06.046Z"
-    },
-    {
-      "sku": "TEST-NOIMG",
-      "slug": "micro-resistor-pack-test-noimg",
-      "name": "Micro Resistor Pack",
+      "sku": "1937",
+      "slug": "n-plug-1937",
+      "name": "N' PLUG",
       "categoryId": "electronics",
       "basePrice": 50,
       "markupPercentage": 15,
       "isPriceOverridden": false,
       "overridePrice": null,
       "sellingPrice": 57.5,
-      "image": null,
-      "stock": 0,
-      "blurb": "Micro Resistor Pack genuine component.",
-      "specs": [],
-      "createdAt": "2026-10-12T10:21:34.820Z",
-      "updatedAt": "2026-10-12T10:23:06.046Z"
+      "image": "/assets/p/psu-module.jpg",
+      "stock": 15,
+      "blurb": "N' PLUG (Pc(s)). Genuine InTouch ERP SKU: 1937",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "1937"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2403"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.578Z",
+      "updatedAt": "2026-10-12T15:48:25.578Z"
     },
     {
-      "sku": "TEST-002",
-      "slug": "special-deal-rover-motor-test-002",
-      "name": "Special Deal Rover Motor",
-      "categoryId": "electronics",
-      "basePrice": 500,
-      "markupPercentage": 15,
-      "isPriceOverridden": false,
-      "overridePrice": null,
-      "sellingPrice": 575,
-      "image": null,
-      "stock": 20,
-      "blurb": "Special Deal Rover Motor genuine component.",
-      "specs": [],
-      "createdAt": "2026-10-12T10:21:34.817Z",
-      "updatedAt": "2026-10-12T10:23:06.046Z"
-    },
-    {
-      "sku": "TEST-001",
-      "slug": "autonomous-rover-kit-test-001",
-      "name": "Autonomous Rover Kit",
-      "categoryId": "electronics",
-      "basePrice": 1000,
-      "markupPercentage": 15,
-      "isPriceOverridden": false,
-      "overridePrice": null,
-      "sellingPrice": 1150,
+      "sku": "17556",
+      "slug": "ad663-tcl-singer-remote-17556",
+      "name": "#AD663 TCL/SINGER REMOTE",
+      "categoryId": "tv-accessories",
+      "basePrice": 190,
+      "markupPercentage": 10,
+      "isPriceOverridden": true,
+      "overridePrice": 199,
+      "sellingPrice": 209,
       "image": null,
       "stock": 15,
-      "blurb": "Autonomous Rover Kit genuine component.",
-      "specs": [],
-      "createdAt": "2026-10-12T10:21:34.816Z",
-      "updatedAt": "2026-10-12T10:23:06.046Z"
-    },
-    {
-      "sku": "LT-1001",
-      "slug": "65w-gan-fast-charger",
-      "name": "65W GaN Fast Charger Dual USB-C + USB-A",
-      "categoryId": "mobile-accessories",
-      "basePrice": 1200,
-      "isPriceOverridden": false,
-      "overridePrice": null,
-      "image": "/assets/p/gan-charger.jpg",
-      "stock": 45,
-      "blurb": "Compact Gallium Nitride wall charger with dynamic Power Delivery 3.0.",
-      "badge": "Bestseller",
+      "blurb": "#AD663 TCL/SINGER REMOTE (Pc(s)). Genuine InTouch ERP SKU: 17556",
       "specs": [
         {
-          "label": "Power Output",
-          "value": "65W Max"
+          "label": "SKU",
+          "value": "17556"
         },
         {
-          "label": "Ports",
-          "value": "2x USB-C, 1x USB-A"
+          "label": "Unit",
+          "value": "Pc(s)"
         },
         {
-          "label": "Technology",
-          "value": "GaN III SafeCharge"
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2524"
         }
       ],
-      "createdAt": "2026-10-12T10:21:34.793Z",
-      "updatedAt": "2026-10-12T10:21:34.793Z",
-      "markupPercentage": 20,
-      "sellingPrice": 1440
+      "createdAt": "2026-10-12T15:48:25.578Z",
+      "updatedAt": "2026-10-12T15:48:25.578Z",
+      "badge": "Staff Pick"
     },
     {
-      "sku": "LT-1002",
-      "slug": "braided-usb-c-to-usb-c-cable-2m",
-      "name": "Braided USB-C to USB-C Cable (2m, 100W PD)",
-      "categoryId": "mobile-accessories",
-      "basePrice": 350,
-      "isPriceOverridden": false,
-      "overridePrice": null,
-      "image": "/assets/p/usbc-cable.jpg",
-      "stock": 120,
-      "blurb": "High-durability Kevlar-reinforced braided charging cable supporting up to 100W PD.",
-      "badge": "Popular",
-      "specs": [
-        {
-          "label": "Length",
-          "value": "2.0 Meters"
-        },
-        {
-          "label": "Power Rating",
-          "value": "100W (20V/5A)"
-        },
-        {
-          "label": "Data Transfer",
-          "value": "480 Mbps"
-        }
-      ],
-      "createdAt": "2026-10-12T10:21:34.793Z",
-      "updatedAt": "2026-10-12T10:21:34.793Z",
-      "markupPercentage": 20,
-      "sellingPrice": 420
-    },
-    {
-      "sku": "LT-1003",
-      "slug": "20000mah-magsafe-power-bank",
-      "name": "20,000mAh Magnetic Wireless Power Bank",
-      "categoryId": "mobile-accessories",
-      "basePrice": 2200,
-      "isPriceOverridden": true,
-      "overridePrice": 2499,
-      "image": "/assets/p/magsafe-powerbank.jpg",
-      "stock": 28,
-      "blurb": "High-capacity slim magnetic power bank with digital battery indicator.",
-      "badge": "Special Deal",
-      "specs": [
-        {
-          "label": "Capacity",
-          "value": "20,000 mAh / 74Wh"
-        },
-        {
-          "label": "Wireless Output",
-          "value": "15W MagSafe"
-        },
-        {
-          "label": "Wired Output",
-          "value": "22.5W QC / 20W PD"
-        }
-      ],
-      "createdAt": "2026-10-12T10:21:34.793Z",
-      "updatedAt": "2026-10-12T10:21:34.793Z",
-      "markupPercentage": 20,
-      "sellingPrice": 2499
-    },
-    {
-      "sku": "LT-1004",
-      "slug": "lightning-to-usb-c-cable-1m",
-      "name": "MFi Certified Lightning to USB-C Cable (1.2m)",
-      "categoryId": "mobile-accessories",
-      "basePrice": 400,
-      "isPriceOverridden": false,
-      "overridePrice": null,
-      "image": "/assets/p/lightning-cable.jpg",
-      "stock": 85,
-      "blurb": "Original C94 chip Apple certified fast charging sync cable.",
-      "specs": [
-        {
-          "label": "Certification",
-          "value": "Apple MFi"
-        },
-        {
-          "label": "Length",
-          "value": "1.2 Meters"
-        }
-      ],
-      "createdAt": "2026-10-12T10:21:34.793Z",
-      "updatedAt": "2026-10-12T10:21:34.793Z",
-      "markupPercentage": 20,
-      "sellingPrice": 480
-    },
-    {
-      "sku": "LT-2001",
-      "slug": "esp32-wroom-32d-dev-board",
-      "name": "ESP32-WROOM-32D Dual-Core Wi-Fi + BLE Dev Board",
-      "categoryId": "iot-and-microcontrollers",
-      "basePrice": 420,
-      "isPriceOverridden": false,
-      "overridePrice": null,
-      "image": "/assets/p/esp32.jpg",
-      "stock": 140,
-      "blurb": "Versatile 38-pin ESP32 development board with onboard antenna and CP2102.",
-      "badge": "Maker Choice",
-      "specs": [
-        {
-          "label": "SoC",
-          "value": "ESP32-D0WDQ6 Dual-Core 240MHz"
-        },
-        {
-          "label": "Wireless",
-          "value": "Wi-Fi 802.11 b/g/n + BT 4.2 BR/EDR & BLE"
-        },
-        {
-          "label": "Flash",
-          "value": "4MB SPI Flash"
-        }
-      ],
-      "createdAt": "2026-10-12T10:21:34.793Z",
-      "updatedAt": "2026-10-12T10:21:34.793Z",
-      "markupPercentage": 25,
-      "sellingPrice": 525
-    },
-    {
-      "sku": "LT-2002",
-      "slug": "arduino-uno-r3-atmega328p",
-      "name": "Arduino Uno R3 Compatible Board (DIP ATmega328P)",
-      "categoryId": "iot-and-microcontrollers",
-      "basePrice": 380,
-      "isPriceOverridden": false,
-      "overridePrice": null,
-      "image": "/assets/p/uno.jpg",
-      "stock": 95,
-      "blurb": "Standard Arduino Uno microcontroller development board with 14 digital I/O pins.",
-      "specs": [
-        {
-          "label": "Microcontroller",
-          "value": "ATmega328P (Removable DIP)"
-        },
-        {
-          "label": "Operating Voltage",
-          "value": "5V DC"
-        },
-        {
-          "label": "Analog Inputs",
-          "value": "6 Channels (10-bit)"
-        }
-      ],
-      "createdAt": "2026-10-12T10:21:34.793Z",
-      "updatedAt": "2026-10-12T10:21:34.793Z",
-      "markupPercentage": 25,
-      "sellingPrice": 475
-    },
-    {
-      "sku": "LT-2003",
-      "slug": "ultrasonic-distance-sensor-hcsr04",
-      "name": "HC-SR04 Ultrasonic Distance Sensor Module",
-      "categoryId": "iot-and-microcontrollers",
-      "basePrice": 90,
-      "isPriceOverridden": false,
-      "overridePrice": null,
-      "image": "/assets/p/ultrasonic.jpg",
-      "stock": 250,
-      "blurb": "Non-contact 2cm to 400cm distance measurement sensor module.",
-      "specs": [
-        {
-          "label": "Range",
-          "value": "2cm – 400cm"
-        },
-        {
-          "label": "Operating Current",
-          "value": "15mA"
-        },
-        {
-          "label": "Trigger Input",
-          "value": "10µs TTL Pulse"
-        }
-      ],
-      "createdAt": "2026-10-12T10:21:34.793Z",
-      "updatedAt": "2026-10-12T10:21:34.793Z",
-      "markupPercentage": 25,
-      "sellingPrice": 112.5
-    },
-    {
-      "sku": "LT-3001",
-      "slug": "60w-temperature-controlled-soldering-station",
-      "name": "60W Digital Temperature Controlled Soldering Station",
-      "categoryId": "repair-kits",
-      "basePrice": 2800,
-      "isPriceOverridden": false,
-      "overridePrice": null,
-      "image": "/assets/p/soldering-station.jpg",
-      "stock": 22,
-      "blurb": "Precision ceramic heating element with digital PID temperature stabilization (200°C–480°C).",
-      "badge": "Pro Grade",
-      "specs": [
-        {
-          "label": "Power",
-          "value": "60W (ESD Safe)"
-        },
-        {
-          "label": "Temp Range",
-          "value": "200°C – 480°C"
-        },
-        {
-          "label": "Stability",
-          "value": "±2°C"
-        }
-      ],
-      "createdAt": "2026-10-12T10:21:34.793Z",
-      "updatedAt": "2026-10-12T10:21:34.793Z",
-      "markupPercentage": 18,
-      "sellingPrice": 3304
-    },
-    {
-      "sku": "LT-3002",
-      "slug": "128-in-1-precision-screwdriver-kit",
-      "name": "128-in-1 Precision Magnetic Screwdriver Repair Toolkit",
-      "categoryId": "repair-kits",
-      "basePrice": 1100,
-      "isPriceOverridden": false,
-      "overridePrice": null,
-      "image": "/assets/p/screwdriver-set.jpg",
-      "stock": 60,
-      "blurb": "Complete repair kit for smartphones, laptops, electronics, and small home appliances.",
-      "specs": [
-        {
-          "label": "Bits Material",
-          "value": "CR-V Steel (HRC58-62)"
-        },
-        {
-          "label": "Includes",
-          "value": "Flexible shaft, tweezers, magnetizer, pry tools"
-        }
-      ],
-      "createdAt": "2026-10-12T10:21:34.793Z",
-      "updatedAt": "2026-10-12T10:21:34.793Z",
-      "markupPercentage": 18,
-      "sellingPrice": 1298
-    },
-    {
-      "sku": "LT-4001",
-      "slug": "4k-ultra-hd-hdmi-2-0-cable-3m",
-      "name": "Ultra HD 4K 60Hz Braided HDMI 2.0 Cable (3m)",
-      "categoryId": "tv-accessories",
-      "basePrice": 320,
-      "isPriceOverridden": false,
-      "overridePrice": null,
-      "image": "/assets/p/hdmi-cable.jpg",
-      "stock": 80,
-      "blurb": "Gold-plated 18Gbps high speed HDMI cable with HDR and ARC support.",
-      "specs": [
-        {
-          "label": "Bandwidth",
-          "value": "18 Gbps"
-        },
-        {
-          "label": "Resolution",
-          "value": "4K @ 60Hz / 2K @ 144Hz"
-        },
-        {
-          "label": "Connectors",
-          "value": "24K Gold-Plated Type A"
-        }
-      ],
-      "createdAt": "2026-10-12T10:21:34.793Z",
-      "updatedAt": "2026-10-12T10:21:34.793Z",
-      "markupPercentage": 10,
-      "sellingPrice": 352
-    },
-    {
-      "sku": "LT-4002",
-      "slug": "universal-smart-tv-remote-control",
-      "name": "Universal Smart TV Remote with Voice & Netflix Shortcut",
-      "categoryId": "tv-accessories",
-      "basePrice": 450,
-      "isPriceOverridden": false,
-      "overridePrice": null,
-      "image": "/assets/p/remote.jpg",
-      "stock": 65,
-      "blurb": "Pre-programmed for Samsung, LG, Sony, TCL, Hisense, and Android Smart TVs.",
-      "specs": [
-        {
-          "label": "Transmission",
-          "value": "Infrared 38kHz + Bluetooth"
-        },
-        {
-          "label": "Operating Distance",
-          "value": "> 10 Meters"
-        }
-      ],
-      "createdAt": "2026-10-12T10:21:34.793Z",
-      "updatedAt": "2026-10-12T10:21:34.793Z",
-      "markupPercentage": 10,
-      "sellingPrice": 495
-    },
-    {
-      "sku": "LT-5001",
-      "slug": "breadboard-friendly-3-3v-5v-power-module",
-      "name": "Breadboard Power Supply Module 3.3V / 5V DC (MB102)",
+      "sku": "9624",
+      "slug": "0-0018uf2kv-capacitor-9624",
+      "name": "0.0018uf2KV CAPACITOR",
       "categoryId": "electronics",
-      "basePrice": 110,
+      "basePrice": 5,
+      "markupPercentage": 15,
       "isPriceOverridden": false,
       "overridePrice": null,
+      "sellingPrice": 5.75,
       "image": "/assets/p/psu-module.jpg",
-      "stock": 150,
-      "blurb": "Plugs directly into standard 830/400 tie point breadboards with dual rail selection.",
+      "stock": 545,
+      "blurb": "0.0018uf2KV CAPACITOR (Pc(s)). Genuine InTouch ERP SKU: 9624",
       "specs": [
         {
-          "label": "Input Voltage",
-          "value": "6.5V – 12V (DC Barrel) or USB"
+          "label": "SKU",
+          "value": "9624"
         },
         {
-          "label": "Output Voltage",
-          "value": "3.3V or 5V (Switch selectable)"
+          "label": "Unit",
+          "value": "Pc(s)"
         },
         {
-          "label": "Max Current",
-          "value": "700 mA"
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2401"
         }
       ],
-      "createdAt": "2026-10-12T10:21:34.793Z",
-      "updatedAt": "2026-10-12T10:21:34.793Z",
-      "markupPercentage": 15,
-      "sellingPrice": 126.5
+      "createdAt": "2026-10-12T15:48:25.578Z",
+      "updatedAt": "2026-10-12T15:48:25.578Z"
     },
     {
-      "sku": "LT-5002",
-      "slug": "electrolytic-capacitor-kit-500pcs",
-      "name": "500-Piece Electrolytic Capacitor Assortment Kit (24 Values)",
+      "sku": "9653",
+      "slug": "0-001uf1v-capacitor-9653",
+      "name": "0.001uf1V CAPACITOR",
       "categoryId": "electronics",
-      "basePrice": 650,
-      "isPriceOverridden": false,
-      "overridePrice": null,
-      "image": "/assets/p/capacitor-kit.jpg",
-      "stock": 40,
-      "blurb": "Comprehensive assortment of radial aluminum capacitors from 0.1µF to 1000µF (10V-50V).",
-      "specs": [
-        {
-          "label": "Range",
-          "value": "0.1µF to 1000µF"
-        },
-        {
-          "label": "Tolerance",
-          "value": "±20%"
-        },
-        {
-          "label": "Quantity",
-          "value": "500 Pieces with organizer case"
-        }
-      ],
-      "createdAt": "2026-10-12T10:21:34.793Z",
-      "updatedAt": "2026-10-12T10:21:34.793Z",
+      "basePrice": 5,
       "markupPercentage": 15,
-      "sellingPrice": 747.5
-    },
-    {
-      "sku": "LT-5003",
-      "slug": "1-4w-metal-film-resistor-kit-600pcs",
-      "name": "1/4W 1% Metal Film Resistors Assortment (600 Pieces)",
-      "categoryId": "electronics",
-      "basePrice": 280,
       "isPriceOverridden": false,
       "overridePrice": null,
+      "sellingPrice": 5.75,
       "image": null,
-      "stock": 90,
-      "blurb": "High precision 1% tolerance metal film resistors across 30 common E12 values.",
+      "stock": 28,
+      "blurb": "0.001uf1V CAPACITOR (Pc(s)). Genuine InTouch ERP SKU: 9653",
       "specs": [
         {
-          "label": "Power Rating",
-          "value": "0.25 Watt"
+          "label": "SKU",
+          "value": "9653"
         },
         {
-          "label": "Tolerance",
-          "value": "±1%"
+          "label": "Unit",
+          "value": "Pc(s)"
         },
         {
-          "label": "Values",
-          "value": "10Ω to 1MΩ (20pcs each)"
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2401"
         }
       ],
-      "createdAt": "2026-10-12T10:21:34.793Z",
-      "updatedAt": "2026-10-12T10:21:34.793Z",
-      "markupPercentage": 15,
-      "sellingPrice": 322
+      "createdAt": "2026-10-12T15:48:25.578Z",
+      "updatedAt": "2026-10-12T15:48:25.578Z"
     },
     {
-      "sku": "LT-5004",
-      "slug": "5v-dual-channel-relay-module-optocoupler",
-      "name": "5V Dual Channel Relay Module with Optocoupler Isolation",
+      "sku": "9658",
+      "slug": "0-0022uf100v-capacitor-9658",
+      "name": "0.0022uf100V CAPACITOR",
       "categoryId": "electronics",
-      "basePrice": 150,
-      "isPriceOverridden": true,
-      "overridePrice": 185,
-      "image": "/assets/p/relay.jpg",
-      "stock": 110,
-      "blurb": "High current relay module capable of switching 250V AC / 10A or 30V DC / 10A.",
-      "badge": "Overridden Price",
+      "basePrice": 2,
+      "markupPercentage": 15,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 2.3,
+      "image": "/assets/p/psu-module.jpg",
+      "stock": 15,
+      "blurb": "0.0022uf100V CAPACITOR (Pc(s)). Genuine InTouch ERP SKU: 9658",
       "specs": [
         {
-          "label": "Control Voltage",
-          "value": "5V DC"
+          "label": "SKU",
+          "value": "9658"
         },
         {
-          "label": "Switching Capacity",
-          "value": "10A @ 250VAC / 30VDC"
+          "label": "Unit",
+          "value": "Pc(s)"
         },
         {
-          "label": "Isolation",
-          "value": "Optical Optocoupler"
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2401"
         }
       ],
-      "createdAt": "2026-10-12T10:21:34.793Z",
-      "updatedAt": "2026-10-12T10:21:34.793Z",
+      "createdAt": "2026-10-12T15:48:25.578Z",
+      "updatedAt": "2026-10-12T15:48:25.578Z"
+    },
+    {
+      "sku": "9626",
+      "slug": "0-0022uf630v-capacitor-9626",
+      "name": "0.0022uf630V CAPACITOR",
+      "categoryId": "electronics",
+      "basePrice": 5,
       "markupPercentage": 15,
-      "sellingPrice": 185
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 5.75,
+      "image": null,
+      "stock": 106,
+      "blurb": "0.0022uf630V CAPACITOR (Pc(s)). Genuine InTouch ERP SKU: 9626",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "9626"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2401"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.578Z",
+      "updatedAt": "2026-10-12T15:48:25.578Z"
+    },
+    {
+      "sku": "4027",
+      "slug": "0-0033uf100v-capasitor-4027",
+      "name": "0.0033UF100V  CAPASITOR",
+      "categoryId": "electronics",
+      "basePrice": 2,
+      "markupPercentage": 15,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 2.3,
+      "image": "/assets/p/psu-module.jpg",
+      "stock": 15,
+      "blurb": "0.0033UF100V  CAPASITOR (Pc(s)). Genuine InTouch ERP SKU: 4027",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "4027"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2401"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.578Z",
+      "updatedAt": "2026-10-12T15:48:25.578Z"
+    },
+    {
+      "sku": "9628",
+      "slug": "0-0039uf3kv-capacitor-9628",
+      "name": "0.0039uf3KV CAPACITOR",
+      "categoryId": "electronics",
+      "basePrice": 5,
+      "markupPercentage": 15,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 5.75,
+      "image": null,
+      "stock": 10,
+      "blurb": "0.0039uf3KV CAPACITOR (Pc(s)). Genuine InTouch ERP SKU: 9628",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "9628"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2401"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.578Z",
+      "updatedAt": "2026-10-12T15:48:25.578Z"
+    },
+    {
+      "sku": "9627",
+      "slug": "0-003uf2kv-capacitor-9627",
+      "name": "0.003uf2KV CAPACITOR",
+      "categoryId": "electronics",
+      "basePrice": 5,
+      "markupPercentage": 15,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 5.75,
+      "image": "/assets/p/psu-module.jpg",
+      "stock": 30,
+      "blurb": "0.003uf2KV CAPACITOR (Pc(s)). Genuine InTouch ERP SKU: 9627",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "9627"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2401"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.578Z",
+      "updatedAt": "2026-10-12T15:48:25.578Z"
+    },
+    {
+      "sku": "9635",
+      "slug": "0-0044uf2kv-capacitor-9635",
+      "name": "0.0044uf2KV CAPACITOR",
+      "categoryId": "electronics",
+      "basePrice": 5,
+      "markupPercentage": 15,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 5.75,
+      "image": null,
+      "stock": 15,
+      "blurb": "0.0044uf2KV CAPACITOR (Pc(s)). Genuine InTouch ERP SKU: 9635",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "9635"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2401"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.578Z",
+      "updatedAt": "2026-10-12T15:48:25.578Z"
+    },
+    {
+      "sku": "9629",
+      "slug": "0-0047uf250v-capacitor-9629",
+      "name": "0.0047uf250V CAPACITOR",
+      "categoryId": "electronics",
+      "basePrice": 5,
+      "markupPercentage": 15,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 5.75,
+      "image": "/assets/p/psu-module.jpg",
+      "stock": 15,
+      "blurb": "0.0047uf250V CAPACITOR (Pc(s)). Genuine InTouch ERP SKU: 9629",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "9629"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2401"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.578Z",
+      "updatedAt": "2026-10-12T15:48:25.578Z"
+    },
+    {
+      "sku": "9634",
+      "slug": "0-0047uf400v-capacitor-9634",
+      "name": "0.0047uf400V CAPACITOR",
+      "categoryId": "electronics",
+      "basePrice": 3,
+      "markupPercentage": 15,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 3.45,
+      "image": null,
+      "stock": 173,
+      "blurb": "0.0047uf400V CAPACITOR (Pc(s)). Genuine InTouch ERP SKU: 9634",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "9634"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2401"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.578Z",
+      "updatedAt": "2026-10-12T15:48:25.578Z"
+    },
+    {
+      "sku": "9633",
+      "slug": "0-0047uf630v-capacitor-9633",
+      "name": "0.0047uf630V CAPACITOR",
+      "categoryId": "electronics",
+      "basePrice": 5,
+      "markupPercentage": 15,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 5.75,
+      "image": "/assets/p/psu-module.jpg",
+      "stock": 356,
+      "blurb": "0.0047uf630V CAPACITOR (Pc(s)). Genuine InTouch ERP SKU: 9633",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "9633"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2401"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.578Z",
+      "updatedAt": "2026-10-12T15:48:25.579Z"
+    },
+    {
+      "sku": "5642",
+      "slug": "0-0056uf100v-capasitor-5642",
+      "name": "0.0056UF100V  CAPASITOR",
+      "categoryId": "electronics",
+      "basePrice": 2,
+      "markupPercentage": 15,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 2.3,
+      "image": null,
+      "stock": 15,
+      "blurb": "0.0056UF100V  CAPASITOR (Pc(s)). Genuine InTouch ERP SKU: 5642",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "5642"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2401"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.579Z",
+      "updatedAt": "2026-10-12T15:48:25.579Z"
+    },
+    {
+      "sku": "5644",
+      "slug": "0-0056uf50v-capasitor-5644",
+      "name": "0.0056UF50V      CAPASITOR",
+      "categoryId": "electronics",
+      "basePrice": 0.5,
+      "markupPercentage": 15,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 0.58,
+      "image": "/assets/p/psu-module.jpg",
+      "stock": 15,
+      "blurb": "0.0056UF50V      CAPASITOR (Pc(s)). Genuine InTouch ERP SKU: 5644",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "5644"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2401"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.579Z",
+      "updatedAt": "2026-10-12T15:48:25.579Z"
+    },
+    {
+      "sku": "9630",
+      "slug": "0-0056uf630v-capacitor-9630",
+      "name": "0.0056uf630V CAPACITOR",
+      "categoryId": "electronics",
+      "basePrice": 5,
+      "markupPercentage": 15,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 5.75,
+      "image": null,
+      "stock": 181,
+      "blurb": "0.0056uf630V CAPACITOR (Pc(s)). Genuine InTouch ERP SKU: 9630",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "9630"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2401"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.579Z",
+      "updatedAt": "2026-10-12T15:48:25.579Z"
+    },
+    {
+      "sku": "6386",
+      "slug": "0-0068uf250v-capasitor-6386",
+      "name": "0.0068UF250V  CAPASITOR",
+      "categoryId": "electronics",
+      "basePrice": 2,
+      "markupPercentage": 15,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 2.3,
+      "image": "/assets/p/psu-module.jpg",
+      "stock": 75,
+      "blurb": "0.0068UF250V  CAPASITOR (Pc(s)). Genuine InTouch ERP SKU: 6386",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "6386"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2401"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.579Z",
+      "updatedAt": "2026-10-12T15:48:25.579Z"
+    },
+    {
+      "sku": "9632",
+      "slug": "0-0068uf2kv-capacitor-9632",
+      "name": "0.0068uf2KV CAPACITOR",
+      "categoryId": "electronics",
+      "basePrice": 5,
+      "markupPercentage": 15,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 5.75,
+      "image": null,
+      "stock": 681,
+      "blurb": "0.0068uf2KV CAPACITOR (Pc(s)). Genuine InTouch ERP SKU: 9632",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "9632"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2401"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.579Z",
+      "updatedAt": "2026-10-12T15:48:25.579Z"
+    },
+    {
+      "sku": "9631",
+      "slug": "0-0068uf400v-capacitor-9631",
+      "name": "0.0068uf400V CAPACITOR",
+      "categoryId": "electronics",
+      "basePrice": 5,
+      "markupPercentage": 15,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 5.75,
+      "image": "/assets/p/psu-module.jpg",
+      "stock": 44,
+      "blurb": "0.0068uf400V CAPACITOR (Pc(s)). Genuine InTouch ERP SKU: 9631",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "9631"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2401"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.579Z",
+      "updatedAt": "2026-10-12T15:48:25.579Z"
+    },
+    {
+      "sku": "9637",
+      "slug": "0-0082uf1600v-capacitor-9637",
+      "name": "0.0082uf1600V CAPACITOR",
+      "categoryId": "electronics",
+      "basePrice": 10,
+      "markupPercentage": 15,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 11.5,
+      "image": null,
+      "stock": 3,
+      "blurb": "0.0082uf1600V CAPACITOR (Pc(s)). Genuine InTouch ERP SKU: 9637",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "9637"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2401"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.579Z",
+      "updatedAt": "2026-10-12T15:48:25.579Z"
+    },
+    {
+      "sku": "9636",
+      "slug": "0-008uf1600v-capacitor-9636",
+      "name": "0.008uf1600V CAPACITOR",
+      "categoryId": "electronics",
+      "basePrice": 5,
+      "markupPercentage": 15,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 5.75,
+      "image": "/assets/p/psu-module.jpg",
+      "stock": 39,
+      "blurb": "0.008uf1600V CAPACITOR (Pc(s)). Genuine InTouch ERP SKU: 9636",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "9636"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2401"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.579Z",
+      "updatedAt": "2026-10-12T15:48:25.579Z"
+    },
+    {
+      "sku": "1736",
+      "slug": "0-012uf1600v-capasitor-1736",
+      "name": "0.012uf1600v  CAPASITOR",
+      "categoryId": "electronics",
+      "basePrice": 10,
+      "markupPercentage": 15,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 11.5,
+      "image": null,
+      "stock": 135,
+      "blurb": "0.012uf1600v  CAPASITOR (Pc(s)). Genuine InTouch ERP SKU: 1736",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "1736"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2401"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.579Z",
+      "updatedAt": "2026-10-12T15:48:25.579Z"
+    },
+    {
+      "sku": "1737",
+      "slug": "0-012uf2000v-capasitor-1737",
+      "name": "0.012uf2000v CAPASITOR",
+      "categoryId": "electronics",
+      "basePrice": 10,
+      "markupPercentage": 15,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 11.5,
+      "image": "/assets/p/psu-module.jpg",
+      "stock": 449,
+      "blurb": "0.012uf2000v CAPASITOR (Pc(s)). Genuine InTouch ERP SKU: 1737",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "1737"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2401"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.579Z",
+      "updatedAt": "2026-10-12T15:48:25.579Z"
+    },
+    {
+      "sku": "9639",
+      "slug": "0-012uf400v-capacitor-9639",
+      "name": "0.012uf400V CAPACITOR",
+      "categoryId": "electronics",
+      "basePrice": 5,
+      "markupPercentage": 15,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 5.75,
+      "image": null,
+      "stock": 98,
+      "blurb": "0.012uf400V CAPACITOR (Pc(s)). Genuine InTouch ERP SKU: 9639",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "9639"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2401"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.579Z",
+      "updatedAt": "2026-10-12T15:48:25.579Z"
+    },
+    {
+      "sku": "1738",
+      "slug": "0-012uf630v-capasitor-1738",
+      "name": "0.012uf630v CAPASITOR",
+      "categoryId": "electronics",
+      "basePrice": 2,
+      "markupPercentage": 15,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 2.3,
+      "image": "/assets/p/psu-module.jpg",
+      "stock": 12,
+      "blurb": "0.012uf630v CAPASITOR (Pc(s)). Genuine InTouch ERP SKU: 1738",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "1738"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2401"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.579Z",
+      "updatedAt": "2026-10-12T15:48:25.579Z"
+    },
+    {
+      "sku": "9640",
+      "slug": "0-015uf400v-capacitor-9640",
+      "name": "0.015uf400V CAPACITOR",
+      "categoryId": "electronics",
+      "basePrice": 5,
+      "markupPercentage": 15,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 5.75,
+      "image": null,
+      "stock": 113,
+      "blurb": "0.015uf400V CAPACITOR (Pc(s)). Genuine InTouch ERP SKU: 9640",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "9640"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2401"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.579Z",
+      "updatedAt": "2026-10-12T15:48:25.579Z"
+    },
+    {
+      "sku": "9638",
+      "slug": "0-01uf1kv-capacitor-9638",
+      "name": "0.01uf1KV CAPACITOR",
+      "categoryId": "electronics",
+      "basePrice": 5,
+      "markupPercentage": 15,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 5.75,
+      "image": "/assets/p/psu-module.jpg",
+      "stock": 73,
+      "blurb": "0.01uf1KV CAPACITOR (Pc(s)). Genuine InTouch ERP SKU: 9638",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "9638"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2401"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.579Z",
+      "updatedAt": "2026-10-12T15:48:25.579Z"
+    },
+    {
+      "sku": "9641",
+      "slug": "0-033uf630v-capacitor-9641",
+      "name": "0.033UF630V CAPACITOR",
+      "categoryId": "electronics",
+      "basePrice": 5,
+      "markupPercentage": 15,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 5.75,
+      "image": null,
+      "stock": 15,
+      "blurb": "0.033UF630V CAPACITOR (Pc(s)). Genuine InTouch ERP SKU: 9641",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "9641"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2401"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.579Z",
+      "updatedAt": "2026-10-12T15:48:25.579Z"
+    },
+    {
+      "sku": "5059",
+      "slug": "0-047uf1000v-capasitor-5059",
+      "name": "0.047uf1000V CAPASITOR",
+      "categoryId": "electronics",
+      "basePrice": 5,
+      "markupPercentage": 15,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 5.75,
+      "image": "/assets/p/psu-module.jpg",
+      "stock": 83,
+      "blurb": "0.047uf1000V CAPASITOR (Pc(s)). Genuine InTouch ERP SKU: 5059",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "5059"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2401"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.579Z",
+      "updatedAt": "2026-10-12T15:48:25.579Z"
+    },
+    {
+      "sku": "5060",
+      "slug": "0-047uf2kv-capasitor-5060",
+      "name": "0.047UF2KV  CAPASITOR",
+      "categoryId": "electronics",
+      "basePrice": 5.63,
+      "markupPercentage": 15,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 6.47,
+      "image": null,
+      "stock": 15,
+      "blurb": "0.047UF2KV  CAPASITOR (Pc(s)). Genuine InTouch ERP SKU: 5060",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "5060"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2401"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.579Z",
+      "updatedAt": "2026-10-12T15:48:25.579Z"
+    },
+    {
+      "sku": "5650",
+      "slug": "0-056uf100v-capasitor-5650",
+      "name": "0.056UF100V CAPASITOR",
+      "categoryId": "electronics",
+      "basePrice": 2,
+      "markupPercentage": 15,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 2.3,
+      "image": "/assets/p/psu-module.jpg",
+      "stock": 121,
+      "blurb": "0.056UF100V CAPASITOR (Pc(s)). Genuine InTouch ERP SKU: 5650",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "5650"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2401"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.579Z",
+      "updatedAt": "2026-10-12T15:48:25.579Z"
+    },
+    {
+      "sku": "5643",
+      "slug": "0-056uf1600v-capasitor-5643",
+      "name": "0.056UF1600V  CAPASITOR",
+      "categoryId": "electronics",
+      "basePrice": 10,
+      "markupPercentage": 15,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 11.5,
+      "image": null,
+      "stock": 15,
+      "blurb": "0.056UF1600V  CAPASITOR (Pc(s)). Genuine InTouch ERP SKU: 5643",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "5643"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2401"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.579Z",
+      "updatedAt": "2026-10-12T15:48:25.579Z"
+    },
+    {
+      "sku": "9540",
+      "slug": "0-056uf250v-capacitor-9540",
+      "name": "0.056uf250V CAPACITOR",
+      "categoryId": "electronics",
+      "basePrice": 3,
+      "markupPercentage": 15,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 3.45,
+      "image": "/assets/p/psu-module.jpg",
+      "stock": 51,
+      "blurb": "0.056uf250V CAPACITOR (Pc(s)). Genuine InTouch ERP SKU: 9540",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "9540"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2401"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.579Z",
+      "updatedAt": "2026-10-12T15:48:25.579Z"
+    },
+    {
+      "sku": "6396",
+      "slug": "0-068uf250v-capasitor-6396",
+      "name": "0.068UF250V  CAPASITOR",
+      "categoryId": "electronics",
+      "basePrice": 2,
+      "markupPercentage": 15,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 2.3,
+      "image": null,
+      "stock": 24,
+      "blurb": "0.068UF250V  CAPASITOR (Pc(s)). Genuine InTouch ERP SKU: 6396",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "6396"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2401"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.579Z",
+      "updatedAt": "2026-10-12T15:48:25.579Z"
+    },
+    {
+      "sku": "9539",
+      "slug": "0-068uf400v-capacitor-9539",
+      "name": "0.068uf400V CAPACITOR",
+      "categoryId": "electronics",
+      "basePrice": 5,
+      "markupPercentage": 15,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 5.75,
+      "image": "/assets/p/psu-module.jpg",
+      "stock": 30,
+      "blurb": "0.068uf400V CAPACITOR (Pc(s)). Genuine InTouch ERP SKU: 9539",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "9539"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2401"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.579Z",
+      "updatedAt": "2026-10-12T15:48:25.579Z"
+    },
+    {
+      "sku": "6225",
+      "slug": "0-068uf400v-capasitor-6225",
+      "name": "0.068uf400v CAPASITOR",
+      "categoryId": "electronics",
+      "basePrice": 4.92,
+      "markupPercentage": 15,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 5.66,
+      "image": null,
+      "stock": 15,
+      "blurb": "0.068uf400v CAPASITOR (Pc(s)). Genuine InTouch ERP SKU: 6225",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "6225"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2401"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.579Z",
+      "updatedAt": "2026-10-12T15:48:25.579Z"
+    },
+    {
+      "sku": "6397",
+      "slug": "0-068uf630v-capasitor-6397",
+      "name": "0.068UF630V CAPASITOR",
+      "categoryId": "electronics",
+      "basePrice": 5,
+      "markupPercentage": 15,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 5.75,
+      "image": "/assets/p/psu-module.jpg",
+      "stock": 63,
+      "blurb": "0.068UF630V CAPASITOR (Pc(s)). Genuine InTouch ERP SKU: 6397",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "6397"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2401"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.579Z",
+      "updatedAt": "2026-10-12T15:48:25.579Z"
+    },
+    {
+      "sku": "9541",
+      "slug": "0-082uf8000v-capasitor-9541",
+      "name": "0.082UF8000V CAPASITOR",
+      "categoryId": "electronics",
+      "basePrice": 10,
+      "markupPercentage": 15,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 11.5,
+      "image": null,
+      "stock": 15,
+      "blurb": "0.082UF8000V CAPASITOR (Pc(s)). Genuine InTouch ERP SKU: 9541",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "9541"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2401"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.579Z",
+      "updatedAt": "2026-10-12T15:48:25.579Z"
+    },
+    {
+      "sku": "2244",
+      "slug": "0-15uf400v-capasitor-2244",
+      "name": "0.15UF400V CAPASITOR",
+      "categoryId": "electronics",
+      "basePrice": 3,
+      "markupPercentage": 15,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 3.45,
+      "image": "/assets/p/psu-module.jpg",
+      "stock": 15,
+      "blurb": "0.15UF400V CAPASITOR (Pc(s)). Genuine InTouch ERP SKU: 2244",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "2244"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2401"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.579Z",
+      "updatedAt": "2026-10-12T15:48:25.579Z"
+    },
+    {
+      "sku": "2245",
+      "slug": "0-15uf630v-capasitor-2245",
+      "name": "0.15uf630V CAPASITOR",
+      "categoryId": "electronics",
+      "basePrice": 5,
+      "markupPercentage": 15,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 5.75,
+      "image": null,
+      "stock": 15,
+      "blurb": "0.15uf630V CAPASITOR (Pc(s)). Genuine InTouch ERP SKU: 2245",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "2245"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2401"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.579Z",
+      "updatedAt": "2026-10-12T15:48:25.579Z"
+    },
+    {
+      "sku": "9565",
+      "slug": "0-18-ohm-2w-9565",
+      "name": "0.18 OHM 2W",
+      "categoryId": "electronics",
+      "basePrice": 2,
+      "markupPercentage": 15,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 2.3,
+      "image": "/assets/p/psu-module.jpg",
+      "stock": 15,
+      "blurb": "0.18 OHM 2W (Pc(s)). Genuine InTouch ERP SKU: 9565",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "9565"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2402"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.579Z",
+      "updatedAt": "2026-10-12T15:48:25.579Z"
+    },
+    {
+      "sku": "14772",
+      "slug": "0-1uf-50v-14772",
+      "name": "0.1uf 50v",
+      "categoryId": "electronics",
+      "basePrice": 3,
+      "markupPercentage": 15,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 3.45,
+      "image": null,
+      "stock": 30,
+      "blurb": "0.1uf 50v (Pc(s)). Genuine InTouch ERP SKU: 14772",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "14772"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "N/A"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.579Z",
+      "updatedAt": "2026-10-12T15:48:25.579Z"
+    },
+    {
+      "sku": "9619",
+      "slug": "0-2-ohm-1-4w-resistor-9619",
+      "name": "0.2 OHM  1/4W RESISTOR",
+      "categoryId": "electronics",
+      "basePrice": 0.08,
+      "markupPercentage": 15,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 0.09,
+      "image": "/assets/p/psu-module.jpg",
+      "stock": 15,
+      "blurb": "0.2 OHM  1/4W RESISTOR (Pc(s)). Genuine InTouch ERP SKU: 9619",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "9619"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2402"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.579Z",
+      "updatedAt": "2026-10-12T15:48:25.579Z"
+    },
+    {
+      "sku": "13252",
+      "slug": "0-22-ohm-1-4w-resistor-13252",
+      "name": "0.22 OHM 1/4W RESISTOR",
+      "categoryId": "electronics",
+      "basePrice": 0.08,
+      "markupPercentage": 15,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 0.09,
+      "image": null,
+      "stock": 494,
+      "blurb": "0.22 OHM 1/4W RESISTOR (Pc(s)). Genuine InTouch ERP SKU: 13252",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "13252"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2402"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.579Z",
+      "updatedAt": "2026-10-12T15:48:25.579Z"
+    },
+    {
+      "sku": "1003",
+      "slug": "0-22uf100v-capasitor-1003",
+      "name": "0.22uf100v CAPASITOR",
+      "categoryId": "electronics",
+      "basePrice": 0.9,
+      "markupPercentage": 15,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 1.04,
+      "image": "/assets/p/psu-module.jpg",
+      "stock": 540,
+      "blurb": "0.22uf100v CAPASITOR (Pc(s)). Genuine InTouch ERP SKU: 1003",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "1003"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2401"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.579Z",
+      "updatedAt": "2026-10-12T15:48:25.579Z"
+    },
+    {
+      "sku": "3161",
+      "slug": "0-22uf275v-capasitor-3161",
+      "name": "0.22UF275V CAPASITOR",
+      "categoryId": "electronics",
+      "basePrice": 15,
+      "markupPercentage": 15,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 17.25,
+      "image": null,
+      "stock": 15,
+      "blurb": "0.22UF275V CAPASITOR (Pc(s)). Genuine InTouch ERP SKU: 3161",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "3161"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2401"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.579Z",
+      "updatedAt": "2026-10-12T15:48:25.579Z"
+    },
+    {
+      "sku": "1004",
+      "slug": "0-22uf50v-capasitor-1004",
+      "name": "0.22uf50V   CAPASITOR",
+      "categoryId": "electronics",
+      "basePrice": 0.5,
+      "markupPercentage": 15,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 0.58,
+      "image": "/assets/p/psu-module.jpg",
+      "stock": 385,
+      "blurb": "0.22uf50V   CAPASITOR (Pc(s)). Genuine InTouch ERP SKU: 1004",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "1004"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2401"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.579Z",
+      "updatedAt": "2026-10-12T15:48:25.579Z"
+    },
+    {
+      "sku": "3162",
+      "slug": "0-22uf630v-capasitor-3162",
+      "name": "0.22UF630V CAPASITOR",
+      "categoryId": "electronics",
+      "basePrice": 4.25,
+      "markupPercentage": 15,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 4.89,
+      "image": null,
+      "stock": 641,
+      "blurb": "0.22UF630V CAPASITOR (Pc(s)). Genuine InTouch ERP SKU: 3162",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "3162"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2401"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.579Z",
+      "updatedAt": "2026-10-12T15:48:25.579Z"
+    },
+    {
+      "sku": "003PH",
+      "slug": "003ph-phone-stand-003ph",
+      "name": "003PH PHONE STAND",
+      "categoryId": "mobile-accessories",
+      "basePrice": 144,
+      "markupPercentage": 20,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 172.8,
+      "image": "/assets/p/gan-charger.jpg",
+      "stock": 15,
+      "blurb": "003PH PHONE STAND (Pc(s)). Genuine InTouch ERP SKU: 003PH",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "003PH"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2546"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.579Z",
+      "updatedAt": "2026-10-12T15:48:25.579Z"
+    },
+    {
+      "sku": "6178",
+      "slug": "005p-smd-6pin-6178",
+      "name": "005P SMD 6PIN",
+      "categoryId": "iot-and-microcontrollers",
+      "basePrice": 50.74,
+      "markupPercentage": 25,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 63.43,
+      "image": null,
+      "stock": 15,
+      "blurb": "005P SMD 6PIN (Pc(s)). Genuine InTouch ERP SKU: 6178",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "6178"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2411"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.579Z",
+      "updatedAt": "2026-10-12T15:48:25.579Z"
+    },
+    {
+      "sku": "10745",
+      "slug": "014s-rml1120-lcd-led-common-remote-10745",
+      "name": "014S RML1120  LCD/LED COMMON REMOTE",
+      "categoryId": "iot-and-microcontrollers",
+      "basePrice": 450,
+      "markupPercentage": 25,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 562.5,
+      "image": "/assets/p/esp32.jpg",
+      "stock": 50,
+      "blurb": "014S RML1120  LCD/LED COMMON REMOTE (Pc(s)). Genuine InTouch ERP SKU: 10745",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "10745"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2409"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.579Z",
+      "updatedAt": "2026-10-12T15:48:25.579Z"
+    },
+    {
+      "sku": "16008",
+      "slug": "040-single-4440-ic-7805-to-usb-16008",
+      "name": "040 SINGLE 4440 IC+7805 TO USB",
+      "categoryId": "mobile-accessories",
+      "basePrice": 450,
+      "markupPercentage": 20,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 540,
+      "image": null,
+      "stock": 21,
+      "blurb": "040 SINGLE 4440 IC+7805 TO USB (Pc(s)). Genuine InTouch ERP SKU: 16008",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "16008"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2524"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.579Z",
+      "updatedAt": "2026-10-12T15:48:25.579Z"
+    },
+    {
+      "sku": "16915",
+      "slug": "1-way-switch-16915",
+      "name": "1 WAY SWITCH",
+      "categoryId": "tv-accessories",
+      "basePrice": 250,
+      "markupPercentage": 10,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 275,
+      "image": "/assets/p/hdmi-cable.jpg",
+      "stock": 15,
+      "blurb": "1 WAY SWITCH (Pc(s)). Genuine InTouch ERP SKU: 16915",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "16915"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2524"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.579Z",
+      "updatedAt": "2026-10-12T15:48:25.579Z"
+    },
+    {
+      "sku": "2565",
+      "slug": "1-878-659-22-bt2-sony-lcd-main-pcb-2565",
+      "name": "1-878-659-22 BT2 SONY LCD MAIN PCB",
+      "categoryId": "iot-and-microcontrollers",
+      "basePrice": 3000,
+      "markupPercentage": 25,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 3750,
+      "image": null,
+      "stock": 2,
+      "blurb": "1-878-659-22 BT2 SONY LCD MAIN PCB (Pc(s)). Genuine InTouch ERP SKU: 2565",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "2565"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2413"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.579Z",
+      "updatedAt": "2026-10-12T15:48:25.579Z"
+    },
+    {
+      "sku": "8085",
+      "slug": "1-883-775-21-aps283-power-suply-lcd-8085",
+      "name": "1-883-775-21 APS283 POWER SUPLY LCD",
+      "categoryId": "iot-and-microcontrollers",
+      "basePrice": 4050,
+      "markupPercentage": 25,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 5062.5,
+      "image": "/assets/p/esp32.jpg",
+      "stock": 2,
+      "blurb": "1-883-775-21 APS283 POWER SUPLY LCD (Pc(s)). Genuine InTouch ERP SKU: 8085",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "8085"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2413"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.579Z",
+      "updatedAt": "2026-10-12T15:48:25.579Z"
+    },
+    {
+      "sku": "1137",
+      "slug": "1-2v-1350ma-battery-1137",
+      "name": "1.2V 1350MA BATTERY",
+      "categoryId": "mobile-accessories",
+      "basePrice": 800,
+      "markupPercentage": 20,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 960,
+      "image": null,
+      "stock": 15,
+      "blurb": "1.2V 1350MA BATTERY (Pc(s)). Genuine InTouch ERP SKU: 1137",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "1137"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2421"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.579Z",
+      "updatedAt": "2026-10-12T15:48:25.579Z"
+    },
+    {
+      "sku": "16242",
+      "slug": "1-2v-aa-rechargeable-battery-16242",
+      "name": "1.2V AA RECHARGEABLE BATTERY",
+      "categoryId": "mobile-accessories",
+      "basePrice": 100,
+      "markupPercentage": 20,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 120,
+      "image": "/assets/p/gan-charger.jpg",
+      "stock": 21,
+      "blurb": "1.2V AA RECHARGEABLE BATTERY (Pc(s)). Genuine InTouch ERP SKU: 16242",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "16242"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2524"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.580Z",
+      "updatedAt": "2026-10-12T15:48:25.580Z"
+    },
+    {
+      "sku": "1140",
+      "slug": "1-2v-aa-rechargeable-battery-clip-1140",
+      "name": "1.2V AA RECHARGEABLE BATTERY CLIP",
+      "categoryId": "mobile-accessories",
+      "basePrice": 120.33,
+      "markupPercentage": 20,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 144.4,
+      "image": null,
+      "stock": 12,
+      "blurb": "1.2V AA RECHARGEABLE BATTERY CLIP (Pc(s)). Genuine InTouch ERP SKU: 1140",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "1140"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2421"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.580Z",
+      "updatedAt": "2026-10-12T15:48:25.580Z"
+    },
+    {
+      "sku": "1139",
+      "slug": "1-2v-aaa-rechargeable-battery-1139",
+      "name": "1.2V AAA  RECHARGEABLE battery",
+      "categoryId": "mobile-accessories",
+      "basePrice": 64.43,
+      "markupPercentage": 20,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 77.32,
+      "image": "/assets/p/gan-charger.jpg",
+      "stock": 12,
+      "blurb": "1.2V AAA  RECHARGEABLE battery (Pc(s)). Genuine InTouch ERP SKU: 1139",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "1139"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2421"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.580Z",
+      "updatedAt": "2026-10-12T15:48:25.580Z"
+    },
+    {
+      "sku": "14470",
+      "slug": "1-2v-scx-battery-14470",
+      "name": "1.2V SCX BATTERY",
+      "categoryId": "mobile-accessories",
+      "basePrice": 300,
+      "markupPercentage": 20,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 360,
+      "image": null,
+      "stock": 15,
+      "blurb": "1.2V SCX BATTERY (Pc(s)). Genuine InTouch ERP SKU: 14470",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "14470"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2524"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.580Z",
+      "updatedAt": "2026-10-12T15:48:25.580Z"
+    },
+    {
+      "sku": "1143",
+      "slug": "1-2v10000ma-d-battery-1143",
+      "name": "1.2V10000MA D BATTERY",
+      "categoryId": "mobile-accessories",
+      "basePrice": 252,
+      "markupPercentage": 20,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 302.4,
+      "image": "/assets/p/gan-charger.jpg",
+      "stock": 15,
+      "blurb": "1.2V10000MA D BATTERY (Pc(s)). Genuine InTouch ERP SKU: 1143",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "1143"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2421"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.580Z",
+      "updatedAt": "2026-10-12T15:48:25.580Z"
+    },
+    {
+      "sku": "4503",
+      "slug": "1-2v2500ma-4-5-sc-battery-4503",
+      "name": "1.2V2500MA 4/5 SC BATTERY",
+      "categoryId": "mobile-accessories",
+      "basePrice": 95,
+      "markupPercentage": 20,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 114,
+      "image": null,
+      "stock": 15,
+      "blurb": "1.2V2500MA 4/5 SC BATTERY (Pc(s)). Genuine InTouch ERP SKU: 4503",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "4503"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2421"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.580Z",
+      "updatedAt": "2026-10-12T15:48:25.580Z"
+    },
+    {
+      "sku": "1145",
+      "slug": "1-2v2500ma-sc-battery-clip-type-1145",
+      "name": "1.2V2500MA SC BATTERY CLIP TYPE",
+      "categoryId": "mobile-accessories",
+      "basePrice": 275,
+      "markupPercentage": 20,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 330,
+      "image": "/assets/p/gan-charger.jpg",
+      "stock": 20,
+      "blurb": "1.2V2500MA SC BATTERY CLIP TYPE (Pc(s)). Genuine InTouch ERP SKU: 1145",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "1145"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2421"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.580Z",
+      "updatedAt": "2026-10-12T15:48:25.580Z"
+    },
+    {
+      "sku": "1146",
+      "slug": "1-2v2800ma-sc-battery-1146",
+      "name": "1.2V2800MA  SC BATTERY",
+      "categoryId": "mobile-accessories",
+      "basePrice": 126,
+      "markupPercentage": 20,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 151.2,
+      "image": null,
+      "stock": 15,
+      "blurb": "1.2V2800MA  SC BATTERY (Pc(s)). Genuine InTouch ERP SKU: 1146",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "1146"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2421"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.580Z",
+      "updatedAt": "2026-10-12T15:48:25.580Z"
+    },
+    {
+      "sku": "1148",
+      "slug": "1-2v5000ma-c-battery-1148",
+      "name": "1.2V5000MA C BATTERY",
+      "categoryId": "mobile-accessories",
+      "basePrice": 182,
+      "markupPercentage": 20,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 218.4,
+      "image": "/assets/p/gan-charger.jpg",
+      "stock": 15,
+      "blurb": "1.2V5000MA C BATTERY (Pc(s)). Genuine InTouch ERP SKU: 1148",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "1148"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2421"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.580Z",
+      "updatedAt": "2026-10-12T15:48:25.580Z"
+    },
+    {
+      "sku": "1151",
+      "slug": "1-5a-tv-fuse-1151",
+      "name": "1.5A TV FUSE",
+      "categoryId": "tv-accessories",
+      "basePrice": 0.8,
+      "markupPercentage": 10,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 0.88,
+      "image": null,
+      "stock": 689,
+      "blurb": "1.5A TV FUSE (Pc(s)). Genuine InTouch ERP SKU: 1151",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "1151"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2425"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.580Z",
+      "updatedAt": "2026-10-12T15:48:25.580Z"
+    },
+    {
+      "sku": "1161",
+      "slug": "1-5m-network-cable-1161",
+      "name": "1.5M NETWORK CABLE",
+      "categoryId": "mobile-accessories",
+      "basePrice": 73.14,
+      "markupPercentage": 20,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 87.77,
+      "image": "/assets/p/gan-charger.jpg",
+      "stock": 15,
+      "blurb": "1.5M NETWORK CABLE (Pc(s)). Genuine InTouch ERP SKU: 1161",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "1161"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2404"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.580Z",
+      "updatedAt": "2026-10-12T15:48:25.580Z"
+    },
+    {
+      "sku": "3714",
+      "slug": "1-5v-2sel-battery-holder-3714",
+      "name": "1.5V 2SEL BATTERY HOLDER",
+      "categoryId": "mobile-accessories",
+      "basePrice": 40.8,
+      "markupPercentage": 20,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 48.96,
+      "image": null,
+      "stock": 74,
+      "blurb": "1.5V 2SEL BATTERY HOLDER (Pc(s)). Genuine InTouch ERP SKU: 3714",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "3714"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2403"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.580Z",
+      "updatedAt": "2026-10-12T15:48:25.580Z"
+    },
+    {
+      "sku": "101SR",
+      "slug": "10-a10-lcd-sam-org-service-101sr",
+      "name": "10 / A10  LCD  SAM  ORG SERVICE",
+      "categoryId": "iot-and-microcontrollers",
+      "basePrice": 1800,
+      "markupPercentage": 25,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 2250,
+      "image": "/assets/p/esp32.jpg",
+      "stock": 15,
+      "blurb": "10 / A10  LCD  SAM  ORG SERVICE (Pc(s)). Genuine InTouch ERP SKU: 101SR",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "101SR"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "N/A"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.580Z",
+      "updatedAt": "2026-10-12T15:48:25.580Z"
+    },
+    {
+      "sku": "1211",
+      "slug": "10000-16v-motor-cap-1211",
+      "name": "10000/16V   MOTOR CAP",
+      "categoryId": "iot-and-microcontrollers",
+      "basePrice": 100,
+      "markupPercentage": 25,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 125,
+      "image": null,
+      "stock": 15,
+      "blurb": "10000/16V   MOTOR CAP (Pc(s)). Genuine InTouch ERP SKU: 1211",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "1211"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2401"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.580Z",
+      "updatedAt": "2026-10-12T15:48:25.580Z"
+    },
+    {
+      "sku": "PB91",
+      "slug": "10000mah-power-bank-moxom-pb91",
+      "name": "10000MAH  POWER BANK MOXOM",
+      "categoryId": "mobile-accessories",
+      "basePrice": 3700,
+      "markupPercentage": 20,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 4440,
+      "image": "/assets/p/gan-charger.jpg",
+      "stock": 15,
+      "blurb": "10000MAH  POWER BANK MOXOM (Pc(s)). Genuine InTouch ERP SKU: PB91",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "PB91"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "N/A"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.580Z",
+      "updatedAt": "2026-10-12T15:48:25.580Z"
+    },
+    {
+      "sku": "1000A",
+      "slug": "1000a-mp-jump-starter-booster-cable-1000a",
+      "name": "1000A MP JUMP STARTER BOOSTER CABLE",
+      "categoryId": "mobile-accessories",
+      "basePrice": 765,
+      "markupPercentage": 20,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 918,
+      "image": null,
+      "stock": 15,
+      "blurb": "1000A MP JUMP STARTER BOOSTER CABLE (Pc(s)). Genuine InTouch ERP SKU: 1000A",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "1000A"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "N/A"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.580Z",
+      "updatedAt": "2026-10-12T15:48:25.580Z"
+    },
+    {
+      "sku": "12157",
+      "slug": "100g-0-8m-solder-skc-12157",
+      "name": "100G 0.8M SOLDER SKC",
+      "categoryId": "repair-kits",
+      "basePrice": 400,
+      "markupPercentage": 18,
+      "isPriceOverridden": false,
+      "overridePrice": null,
+      "sellingPrice": 472,
+      "image": "/assets/p/soldering-station.jpg",
+      "stock": 15,
+      "blurb": "100G 0.8M SOLDER SKC (Pc(s)). Genuine InTouch ERP SKU: 12157",
+      "specs": [
+        {
+          "label": "SKU",
+          "value": "12157"
+        },
+        {
+          "label": "Unit",
+          "value": "Pc(s)"
+        },
+        {
+          "label": "Type",
+          "value": "single"
+        },
+        {
+          "label": "ERP Category ID",
+          "value": "2419"
+        }
+      ],
+      "createdAt": "2026-10-12T15:48:25.580Z",
+      "updatedAt": "2026-10-12T15:48:25.580Z"
     }
   ],
   "media": [
     {
       "id": "med-1",
-      "filename": "gan-charger.jpg",
+      "filename": "electronics-item-1.jpg",
+      "url": "/assets/p/psu-module.jpg",
+      "sizeBytes": 42000,
+      "mimeType": "image/jpeg",
+      "categoryId": "electronics",
+      "productSku": "13069",
+      "uploadedAt": "2026-10-12T15:48:25.580Z"
+    },
+    {
+      "id": "med-3",
+      "filename": "electronics-item-3.jpg",
+      "url": "/assets/p/psu-module.jpg",
+      "sizeBytes": 42000,
+      "mimeType": "image/jpeg",
+      "categoryId": "electronics",
+      "productSku": "1937",
+      "uploadedAt": "2026-10-12T15:48:25.580Z"
+    },
+    {
+      "id": "med-5",
+      "filename": "electronics-item-5.jpg",
+      "url": "/assets/p/psu-module.jpg",
+      "sizeBytes": 42000,
+      "mimeType": "image/jpeg",
+      "categoryId": "electronics",
+      "productSku": "9624",
+      "uploadedAt": "2026-10-12T15:48:25.580Z"
+    },
+    {
+      "id": "med-7",
+      "filename": "electronics-item-7.jpg",
+      "url": "/assets/p/psu-module.jpg",
+      "sizeBytes": 42000,
+      "mimeType": "image/jpeg",
+      "categoryId": "electronics",
+      "productSku": "9658",
+      "uploadedAt": "2026-10-12T15:48:25.580Z"
+    },
+    {
+      "id": "med-9",
+      "filename": "electronics-item-9.jpg",
+      "url": "/assets/p/psu-module.jpg",
+      "sizeBytes": 42000,
+      "mimeType": "image/jpeg",
+      "categoryId": "electronics",
+      "productSku": "4027",
+      "uploadedAt": "2026-10-12T15:48:25.580Z"
+    },
+    {
+      "id": "med-11",
+      "filename": "electronics-item-11.jpg",
+      "url": "/assets/p/psu-module.jpg",
+      "sizeBytes": 42000,
+      "mimeType": "image/jpeg",
+      "categoryId": "electronics",
+      "productSku": "9627",
+      "uploadedAt": "2026-10-12T15:48:25.580Z"
+    },
+    {
+      "id": "med-13",
+      "filename": "electronics-item-13.jpg",
+      "url": "/assets/p/psu-module.jpg",
+      "sizeBytes": 42000,
+      "mimeType": "image/jpeg",
+      "categoryId": "electronics",
+      "productSku": "9629",
+      "uploadedAt": "2026-10-12T15:48:25.580Z"
+    },
+    {
+      "id": "med-15",
+      "filename": "electronics-item-15.jpg",
+      "url": "/assets/p/psu-module.jpg",
+      "sizeBytes": 42000,
+      "mimeType": "image/jpeg",
+      "categoryId": "electronics",
+      "productSku": "9633",
+      "uploadedAt": "2026-10-12T15:48:25.580Z"
+    },
+    {
+      "id": "med-17",
+      "filename": "electronics-item-17.jpg",
+      "url": "/assets/p/psu-module.jpg",
+      "sizeBytes": 42000,
+      "mimeType": "image/jpeg",
+      "categoryId": "electronics",
+      "productSku": "5644",
+      "uploadedAt": "2026-10-12T15:48:25.580Z"
+    },
+    {
+      "id": "med-19",
+      "filename": "electronics-item-19.jpg",
+      "url": "/assets/p/psu-module.jpg",
+      "sizeBytes": 42000,
+      "mimeType": "image/jpeg",
+      "categoryId": "electronics",
+      "productSku": "6386",
+      "uploadedAt": "2026-10-12T15:48:25.580Z"
+    },
+    {
+      "id": "med-21",
+      "filename": "electronics-item-21.jpg",
+      "url": "/assets/p/psu-module.jpg",
+      "sizeBytes": 42000,
+      "mimeType": "image/jpeg",
+      "categoryId": "electronics",
+      "productSku": "9631",
+      "uploadedAt": "2026-10-12T15:48:25.580Z"
+    },
+    {
+      "id": "med-23",
+      "filename": "electronics-item-23.jpg",
+      "url": "/assets/p/psu-module.jpg",
+      "sizeBytes": 42000,
+      "mimeType": "image/jpeg",
+      "categoryId": "electronics",
+      "productSku": "9636",
+      "uploadedAt": "2026-10-12T15:48:25.580Z"
+    },
+    {
+      "id": "med-25",
+      "filename": "electronics-item-25.jpg",
+      "url": "/assets/p/psu-module.jpg",
+      "sizeBytes": 42000,
+      "mimeType": "image/jpeg",
+      "categoryId": "electronics",
+      "productSku": "1737",
+      "uploadedAt": "2026-10-12T15:48:25.580Z"
+    },
+    {
+      "id": "med-27",
+      "filename": "electronics-item-27.jpg",
+      "url": "/assets/p/psu-module.jpg",
+      "sizeBytes": 42000,
+      "mimeType": "image/jpeg",
+      "categoryId": "electronics",
+      "productSku": "1738",
+      "uploadedAt": "2026-10-12T15:48:25.580Z"
+    },
+    {
+      "id": "med-29",
+      "filename": "electronics-item-29.jpg",
+      "url": "/assets/p/psu-module.jpg",
+      "sizeBytes": 42000,
+      "mimeType": "image/jpeg",
+      "categoryId": "electronics",
+      "productSku": "9638",
+      "uploadedAt": "2026-10-12T15:48:25.580Z"
+    },
+    {
+      "id": "med-31",
+      "filename": "electronics-item-31.jpg",
+      "url": "/assets/p/psu-module.jpg",
+      "sizeBytes": 42000,
+      "mimeType": "image/jpeg",
+      "categoryId": "electronics",
+      "productSku": "5059",
+      "uploadedAt": "2026-10-12T15:48:25.580Z"
+    },
+    {
+      "id": "med-33",
+      "filename": "electronics-item-33.jpg",
+      "url": "/assets/p/psu-module.jpg",
+      "sizeBytes": 42000,
+      "mimeType": "image/jpeg",
+      "categoryId": "electronics",
+      "productSku": "5650",
+      "uploadedAt": "2026-10-12T15:48:25.580Z"
+    },
+    {
+      "id": "med-35",
+      "filename": "electronics-item-35.jpg",
+      "url": "/assets/p/psu-module.jpg",
+      "sizeBytes": 42000,
+      "mimeType": "image/jpeg",
+      "categoryId": "electronics",
+      "productSku": "9540",
+      "uploadedAt": "2026-10-12T15:48:25.580Z"
+    },
+    {
+      "id": "med-37",
+      "filename": "electronics-item-37.jpg",
+      "url": "/assets/p/psu-module.jpg",
+      "sizeBytes": 42000,
+      "mimeType": "image/jpeg",
+      "categoryId": "electronics",
+      "productSku": "9539",
+      "uploadedAt": "2026-10-12T15:48:25.580Z"
+    },
+    {
+      "id": "med-39",
+      "filename": "electronics-item-39.jpg",
+      "url": "/assets/p/psu-module.jpg",
+      "sizeBytes": 42000,
+      "mimeType": "image/jpeg",
+      "categoryId": "electronics",
+      "productSku": "6397",
+      "uploadedAt": "2026-10-12T15:48:25.580Z"
+    },
+    {
+      "id": "med-41",
+      "filename": "electronics-item-41.jpg",
+      "url": "/assets/p/psu-module.jpg",
+      "sizeBytes": 42000,
+      "mimeType": "image/jpeg",
+      "categoryId": "electronics",
+      "productSku": "2244",
+      "uploadedAt": "2026-10-12T15:48:25.580Z"
+    },
+    {
+      "id": "med-43",
+      "filename": "electronics-item-43.jpg",
+      "url": "/assets/p/psu-module.jpg",
+      "sizeBytes": 42000,
+      "mimeType": "image/jpeg",
+      "categoryId": "electronics",
+      "productSku": "9565",
+      "uploadedAt": "2026-10-12T15:48:25.580Z"
+    },
+    {
+      "id": "med-45",
+      "filename": "electronics-item-45.jpg",
+      "url": "/assets/p/psu-module.jpg",
+      "sizeBytes": 42000,
+      "mimeType": "image/jpeg",
+      "categoryId": "electronics",
+      "productSku": "9619",
+      "uploadedAt": "2026-10-12T15:48:25.580Z"
+    },
+    {
+      "id": "med-47",
+      "filename": "electronics-item-47.jpg",
+      "url": "/assets/p/psu-module.jpg",
+      "sizeBytes": 42000,
+      "mimeType": "image/jpeg",
+      "categoryId": "electronics",
+      "productSku": "1003",
+      "uploadedAt": "2026-10-12T15:48:25.580Z"
+    },
+    {
+      "id": "med-49",
+      "filename": "electronics-item-49.jpg",
+      "url": "/assets/p/psu-module.jpg",
+      "sizeBytes": 42000,
+      "mimeType": "image/jpeg",
+      "categoryId": "electronics",
+      "productSku": "1004",
+      "uploadedAt": "2026-10-12T15:48:25.580Z"
+    },
+    {
+      "id": "med-51",
+      "filename": "mobile-accessories-item-51.jpg",
       "url": "/assets/p/gan-charger.jpg",
       "sizeBytes": 42000,
       "mimeType": "image/jpeg",
       "categoryId": "mobile-accessories",
-      "productSku": "LT-1001",
-      "uploadedAt": "2026-10-12T10:21:34.814Z"
+      "productSku": "003PH",
+      "uploadedAt": "2026-10-12T15:48:25.580Z"
     },
     {
-      "id": "med-2",
-      "filename": "usbc-cable.jpg",
-      "url": "/assets/p/usbc-cable.jpg",
-      "sizeBytes": 41460,
-      "mimeType": "image/jpeg",
-      "categoryId": "mobile-accessories",
-      "productSku": "LT-1002",
-      "uploadedAt": "2026-10-12T10:21:34.814Z"
-    },
-    {
-      "id": "med-3",
-      "filename": "esp32.jpg",
+      "id": "med-53",
+      "filename": "iot-and-microcontrollers-item-53.jpg",
       "url": "/assets/p/esp32.jpg",
-      "sizeBytes": 46910,
+      "sizeBytes": 42000,
       "mimeType": "image/jpeg",
       "categoryId": "iot-and-microcontrollers",
-      "productSku": "LT-2001",
-      "uploadedAt": "2026-10-12T10:21:34.814Z"
+      "productSku": "10745",
+      "uploadedAt": "2026-10-12T15:48:25.580Z"
     },
     {
-      "id": "med-4",
-      "filename": "soldering-station.jpg",
+      "id": "med-55",
+      "filename": "tv-accessories-item-55.jpg",
+      "url": "/assets/p/hdmi-cable.jpg",
+      "sizeBytes": 42000,
+      "mimeType": "image/jpeg",
+      "categoryId": "tv-accessories",
+      "productSku": "16915",
+      "uploadedAt": "2026-10-12T15:48:25.580Z"
+    },
+    {
+      "id": "med-57",
+      "filename": "iot-and-microcontrollers-item-57.jpg",
+      "url": "/assets/p/esp32.jpg",
+      "sizeBytes": 42000,
+      "mimeType": "image/jpeg",
+      "categoryId": "iot-and-microcontrollers",
+      "productSku": "8085",
+      "uploadedAt": "2026-10-12T15:48:25.580Z"
+    },
+    {
+      "id": "med-59",
+      "filename": "mobile-accessories-item-59.jpg",
+      "url": "/assets/p/gan-charger.jpg",
+      "sizeBytes": 42000,
+      "mimeType": "image/jpeg",
+      "categoryId": "mobile-accessories",
+      "productSku": "16242",
+      "uploadedAt": "2026-10-12T15:48:25.580Z"
+    },
+    {
+      "id": "med-61",
+      "filename": "mobile-accessories-item-61.jpg",
+      "url": "/assets/p/gan-charger.jpg",
+      "sizeBytes": 42000,
+      "mimeType": "image/jpeg",
+      "categoryId": "mobile-accessories",
+      "productSku": "1139",
+      "uploadedAt": "2026-10-12T15:48:25.580Z"
+    },
+    {
+      "id": "med-63",
+      "filename": "mobile-accessories-item-63.jpg",
+      "url": "/assets/p/gan-charger.jpg",
+      "sizeBytes": 42000,
+      "mimeType": "image/jpeg",
+      "categoryId": "mobile-accessories",
+      "productSku": "1143",
+      "uploadedAt": "2026-10-12T15:48:25.580Z"
+    },
+    {
+      "id": "med-65",
+      "filename": "mobile-accessories-item-65.jpg",
+      "url": "/assets/p/gan-charger.jpg",
+      "sizeBytes": 42000,
+      "mimeType": "image/jpeg",
+      "categoryId": "mobile-accessories",
+      "productSku": "1145",
+      "uploadedAt": "2026-10-12T15:48:25.580Z"
+    },
+    {
+      "id": "med-67",
+      "filename": "mobile-accessories-item-67.jpg",
+      "url": "/assets/p/gan-charger.jpg",
+      "sizeBytes": 42000,
+      "mimeType": "image/jpeg",
+      "categoryId": "mobile-accessories",
+      "productSku": "1148",
+      "uploadedAt": "2026-10-12T15:48:25.580Z"
+    },
+    {
+      "id": "med-69",
+      "filename": "mobile-accessories-item-69.jpg",
+      "url": "/assets/p/gan-charger.jpg",
+      "sizeBytes": 42000,
+      "mimeType": "image/jpeg",
+      "categoryId": "mobile-accessories",
+      "productSku": "1161",
+      "uploadedAt": "2026-10-12T15:48:25.580Z"
+    },
+    {
+      "id": "med-71",
+      "filename": "iot-and-microcontrollers-item-71.jpg",
+      "url": "/assets/p/esp32.jpg",
+      "sizeBytes": 42000,
+      "mimeType": "image/jpeg",
+      "categoryId": "iot-and-microcontrollers",
+      "productSku": "101SR",
+      "uploadedAt": "2026-10-12T15:48:25.580Z"
+    },
+    {
+      "id": "med-73",
+      "filename": "mobile-accessories-item-73.jpg",
+      "url": "/assets/p/gan-charger.jpg",
+      "sizeBytes": 42000,
+      "mimeType": "image/jpeg",
+      "categoryId": "mobile-accessories",
+      "productSku": "PB91",
+      "uploadedAt": "2026-10-12T15:48:25.580Z"
+    },
+    {
+      "id": "med-75",
+      "filename": "repair-kits-item-75.jpg",
       "url": "/assets/p/soldering-station.jpg",
-      "sizeBytes": 40020,
+      "sizeBytes": 42000,
       "mimeType": "image/jpeg",
       "categoryId": "repair-kits",
-      "productSku": "LT-3001",
-      "uploadedAt": "2026-10-12T10:21:34.814Z"
+      "productSku": "12157",
+      "uploadedAt": "2026-10-12T15:48:25.580Z"
     }
   ],
-  "version": 1,
-  "lastUpdated": "2026-10-12T10:23:06.046Z"
+  "version": 2,
+  "lastUpdated": "2026-10-13T05:07:33.539Z"
 }

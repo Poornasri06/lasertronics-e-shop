@@ -11,6 +11,7 @@ import {
   updateCategoryMarkup,
   deleteCategory,
   saveProduct,
+  deleteProduct,
   resetProductPriceOverride,
   bulkImportProducts,
   getProductBySku,
@@ -156,11 +157,18 @@ async function runTests() {
   const b1 = getProductBySku(skuB1);
   assert(b1 !== undefined && b1.sellingPrice === 112, `${skuB1} Base 80 + 40% = 112 (got ${b1?.sellingPrice})`);
 
-  // 10. Clean up test category
+  // 10. Clean up test category & test products
   console.log("\n--- 10. Testing Category Deletion & Reassignment ---");
   deleteCategory("test-robotics", "electronics");
   const movedProd = getProductBySku("TEST-001");
   assert(movedProd?.categoryId === "electronics", `Products in deleted category reassigned to electronics`);
+
+  // Clean up temporary test products
+  deleteProduct("TEST-001");
+  deleteProduct("TEST-002");
+  deleteProduct("TEST-NOIMG");
+  deleteProduct(skuB1);
+  deleteProduct(skuB2);
 
   console.log("\n=======================================================");
   console.log("🎉 ALL TESTS PASSED SUCCESSFULLY! 10/10 VERIFIED");
