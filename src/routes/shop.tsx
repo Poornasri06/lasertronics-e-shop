@@ -42,7 +42,10 @@ const PAGE_SIZE = 36;
 
 function ShopPage() {
   const { liveProducts } = Route.useLoaderData();
-  const allProducts = liveProducts && liveProducts.length > 0 ? liveProducts : defaultFallbackProducts;
+  const allProducts = useMemo(() => {
+    const raw = liveProducts && liveProducts.length > 0 ? liveProducts : defaultFallbackProducts;
+    return raw.filter((p) => (p.stock || 0) > 0);
+  }, [liveProducts]);
 
   const [query, setQuery] = useState("");
   const [active, setActive] = useState<string>("all");

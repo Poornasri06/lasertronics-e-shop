@@ -131,9 +131,11 @@ const testimonials = [
 
 function Index() {
   const { liveProducts } = Route.useLoaderData();
-  const allProducts = liveProducts && liveProducts.length > 0 ? liveProducts : defaultFallbackProducts;
+  const allProducts = (liveProducts && liveProducts.length > 0 ? liveProducts : defaultFallbackProducts).filter(
+    (p) => (p.stock || 0) > 0
+  );
   registerLiveProducts(allProducts);
-  const newArrivals = allProducts.slice(0, 6);
+  const newArrivals = allProducts.filter((p) => (p.stock || 0) > 0).slice(0, 6);
 
   return (
     <SiteLayout>

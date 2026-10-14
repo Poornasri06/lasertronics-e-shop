@@ -168,26 +168,34 @@ export const categories: Category[] = [
 
 import catalogDb from "./catalog-db.json";
 
-// Authentic Lasertronics products from catalog database
-export const products: Product[] = (catalogDb.products || []).map((r: any) => ({
-  slug: r.slug,
-  name: r.name,
-  category: r.categoryId,
-  price: r.sellingPrice,
-  image: r.image && r.image.trim() !== "" ? r.image : "/favicon.png",
-  blurb: r.blurb,
-  ...(r.badge ? { badge: r.badge } : {}),
-  specs: [
-    { label: "SKU", value: r.sku },
-    { label: "Base Price", value: `₹${r.basePrice.toLocaleString("en-IN")}` },
-    { label: "Markup", value: `${r.markupPercentage ?? 0}%` },
-    ...(r.isPriceOverridden ? [{ label: "Pricing Note", value: "Manual Admin Price Override" }] : []),
-    ...(r.specs || []),
-  ],
-  rating: 4.8,
-  reviews: 14,
-  stock: r.stock,
-}));
+// Authentic Lasertronics products from catalog database (in-stock only)
+export const products: Product[] = (catalogDb.products || [])
+  .filter((r: any) => (r.stock || 0) > 0)
+  .map((r: any) => ({
+    slug: r.slug,
+    name: r.name,
+    category: r.categoryId,
+    price: r.sellingPrice,
+    image: r.image && r.image.trim() !== "" ? r.image : "/favicon.png",
+    blurb: r.blurb,
+    ...(r.badge ? { badge: r.badge } : {}),
+    specs: [
+      { label: "SKU", value: r.sku },
+      { label: "Availability", value: "In Stock" },
+      ...(r.specs || []).filter(
+        (s: any) =>
+          s.label !== "Available Stock" &&
+          s.label !== "Stock Enabled" &&
+          s.label !== "Base Price" &&
+          s.label !== "Base Cost" &&
+          s.label !== "Markup" &&
+          s.label !== "Category Margin"
+      ),
+    ],
+    rating: 4.8,
+    reviews: 14,
+    stock: r.stock,
+  }));
 
 // Dynamic InTouch ERP & catalog live products cache
 const liveProductsMap = new Map<string, Product>();
@@ -201,7 +209,7 @@ for (const item of products) {
 export function registerLiveProducts(items: Product[]) {
   if (!items || !Array.isArray(items)) return;
   for (const item of items) {
-    if (!item?.slug) continue;
+    if (!item?.slug || (item.stock || 0) <= 0) continue;
     liveProductsMap.set(item.slug, item);
     liveProductsMap.set(item.slug.toLowerCase(), item);
     const skuSpec = item.specs?.find((s) => s.label === "SKU");
@@ -213,7 +221,7 @@ export function registerLiveProducts(items: Product[]) {
 }
 
 export function getRegisteredLiveProducts(): Product[] {
-  return Array.from(new Set(liveProductsMap.values()));
+  return Array.from(new Set(liveProductsMap.values())).filter((p) => (p.stock || 0) > 0);
 }
 
 export const formatLKR = (value: number) =>
@@ -222,21 +230,24 @@ export const formatLKR = (value: number) =>
 export const getCategory = (slug: string) => categories.find((c) => c.slug === slug);
 
 export const productsByCategory = (slug: string, limit?: number) => {
-  const liveList = getRegisteredLiveProducts().filter((p) => p.category === slug);
+  const liveList = getRegisteredLiveProducts().filter(
+    (p) => p.category === slug && (p.stock || 0) > 0
+  );
   return limit ? liveList.slice(0, limit) : liveList;
 };
 
 export const getProduct = (slug: string) => {
-  return (
+  const item =
     liveProductsMap.get(slug) ||
     liveProductsMap.get(slug.toLowerCase()) ||
-    undefined
-  );
+    products.find((p) => p.slug === slug || p.slug.toLowerCase() === slug.toLowerCase());
+  if (!item || (item.stock || 0) <= 0) return undefined;
+  return item;
 };
 
 export const relatedProducts = (product: Product, limit = 4) => {
   const liveList = getRegisteredLiveProducts().filter(
-    (p) => p.category === product.category && p.slug !== product.slug,
+    (p) => p.category === product.category && p.slug !== product.slug && (p.stock || 0) > 0,
   );
   return liveList.slice(0, limit);
 };

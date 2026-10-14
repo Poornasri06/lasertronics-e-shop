@@ -25,10 +25,16 @@ function mapRecordToProduct(r: ProductRecord): Product {
     ...(r.badge ? { badge: r.badge } : {}),
     specs: [
       { label: "SKU", value: r.sku },
-      { label: "Base Price", value: `₹${r.basePrice.toLocaleString("en-IN")}` },
-      { label: "Markup", value: `${r.markupPercentage ?? 0}%` },
-      ...(r.isPriceOverridden ? [{ label: "Pricing Note", value: "Manual Admin Price Override" }] : []),
-      ...r.specs,
+      { label: "Availability", value: "In Stock" },
+      ...(r.specs || []).filter(
+        (s: any) =>
+          s.label !== "Available Stock" &&
+          s.label !== "Stock Enabled" &&
+          s.label !== "Base Price" &&
+          s.label !== "Base Cost" &&
+          s.label !== "Markup" &&
+          s.label !== "Category Margin"
+      ),
     ],
     rating: 4.8,
     reviews: 14,
@@ -104,8 +110,11 @@ export async function getLiveStoreProducts(): Promise<Product[]> {
     }
 
     // Graceful fallback to catalog store if API offline
-    const managed = (store?.products || []).map(mapRecordToProduct);
-    return managed.length > 0 ? managed : fallbackProducts;
+    const managed = (store?.products || [])
+      .filter((p) => (p.stock || 0) > 0)
+      .map(mapRecordToProduct);
+    const fallbackActive = fallbackProducts.filter((p) => (p.stock || 0) > 0);
+    return managed.length > 0 ? managed : fallbackActive;
   })();
 
   return isFetchingPromise;
@@ -134,7 +143,7 @@ export const fetchProductsCatalogFn = createServerFn({ method: "GET" })
   .validator((params: CatalogQueryParams) => params)
   .handler(async ({ data: params }): Promise<CatalogResponse> => {
     const all = await getLiveStoreProducts();
-    let list = all;
+    let list = all.filter((p) => (p.stock || 0) > 0);
 
     if (params.category && params.category !== "all") {
       list = list.filter((p) => p.category === params.category);
@@ -178,7 +187,8 @@ export const fetchProductsCatalogFn = createServerFn({ method: "GET" })
  * Server function to fetch all live products
  */
 export const fetchAllProductsFn = createServerFn({ method: "GET" }).handler(async () => {
-  return await getLiveStoreProducts();
+  const all = await getLiveStoreProducts();
+  return all.filter((p) => (p.stock || 0) > 0);
 });
 
 /**
@@ -189,24 +199,30 @@ export const fetchProductBySlugOrSkuFn = createServerFn({ method: "GET" })
   .handler(async ({ data: slug }): Promise<Product | null> => {
     const all = await getLiveStoreProducts();
 
-    // 1. Exact match on slug
+    // 1. Exact match on slug with stock > 0
     const bySlug = all.find(
-      (p) => p.slug === slug || p.slug.toLowerCase() === slug.toLowerCase(),
+      (p) => (p.slug === slug || p.slug.toLowerCase() === slug.toLowerCase()) && (p.stock || 0) > 0,
     );
     if (bySlug) return bySlug;
 
-    // 2. Match on SKU in specs
+    // 2. Match on SKU in specs with stock > 0
     const bySku = all.find((p) =>
+      (p.stock || 0) > 0 &&
       p.specs.some(
         (s) => s.label === "SKU" && (s.value === slug || s.value.toLowerCase() === slug.toLowerCase()),
       ),
     );
     if (bySku) return bySku;
 
-    // 3. Fallback direct query to InTouch ERP
+    // 3. Fallback direct query to InTouch ERP (only if stock_qty > 0)
     try {
       const raw = await fetchInTouchProductBySku(slug);
-      if (raw) return mapInTouchProductToStoreProduct(raw);
+      if (raw) {
+        const qty = parseFloat(raw.stock_qty || "0");
+        if (qty > 0) {
+          return mapInTouchProductToStoreProduct(raw);
+        }
+      }
     } catch (err) {
       console.error(`Failed to fetch product SKU ${slug} directly from ERP:`, err);
     }

@@ -36,7 +36,7 @@ export const Route = createFileRoute("/category/$slug")({
 
 function CategoryPage() {
   const { category } = Route.useLoaderData();
-  const items = productsByCategory(category.slug);
+  const items = productsByCategory(category.slug).filter((p) => (p.stock || 0) > 0);
 
   return (
     <SiteLayout>

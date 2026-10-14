@@ -10,10 +10,10 @@ import { useCart } from "@/lib/cart";
 export const Route = createFileRoute("/product/$slug")({
   loader: async ({ params }) => {
     let product = getProduct(params.slug);
-    if (!product) {
+    if (!product || (product.stock || 0) <= 0) {
       try {
         const live = await fetchProductBySlugOrSkuFn({ data: params.slug });
-        if (live) {
+        if (live && (live.stock || 0) > 0) {
           registerLiveProducts([live]);
           product = live;
         }
@@ -21,7 +21,7 @@ export const Route = createFileRoute("/product/$slug")({
         console.error("Failed to load product by slug/SKU from ERP:", err);
       }
     }
-    if (!product) throw notFound();
+    if (!product || (product.stock || 0) <= 0) throw notFound();
     return { product };
   },
   head: ({ loaderData }) => {
@@ -117,7 +117,7 @@ function ProductPage() {
           </div>
           <div className="mt-1.5 flex items-center gap-1.5 text-xs font-bold text-emerald-600">
             <span className="size-2 rounded-full bg-emerald-500 animate-pulse" />
-            In stock • {product.stock} units available in Colombo
+            In Stock • Available for Immediate Dispatch
           </div>
 
           {/* iOS Tactile Quantity Selector */}
