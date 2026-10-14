@@ -310,8 +310,13 @@ function selectProductImage(name: string, category: string, uniqueKey: string = 
 export function mapInTouchProductToStoreProduct(
   item: InTouchProduct,
   defaultCategory?: string,
+  categoryMarkupMap?: Record<string, number>,
+  productOverridesMap?: Record<string, { overridePrice?: number | null; isOverridden?: boolean; image?: string | null }>,
 ): Product {
-  const rawPrice = parseFloat(item.selling_price) || 0;
+  const purchasePrice = parseFloat(item.purchase_price || "0");
+  const rawSellingPrice = parseFloat(item.selling_price || "0");
+  const basePrice = purchasePrice > 0 ? purchasePrice : rawSellingPrice;
+
   const stockQty = parseFloat(item.stock_qty || "0");
   const computedStock = !isNaN(stockQty)
     ? Math.max(0, Math.floor(stockQty))
@@ -325,9 +330,32 @@ export function mapInTouchProductToStoreProduct(
     productOverrides[item.product_id];
 
   const displayName = override?.name || item.product_name;
-  const displayPrice = override?.price !== undefined ? override.price : rawPrice;
   const category = override?.category || defaultCategory || detectCategory(displayName);
+
+  // Apply Category-Based Margin Percentage (e.g. 20%)
+  const markupPercentage = categoryMarkupMap?.[category] ?? (categoryMarkupMap?.["default"] || 20);
+  const markupAmount = Math.round(((basePrice * markupPercentage) / 100) * 100) / 100;
+  const ruleCalculatedPrice = Math.round((basePrice + markupAmount) * 100) / 100;
+
+  // Check manual override from admin catalog store or hardcoded override
+  const catalogOverride =
+    productOverridesMap?.[item.sku] ||
+    (item.sub_sku ? productOverridesMap?.[item.sub_sku] : undefined) ||
+    productOverridesMap?.[item.product_id];
+
+  let displayPrice = ruleCalculatedPrice;
+  let isOverridden = false;
+
+  if (catalogOverride?.isOverridden && catalogOverride.overridePrice != null && catalogOverride.overridePrice > 0) {
+    displayPrice = catalogOverride.overridePrice;
+    isOverridden = true;
+  } else if (override?.price !== undefined) {
+    displayPrice = override.price;
+    isOverridden = true;
+  }
+
   const image =
+    catalogOverride?.image ||
     override?.image ||
     selectProductImage(displayName, category, item.sub_sku || item.sku || item.product_id);
 
@@ -350,6 +378,9 @@ export function mapInTouchProductToStoreProduct(
       `${displayName} (${item.unit || "unit"}). Genuine InTouch ERP SKU: ${item.sub_sku || item.sku}`,
     specs: [
       { label: "SKU", value: item.sku },
+      { label: "Base Cost", value: `₹${basePrice.toFixed(2)}` },
+      { label: "Category Margin", value: `+${markupPercentage}%` },
+      ...(isOverridden ? [{ label: "Pricing Note", value: "Manual Override Applied" }] : []),
       ...(item.sub_sku && item.sub_sku !== item.sku ? [{ label: "Variation SKU", value: item.sub_sku }] : []),
       ...(item.variation_name ? [{ label: "Variation", value: item.variation_name }] : []),
       { label: "Unit", value: item.unit || "Pc(s)" },

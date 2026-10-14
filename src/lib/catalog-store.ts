@@ -504,6 +504,19 @@ export function saveCatalogStore(data: CatalogData): void {
   } catch (err) {
     console.warn("Could not write catalog-db.json to disk (e.g. read-only env):", err);
   }
+
+  if (onCatalogChangedCallback) {
+    try {
+      onCatalogChangedCallback();
+    } catch (e) {
+      console.warn("Catalog change callback error:", e);
+    }
+  }
+}
+
+let onCatalogChangedCallback: (() => void) | null = null;
+export function setCatalogChangedCallback(cb: () => void): void {
+  onCatalogChangedCallback = cb;
 }
 
 // ==========================================

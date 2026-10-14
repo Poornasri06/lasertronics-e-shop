@@ -6,7 +6,12 @@ import {
 } from "./intouch-api";
 import { products as fallbackProducts, type Product } from "@/data/products";
 
-import { loadCatalogStore, type ProductRecord } from "./catalog-store";
+import { loadCatalogStore, setCatalogChangedCallback, type ProductRecord } from "./catalog-store";
+
+// Automatically clear in-memory storefront product cache whenever admin modifies markup or products
+setCatalogChangedCallback(() => {
+  invalidateStoreProductsCache();
+});
 
 // Helper to convert catalog store record into storefront Product
 function mapRecordToProduct(r: ProductRecord): Product {
@@ -36,7 +41,15 @@ let cachedProducts: Product[] | null = null;
 let lastFetchTime = 0;
 let isFetchingPromise: Promise<Product[]> | null = null;
 
+export function invalidateStoreProductsCache(): void {
+  cachedProducts = null;
+  lastFetchTime = 0;
+  isFetchingPromise = null;
+}
+
 export async function getLiveStoreProducts(): Promise<Product[]> {
+  const store = loadCatalogStore();
+
   const now = Date.now();
   if (cachedProducts && cachedProducts.length > 0 && now - lastFetchTime < CACHE_TTL_MS) {
     return cachedProducts;
@@ -50,6 +63,24 @@ export async function getLiveStoreProducts(): Promise<Product[]> {
     try {
       const rawItems = await fetchInTouchAllProducts();
       if (rawItems && rawItems.length > 0) {
+        // Build category markup mapping from admin catalog store
+        const categoryMarkupMap: Record<string, number> = {};
+        for (const cat of store.categories) {
+          categoryMarkupMap[cat.id] = cat.markupPercentage;
+        }
+
+        // Build individual overrides mapping
+        const productOverridesMap: Record<string, { overridePrice?: number | null; isOverridden?: boolean; image?: string | null }> = {};
+        for (const prod of store.products) {
+          if (prod.isPriceOverridden) {
+            productOverridesMap[prod.sku] = {
+              overridePrice: prod.overridePrice,
+              isOverridden: true,
+              image: prod.image,
+            };
+          }
+        }
+
         // Filter strictly for ACTIVE IN-STOCK products from InTouch ERP API (stock_qty > 0, price > 0)
         const activeInStock = rawItems.filter((item) => {
           const qty = parseFloat(item.stock_qty || "0");
@@ -59,7 +90,9 @@ export async function getLiveStoreProducts(): Promise<Product[]> {
         });
 
         if (activeInStock.length > 0) {
-          cachedProducts = activeInStock.map((item) => mapInTouchProductToStoreProduct(item));
+          cachedProducts = activeInStock.map((item) =>
+            mapInTouchProductToStoreProduct(item, undefined, categoryMarkupMap, productOverridesMap)
+          );
           lastFetchTime = Date.now();
           return cachedProducts;
         }
@@ -71,7 +104,6 @@ export async function getLiveStoreProducts(): Promise<Product[]> {
     }
 
     // Graceful fallback to catalog store if API offline
-    const store = loadCatalogStore();
     const managed = (store?.products || []).map(mapRecordToProduct);
     return managed.length > 0 ? managed : fallbackProducts;
   })();

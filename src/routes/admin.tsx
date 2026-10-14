@@ -129,6 +129,24 @@ function AdminDashboard() {
   // Media Library Filter State
   const [mediaCategoryFilter, setMediaCategoryFilter] = useState("all");
   const [mediaAssignmentFilter, setMediaAssignmentFilter] = useState<"all" | "assigned" | "unassigned">("all");
+  const [bulkMarginValue, setBulkMarginValue] = useState<number>(20);
+
+  // Apply bulk margin to all categories (e.g. 20%)
+  const handleApplyBulkMargin = async (pct: number) => {
+    if (isNaN(pct) || pct < 0) return;
+    try {
+      setIsRefreshing(true);
+      for (const cat of categories) {
+        await updateCategoryMarkupFn({ data: { categoryId: cat.id, markupPercentage: pct } });
+      }
+      toast.success(`Successfully set ${pct}% margin across all ${categories.length} categories! Selling prices recalculated.`);
+      await refreshData();
+    } catch (err: unknown) {
+      toast.error(err instanceof Error ? err.message : "Failed to apply bulk category margin");
+    } finally {
+      setIsRefreshing(false);
+    }
+  };
 
   // Refresh data from server
   const refreshData = async () => {
@@ -1175,46 +1193,105 @@ function AdminDashboard() {
                     <h3 className="text-lg font-bold text-white">Category-Based Pricing Configuration</h3>
                   </div>
                   <p className="text-xs text-slate-300 max-w-2xl leading-relaxed">
-                    Set a percentage-based pricing rule for each product category. The system calculates selling prices automatically using:{" "}
+                    Set a percentage-based margin rule for each product category (e.g. 20% margin). Selling prices are calculated automatically using:{" "}
                     <strong className="text-blue-300 font-mono">
-                      Selling Price = Base Price + (Base Price × Category Markup % ÷ 100)
+                      Selling Price = Base Cost + (Base Cost × Category Margin % ÷ 100)
                     </strong>.
                   </p>
                 </div>
 
-                <Button
-                  onClick={() => setPricingCalculatorOpen(true)}
-                  className="rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold h-9 shadow-md shadow-blue-600/30 gap-1.5"
-                >
-                  <Calculator className="size-3.5" />
-                  <span>Open Simulator</span>
-                </Button>
+                <div className="flex items-center gap-2 shrink-0">
+                  <Button
+                    onClick={() => setPricingCalculatorOpen(true)}
+                    className="rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold h-9 shadow-md shadow-blue-600/30 gap-1.5"
+                  >
+                    <Calculator className="size-3.5" />
+                    <span>Open Simulator</span>
+                  </Button>
+                </div>
+              </div>
+
+              {/* Bulk Margin Setup Bar */}
+              <div className="p-4 rounded-xl bg-slate-900/90 border border-slate-700/80 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                <div className="space-y-0.5">
+                  <span className="text-xs font-bold text-white flex items-center gap-2">
+                    <Sliders className="size-3.5 text-blue-400" />
+                    Bulk Margin Setup (All Categories)
+                  </span>
+                  <p className="text-[11px] text-slate-400">
+                    Quickly configure the same profit margin (e.g. 20%) across all active categories in 1-click.
+                  </p>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-2">
+                  {[10, 15, 20, 25, 30].map((preset) => (
+                    <button
+                      key={preset}
+                      type="button"
+                      onClick={() => {
+                        setBulkMarginValue(preset);
+                        handleApplyBulkMargin(preset);
+                      }}
+                      className={`px-2.5 py-1 rounded-lg text-xs font-bold font-mono transition-all ${
+                        bulkMarginValue === preset
+                          ? "bg-blue-600 text-white shadow-sm"
+                          : "bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white border border-slate-700"
+                      }`}
+                    >
+                      {preset}%
+                    </button>
+                  ))}
+
+                  <div className="flex items-center gap-1.5 ml-1">
+                    <Input
+                      type="number"
+                      min="0"
+                      max="1000"
+                      step="1"
+                      value={bulkMarginValue}
+                      onChange={(e) => setBulkMarginValue(parseFloat(e.target.value) || 0)}
+                      className="w-20 h-8 rounded-lg bg-slate-950 border-slate-700 font-bold font-mono text-blue-300 text-xs"
+                    />
+                    <span className="text-xs font-bold text-slate-400">%</span>
+                    <Button
+                      size="sm"
+                      onClick={() => handleApplyBulkMargin(bulkMarginValue)}
+                      disabled={isRefreshing}
+                      className="h-8 px-3 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold shadow-xs"
+                    >
+                      Apply to All
+                    </Button>
+                  </div>
+                </div>
               </div>
 
               {/* Behavior Note Card on Price Overrides */}
-              <div className="p-4 rounded-xl bg-slate-900/90 border border-slate-700/80 text-xs text-slate-300 space-y-2">
-                <div className="flex items-center gap-2 font-bold text-amber-300">
-                  <AlertTriangle className="size-4 shrink-0" />
-                  <span>Individual Product Overrides Protection Policy</span>
-                </div>
+              <div className="p-3.5 rounded-xl bg-slate-950/80 border border-slate-800 text-xs text-slate-300 flex items-start gap-2.5">
+                <AlertTriangle className="size-4 shrink-0 text-amber-400 mt-0.5" />
                 <p className="text-[11px] text-slate-400 leading-relaxed">
-                  When an administrator updates a category's markup percentage, all products in that category are recalculated automatically. Products with an active manual price override (e.g. promotional deals or vendor discounts) are safely protected and will <strong>NOT</strong> have their overridden price overwritten.
+                  <strong className="text-amber-300">Override Protection:</strong> Products with manual price overrides (e.g., custom promotions) are preserved and will not be overwritten when category margins change.
                 </p>
               </div>
             </div>
 
-            {/* Category Markup Percentages Table */}
+            {/* Category Markup Percentages Cards & Table */}
             <div className="p-6 rounded-2xl bg-slate-800/40 border border-slate-700/60 shadow-lg space-y-4">
-              <h4 className="text-sm font-bold text-white">Active Category Markup Percentages</h4>
+              <div className="flex items-center justify-between">
+                <div>
+                  <h4 className="text-sm font-bold text-white">Category-Wise Price Margin Setup</h4>
+                  <p className="text-xs text-slate-400">Choose preset margins (10%, 15%, 20%, 25%, 30%) or enter custom percentage per category</p>
+                </div>
+              </div>
 
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs">
                   <thead>
                     <tr className="border-b border-slate-700 text-slate-400 uppercase tracking-wider text-[10px]">
                       <th className="py-2.5 px-3">Category</th>
-                      <th className="py-2.5 px-3">Markup Percentage (%)</th>
-                      <th className="py-2.5 px-3 text-right">Sample Base Price (₹)</th>
-                      <th className="py-2.5 px-3 text-right">Calculated Selling Price (₹)</th>
+                      <th className="py-2.5 px-3">Quick Margin Presets</th>
+                      <th className="py-2.5 px-3">Custom Margin (%)</th>
+                      <th className="py-2.5 px-3 text-right">Sample Base Cost</th>
+                      <th className="py-2.5 px-3 text-right">Calculated Selling Price</th>
                       <th className="py-2.5 px-3 text-center">Products Bound</th>
                       <th className="py-2.5 px-3 text-right">Action</th>
                     </tr>
@@ -1231,20 +1308,51 @@ function AdminDashboard() {
                             <span className="text-[10px] text-slate-400">{c.tagline}</span>
                           </td>
 
+                          {/* Quick Margin Presets */}
                           <td className="py-3.5 px-3">
-                            <div className="flex items-center gap-2">
+                            <div className="flex items-center gap-1.5 flex-wrap">
+                              {[10, 15, 20, 25, 30].map((preset) => (
+                                <button
+                                  key={preset}
+                                  type="button"
+                                  onClick={() => handleUpdateCategoryMarkup(c.id, preset)}
+                                  className={`px-2 py-0.5 rounded-md text-[11px] font-bold font-mono transition-all ${
+                                    c.markupPercentage === preset
+                                      ? "bg-blue-600 text-white shadow-xs"
+                                      : "bg-slate-900 text-slate-400 hover:text-white hover:bg-slate-700 border border-slate-800"
+                                  }`}
+                                  title={`Set ${preset}% margin for ${c.name}`}
+                                >
+                                  {preset}%
+                                </button>
+                              ))}
+                            </div>
+                          </td>
+
+                          {/* Custom Input */}
+                          <td className="py-3.5 px-3">
+                            <div className="flex items-center gap-1.5">
                               <Input
                                 type="number"
                                 min="0"
                                 step="0.5"
                                 defaultValue={c.markupPercentage}
+                                key={`input-${c.id}-${c.markupPercentage}`}
+                                onKeyDown={(e) => {
+                                  if (e.key === "Enter") {
+                                    const val = parseFloat((e.target as HTMLInputElement).value);
+                                    if (!isNaN(val) && val !== c.markupPercentage) {
+                                      handleUpdateCategoryMarkup(c.id, val);
+                                    }
+                                  }
+                                }}
                                 onBlur={(e) => {
                                   const val = parseFloat(e.target.value);
                                   if (!isNaN(val) && val !== c.markupPercentage) {
                                     handleUpdateCategoryMarkup(c.id, val);
                                   }
                                 }}
-                                className="w-24 h-8 rounded-lg bg-slate-900 border-slate-700 font-bold font-mono text-blue-300 text-xs"
+                                className="w-20 h-8 rounded-lg bg-slate-900 border-slate-700 font-bold font-mono text-blue-300 text-xs"
                               />
                               <span className="font-bold text-slate-400 text-xs">%</span>
                             </div>
@@ -1256,6 +1364,9 @@ function AdminDashboard() {
 
                           <td className="py-3.5 px-3 text-right font-mono font-extrabold text-emerald-400">
                             {formatINR(sampleCalculated)}
+                            <span className="block text-[10px] text-slate-400 font-normal">
+                              (+{formatINR(sampleCalculated - 100)} margin)
+                            </span>
                           </td>
 
                           <td className="py-3.5 px-3 text-center">
