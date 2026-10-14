@@ -1,4 +1,4 @@
-﻿import { Link, useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { ShoppingCart, Star } from "lucide-react";
 import { formatLKR, type Product } from "@/data/products";
 import { useCart } from "@/lib/cart";
@@ -73,7 +73,7 @@ export function ProductCard({ product }: { product: Product }) {
                 add(product.slug);
                 navigate({ to: "/checkout" });
               }}
-              className="h-8.5 sm:h-10 rounded-xl bg-[#0066FF] px-2 sm:px-3 text-[11px] sm:text-xs font-bold text-white shadow-xs transition-colors hover:bg-[#0055d4] active:scale-[0.98] truncate"
+              className="h-9.5 sm:h-10 rounded-xl bg-[#0066FF] px-2.5 sm:px-3 text-[11px] sm:text-xs font-bold text-white shadow-xs transition-colors hover:bg-[#0055d4] active:scale-[0.98] truncate"
             >
               Buy now
             </button>
@@ -81,9 +81,9 @@ export function ProductCard({ product }: { product: Product }) {
               type="button"
               aria-label={`Add ${product.name} to cart`}
               onClick={() => add(product.slug)}
-              className="grid size-8.5 sm:size-10 place-items-center rounded-xl border border-slate-200 bg-white text-slate-700 shadow-xs transition-colors hover:bg-slate-50 active:scale-95 shrink-0"
+              className="grid size-9.5 sm:size-10 place-items-center rounded-xl border border-slate-200 bg-white text-slate-700 shadow-xs transition-colors hover:bg-slate-50 active:scale-95 shrink-0"
             >
-              <ShoppingCart className="size-3.5 sm:size-4" aria-hidden />
+              <ShoppingCart className="size-4" aria-hidden />
             </button>
           </div>
         </div>
