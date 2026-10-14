@@ -6,6 +6,7 @@ import {
   useRouter,
   HeadContent,
   Scripts,
+  type ErrorComponentProps,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
 
@@ -13,6 +14,12 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { CartProvider } from "../lib/cart";
 import { Toaster } from "../components/ui/sonner";
+import { PWAProvider } from "../lib/pwa-context";
+import {
+  PWAOfflineBanner,
+  PWAUpdateBanner,
+  PWAInstallBanner,
+} from "../components/pwa/PWAStatusBanners";
 
 
 function NotFoundComponent() {
@@ -37,11 +44,11 @@ function NotFoundComponent() {
   );
 }
 
-function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
+function ErrorComponent({ error, reset }: ErrorComponentProps) {
   console.error(error);
   const router = useRouter();
   useEffect(() => {
-    reportLovableError(error, { boundary: "tanstack_root_error_component" });
+    reportLovableError(error as any, { boundary: "tanstack_root_error_component" });
   }, [error]);
 
   return (
@@ -98,6 +105,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "mobile-web-app-capable", content: "yes" },
       { name: "apple-mobile-web-app-capable", content: "yes" },
       { name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" },
+      { name: "apple-mobile-web-app-title", content: "Lasertronics" },
+      { name: "application-name", content: "Lasertronics E-Shop" },
     ],
     links: [
       { rel: "manifest", href: "/manifest.webmanifest" },
@@ -108,8 +117,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap",
       },
-      { rel: "icon", href: "/favicon.png", type: "image/png" },
-      { rel: "apple-touch-icon", href: "/favicon.png" },
+      { rel: "icon", href: "/icon-192.png", type: "image/png" },
+      { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
     ],
   }),
 
@@ -138,11 +147,16 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <CartProvider>
-        {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-        <Outlet />
-        <Toaster position="top-right" richColors closeButton />
-      </CartProvider>
+      <PWAProvider>
+        <CartProvider>
+          <PWAOfflineBanner />
+          {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+          <Outlet />
+          <PWAUpdateBanner />
+          <PWAInstallBanner />
+          <Toaster position="top-right" richColors closeButton />
+        </CartProvider>
+      </PWAProvider>
     </QueryClientProvider>
   );
 }

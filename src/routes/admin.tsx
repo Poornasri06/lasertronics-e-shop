@@ -90,6 +90,7 @@ export const Route = createFileRoute("/admin")({
 function AdminDashboard() {
   const initialData = Route.useLoaderData();
   const { isOnline, isInstallable, triggerInstall } = usePWA();
+  const [isLiveConnected, setIsLiveConnected] = useState<boolean>(isOnline);
 
   // Master State
   const [categories, setCategories] = useState<CategoryRecord[]>(initialData.categories);
@@ -156,8 +157,10 @@ function AdminDashboard() {
       setCategories(res.categories);
       setProducts(res.products);
       setMedia(res.media);
+      setIsLiveConnected(true);
       toast.success("Catalog synced with backend server.");
     } catch {
+      setIsLiveConnected(false);
       toast.error("Failed to sync with backend server.");
     } finally {
       setIsRefreshing(false);
@@ -389,12 +392,18 @@ function AdminDashboard() {
 
           {/* Right Header Utilities */}
           <div className="flex items-center gap-2 sm:gap-3">
-            {/* Online / Offline Indicator */}
-            {/* Live Server Indicator */}
-            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium border bg-emerald-950/50 border-emerald-800 text-emerald-400">
-              <span className="size-2 rounded-full bg-emerald-400 animate-pulse" />
-              <span>Live Catalog Connected</span>
-            </div>
+            {/* Live Server / Offline Indicator */}
+            {isOnline && isLiveConnected ? (
+              <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium border bg-emerald-950/50 border-emerald-800 text-emerald-400">
+                <span className="size-2 rounded-full bg-emerald-400 animate-pulse" />
+                <span>Live Catalog Connected</span>
+              </div>
+            ) : (
+              <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium border bg-amber-950/50 border-amber-800 text-amber-400">
+                <span className="size-2 rounded-full bg-amber-400" />
+                <span>Offline / Local Mode</span>
+              </div>
+            )}
 
             {/* PWA Install Button */}
             {isInstallable && (

@@ -15,6 +15,7 @@ import {
 import { useState, useEffect } from "react";
 import logoAsset from "@/assets/logo.jpg";
 import { useCart } from "@/lib/cart";
+import { PWAInstallButton } from "@/components/pwa/PWAStatusBanners";
 
 interface NavLinkItem {
   label: string;
@@ -176,6 +177,8 @@ export function Header() {
               <User className="size-4.5" aria-hidden />
             </Link>
 
+            <PWAInstallButton variant="pill" className="hidden lg:inline-flex" />
+
             <Link
               to="/admin"
               aria-label="Admin Dashboard"
@@ -250,6 +253,8 @@ export function Header() {
               </nav>
 
               <div className="mt-4 pt-4 border-t border-slate-100 space-y-2">
+                <PWAInstallButton variant="card" />
+
                 <Link
                   to="/admin"
                   onClick={() => setMobileMenuOpen(false)}

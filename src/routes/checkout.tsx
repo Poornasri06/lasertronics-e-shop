@@ -1,9 +1,10 @@
-﻿import { useState } from "react";
+import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { CheckCircle2, Lock } from "lucide-react";
+import { CheckCircle2, Lock, WifiOff } from "lucide-react";
 import { SiteLayout } from "@/components/layout/SiteLayout";
 import { formatLKR } from "@/data/products";
 import { useCart } from "@/lib/cart";
+import { usePWA } from "@/hooks/usePWA";
 
 export const Route = createFileRoute("/checkout")({
   head: () => ({
@@ -27,6 +28,7 @@ const fields = [
 ];
 
 function CheckoutPage() {
+  const { isOnline } = usePWA();
   const { items, subtotal, shipping, total, clear } = useCart();
   const [placed, setPlaced] = useState(false);
   const [payment, setPayment] = useState("cod");
@@ -185,11 +187,33 @@ function CheckoutPage() {
                 </div>
               </dl>
 
+              {!isOnline && (
+                <div className="mt-4 p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-700 text-xs flex items-start gap-2">
+                  <WifiOff className="size-4 shrink-0 mt-0.5" />
+                  <span>
+                    You are currently offline. Please reconnect to submit and confirm your order with Colombo dispatch.
+                  </span>
+                </div>
+              )}
+
               <button
                 type="submit"
-                className="apple-btn-primary mt-5 sm:mt-6 flex min-h-11 sm:min-h-12 w-full items-center justify-center gap-2 rounded-full text-xs sm:text-sm font-bold shadow-lg text-center"
+                disabled={!isOnline}
+                className={`mt-5 sm:mt-6 flex min-h-11 sm:min-h-12 w-full items-center justify-center gap-2 rounded-full text-xs sm:text-sm font-bold shadow-lg text-center transition-all ${
+                  isOnline
+                    ? "apple-btn-primary"
+                    : "bg-slate-300 text-slate-500 cursor-not-allowed border border-slate-300 shadow-none"
+                }`}
               >
-                <Lock className="size-4" aria-hidden /> Confirm & Place Order
+                {isOnline ? (
+                  <>
+                    <Lock className="size-4" aria-hidden /> Confirm & Place Order
+                  </>
+                ) : (
+                  <>
+                    <WifiOff className="size-4" aria-hidden /> Connection Required to Order
+                  </>
+                )}
               </button>
               <p className="mt-3 text-center text-[10.5px] sm:text-[11px] text-muted-foreground">
                 🔒 256-Bit Encrypted • Authentic Sri Lanka Store

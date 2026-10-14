@@ -1,8 +1,8 @@
 {
-  "name": "Lasertronics Admin & Catalog",
-  "short_name": "Lasertronics Admin",
-  "description": "Progressive Web App Admin Dashboard for Product, Image, Category and Category-Based Pricing Management",
-  "start_url": "/admin",
+  "name": "Lasertronics E-Shop",
+  "short_name": "Lasertronics",
+  "description": "Sri Lanka's premier electronics and technology store: genuine components, mobile accessories, TV parts, IoT boards, and repair tools with island-wide delivery.",
+  "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "orientation": "any",
@@ -10,42 +10,54 @@
   "theme_color": "#0A192F",
   "lang": "en-US",
   "dir": "ltr",
-  "categories": ["business", "productivity", "utilities"],
+  "categories": ["shopping", "business", "utilities"],
   "icons": [
     {
-      "src": "/favicon.png",
+      "src": "/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/favicon.png",
+      "src": "/icon-maskable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "maskable any"
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ],
   "shortcuts": [
     {
-      "name": "Manage Products",
-      "short_name": "Products",
-      "description": "Quick access to product catalog management",
-      "url": "/admin?tab=products",
-      "icons": [{ "src": "/favicon.png", "sizes": "96x96" }]
+      "name": "Shop Catalog",
+      "short_name": "Shop",
+      "description": "Browse live electronic components and accessories",
+      "url": "/shop",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
     },
     {
-      "name": "Pricing Rules",
-      "short_name": "Pricing",
-      "description": "Configure category markup pricing rules",
-      "url": "/admin?tab=pricing",
-      "icons": [{ "src": "/favicon.png", "sizes": "96x96" }]
+      "name": "Shopping Cart",
+      "short_name": "Cart",
+      "description": "Review your selected items and checkout",
+      "url": "/cart",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
     },
     {
-      "name": "Media Library",
-      "short_name": "Images",
-      "description": "Review and upload product images",
-      "url": "/admin?tab=images",
-      "icons": [{ "src": "/favicon.png", "sizes": "96x96" }]
+      "name": "Admin Dashboard",
+      "short_name": "Admin",
+      "description": "Manage products, catalog, and pricing rules",
+      "url": "/admin",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
     }
   ]
 }
