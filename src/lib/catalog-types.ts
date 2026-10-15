@@ -24,14 +24,14 @@ export interface ProductRecord {
   name: string;
   categoryId: string;
   basePrice: number; // ₹ base cost/purchase price
-  markupPercentage?: number; // snapshot or product-specific markup %
+  markupPercentage?: number | undefined; // snapshot or product-specific markup %
   isPriceOverridden: boolean; // if true, overridePrice is used instead of category rule
   overridePrice: number | null; // manual selling price override
   sellingPrice: number; // final calculated or overridden selling price
   image: string | null; // image URL or relative path (null if no image)
   stock: number;
   blurb: string;
-  badge?: string;
+  badge?: string | undefined;
   specs: ProductSpec[];
   createdAt: string;
   updatedAt: string;
@@ -43,8 +43,8 @@ export interface MediaRecord {
   url: string;
   sizeBytes: number;
   mimeType: string;
-  categoryId?: string;
-  productSku?: string;
+  categoryId?: string | undefined;
+  productSku?: string | undefined;
   uploadedAt: string;
 }
 

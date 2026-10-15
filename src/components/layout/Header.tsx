@@ -10,12 +10,10 @@ import {
   ChevronRight,
   Home,
   LayoutGrid,
-  Shield,
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import logoAsset from "@/assets/logo.jpg";
 import { useCart } from "@/lib/cart";
-import { PWAInstallButton } from "@/components/pwa/PWAStatusBanners";
 
 interface NavLinkItem {
   label: string;
@@ -25,12 +23,12 @@ interface NavLinkItem {
 
 const desktopNavLinks: NavLinkItem[] = [
   { label: "Home", to: "/" },
+  { label: "Shop", to: "/shop" },
   { label: "Mobile Accessories", to: "/category/$slug", params: { slug: "mobile-accessories" } },
   { label: "Electronics", to: "/category/$slug", params: { slug: "electronics" } },
   { label: "TV Accessories", to: "/category/$slug", params: { slug: "tv-accessories" } },
   { label: "IoT & Microcontrollers", to: "/category/$slug", params: { slug: "iot-and-microcontrollers" } },
   { label: "Repair Kits", to: "/category/$slug", params: { slug: "repair-kits" } },
-  { label: "Solutions", to: "/#solutions" },
   { label: "About", to: "/about" },
   { label: "Contact", to: "/contact" },
 ];
@@ -39,10 +37,10 @@ export function Header() {
   const { count } = useCart();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // Close mobile drawer on resize to desktop
+  // Close mobile drawer on resize to desktop (>= 1024px)
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth >= 1280) {
+      if (window.innerWidth >= 1024) {
         setMobileMenuOpen(false);
       }
     };
@@ -107,7 +105,7 @@ export function Header() {
           </Link>
 
           {/* Desktop Center Navigation - hidden on mobile/tablet */}
-          <nav className="hidden xl:flex items-center gap-0.5 2xl:gap-1 rounded-full border border-white/80 bg-white/50 p-1 backdrop-blur-md shadow-[inset_0_1px_2px_rgba(0,0,0,0.02)]">
+          <nav className="hidden lg:flex items-center gap-0.5 xl:gap-1 rounded-full border border-white/80 bg-white/50 p-1 backdrop-blur-md shadow-[inset_0_1px_2px_rgba(0,0,0,0.02)]">
             {desktopNavLinks.map((l) =>
               l.params ? (
                 <Link
@@ -118,7 +116,7 @@ export function Header() {
                     className:
                       "!bg-primary !text-primary-foreground font-bold shadow-[0_2px_8px_rgba(8,120,209,0.3)]",
                   }}
-                  className="inline-flex h-8 items-center justify-center whitespace-nowrap rounded-full px-2.5 2xl:px-3 text-[11px] 2xl:text-xs font-semibold text-foreground/80 transition-all hover:bg-white/80 hover:text-primary active:scale-95"
+                  className="inline-flex h-8 items-center justify-center whitespace-nowrap rounded-full px-2 xl:px-2.5 2xl:px-3 text-[11px] xl:text-xs font-semibold text-foreground/80 transition-all hover:bg-white/80 hover:text-primary active:scale-95"
                 >
                   {l.label}
                 </Link>
@@ -130,7 +128,7 @@ export function Header() {
                     className:
                       "!bg-primary !text-primary-foreground font-bold shadow-[0_2px_8px_rgba(8,120,209,0.3)]",
                   }}
-                  className="inline-flex h-8 items-center justify-center whitespace-nowrap rounded-full px-2.5 2xl:px-3 text-[11px] 2xl:text-xs font-semibold text-foreground/80 transition-all hover:bg-white/80 hover:text-primary active:scale-95"
+                  className="inline-flex h-8 items-center justify-center whitespace-nowrap rounded-full px-2 xl:px-2.5 2xl:px-3 text-[11px] xl:text-xs font-semibold text-foreground/80 transition-all hover:bg-white/80 hover:text-primary active:scale-95"
                 >
                   {l.label}
                 </Link>
@@ -177,23 +175,14 @@ export function Header() {
               <User className="size-4.5" aria-hidden />
             </Link>
 
-            <PWAInstallButton variant="pill" className="hidden lg:inline-flex" />
 
-            <Link
-              to="/admin"
-              aria-label="Admin Dashboard"
-              title="Admin Dashboard (PWA)"
-              className="grid size-8.5 sm:size-10 place-items-center rounded-full border border-blue-500/30 bg-blue-500/10 text-blue-600 shadow-[0_2px_8px_rgba(8,120,209,0.15)] backdrop-blur-md transition-all hover:bg-blue-600 hover:text-white hover:shadow-md active:scale-95"
-            >
-              <Shield className="size-4 sm:size-4.5" aria-hidden />
-            </Link>
 
-            {/* Mobile Menu Button - visible on screens < xl */}
+            {/* Mobile Menu Button - visible on screens < lg */}
             <button
               type="button"
               aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="grid size-8.5 sm:size-10 xl:hidden place-items-center rounded-full border border-white/70 bg-white/60 text-foreground/80 shadow-[0_2px_8px_rgba(0,0,0,0.03)] backdrop-blur-md transition-all hover:bg-white hover:text-primary active:scale-95"
+              className="grid size-8.5 sm:size-10 lg:hidden place-items-center rounded-full border border-white/70 bg-white/60 text-foreground/80 shadow-[0_2px_8px_rgba(0,0,0,0.03)] backdrop-blur-md transition-all hover:bg-white hover:text-primary active:scale-95"
             >
               {mobileMenuOpen ? (
                 <X className="size-4.5 text-foreground" />
@@ -206,7 +195,7 @@ export function Header() {
 
         {/* Mobile Dropdown Menu Drawer with Modal Overlay */}
         {mobileMenuOpen && (
-          <div className="xl:hidden">
+          <div className="lg:hidden">
             <div
               className="fixed inset-0 top-[calc(2rem+3.5rem)] z-40 bg-slate-950/40 backdrop-blur-xs transition-opacity"
               onClick={() => setMobileMenuOpen(false)}
@@ -253,18 +242,7 @@ export function Header() {
               </nav>
 
               <div className="mt-4 pt-4 border-t border-slate-100 space-y-2">
-                <PWAInstallButton variant="card" />
 
-                <Link
-                  to="/admin"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center justify-between rounded-xl bg-blue-600 p-3 text-xs font-bold text-white shadow-md shadow-blue-600/20 hover:bg-blue-700 transition-colors"
-                >
-                  <span className="flex items-center gap-2">
-                    <Shield className="size-4" /> Admin Dashboard (PWA)
-                  </span>
-                  <ChevronRight className="size-3.5" />
-                </Link>
 
                 <a
                   href="tel:+94777882156"
@@ -284,8 +262,8 @@ export function Header() {
         )}
       </header>
 
-      {/* Ergonomic Mobile Sticky Bottom Navigation Dock (sm / md / mobile only) */}
-      <div className="fixed bottom-0 inset-x-0 z-40 xl:hidden border-t border-white/80 bg-white/92 backdrop-blur-2xl shadow-[0_-4px_20px_rgba(0,0,0,0.06)]">
+      {/* Ergonomic Mobile Sticky Bottom Navigation Dock (mobile phones only, < 768px) */}
+      <div className="fixed bottom-0 inset-x-0 z-40 md:hidden border-t border-white/80 bg-white/92 backdrop-blur-2xl shadow-[0_-4px_20px_rgba(0,0,0,0.06)]">
         <div className="container-page flex items-center justify-around py-1.5">
           <Link
             to="/"

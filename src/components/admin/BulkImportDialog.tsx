@@ -21,12 +21,12 @@ interface BulkImportDialogProps {
     name: string;
     categoryId: string;
     basePrice: number;
-    isPriceOverridden?: boolean;
-    overridePrice?: number | null;
-    image?: string | null;
-    stock?: number;
-    blurb?: string;
-    badge?: string;
+    isPriceOverridden?: boolean | undefined;
+    overridePrice?: number | null | undefined;
+    image?: string | null | undefined;
+    stock?: number | undefined;
+    blurb?: string | undefined;
+    badge?: string | undefined;
   }>) => Promise<{ imported: number; updated: number }>;
 }
 
@@ -85,7 +85,12 @@ export function BulkImportDialog({
         throw new Error("CSV must contain a header row and at least one product row.");
       }
 
-      const headers = lines[0].split(",").map((h) => h.trim().toLowerCase());
+      const firstLine = lines[0];
+      if (!firstLine) {
+        throw new Error("CSV must contain a header row and at least one product row.");
+      }
+
+      const headers = firstLine.split(",").map((h) => h.trim().toLowerCase());
       const skuIdx = headers.indexOf("sku");
       const nameIdx = headers.indexOf("name");
       const catIdx = headers.indexOf("categoryid");
@@ -104,21 +109,27 @@ export function BulkImportDialog({
 
       for (let i = 1; i < lines.length; i++) {
         const row = lines[i];
-        // Split by comma preserving simple values
+        if (!row) continue;
         const cols = row.split(",").map((c) => c.trim());
         const sku = cols[skuIdx];
         const name = cols[nameIdx];
         if (!sku || !name) continue;
 
-        const categoryId = catIdx !== -1 && cols[catIdx] ? cols[catIdx] : categories[0]?.id || "electronics";
-        const basePrice = basePriceIdx !== -1 ? parseFloat(cols[basePriceIdx]) || 0 : 100;
+        const catCol = catIdx !== -1 ? cols[catIdx] : undefined;
+        const categoryId = catCol && catCol.length > 0 ? catCol : categories[0]?.id || "electronics";
+        const basePriceStr = basePriceIdx !== -1 ? cols[basePriceIdx] : undefined;
+        const basePrice = basePriceStr ? parseFloat(basePriceStr) || 0 : 100;
+        const overrideToggleStr = overrideToggleIdx !== -1 ? cols[overrideToggleIdx] : undefined;
         const isPriceOverridden =
-          overrideToggleIdx !== -1 && ["true", "1", "yes"].includes(cols[overrideToggleIdx]?.toLowerCase());
-        const overridePrice =
-          overridePriceIdx !== -1 && cols[overridePriceIdx] ? parseFloat(cols[overridePriceIdx]) || null : null;
-        const stock = stockIdx !== -1 ? parseInt(cols[stockIdx]) || 0 : 10;
-        const badge = badgeIdx !== -1 && cols[badgeIdx] ? cols[badgeIdx] : undefined;
-        const blurb = blurbIdx !== -1 && cols[blurbIdx] ? cols[blurbIdx] : undefined;
+          Boolean(overrideToggleStr && ["true", "1", "yes"].includes(overrideToggleStr.toLowerCase()));
+        const overridePriceStr = overridePriceIdx !== -1 ? cols[overridePriceIdx] : undefined;
+        const overridePrice = overridePriceStr ? parseFloat(overridePriceStr) || null : null;
+        const stockStr = stockIdx !== -1 ? cols[stockIdx] : undefined;
+        const stock = stockStr ? parseInt(stockStr, 10) || 0 : 10;
+        const badgeCol = badgeIdx !== -1 ? cols[badgeIdx] : undefined;
+        const badge = badgeCol && badgeCol.length > 0 ? badgeCol : undefined;
+        const blurbCol = blurbIdx !== -1 ? cols[blurbIdx] : undefined;
+        const blurb = blurbCol && blurbCol.length > 0 ? blurbCol : undefined;
 
         parsedProducts.push({
           sku,

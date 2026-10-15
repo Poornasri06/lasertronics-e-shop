@@ -311,7 +311,17 @@ export function mapInTouchProductToStoreProduct(
   item: InTouchProduct,
   defaultCategory?: string,
   categoryMarkupMap?: Record<string, number>,
-  productOverridesMap?: Record<string, { overridePrice?: number | null; isOverridden?: boolean; image?: string | null }>,
+  productOverridesMap?: Record<
+    string,
+    {
+      overridePrice?: number | null;
+      isOverridden?: boolean;
+      image?: string | null;
+      categoryId?: string;
+      name?: string;
+      stock?: number;
+    }
+  >,
 ): Product {
   const purchasePrice = parseFloat(item.purchase_price || "0");
   const rawSellingPrice = parseFloat(item.selling_price || "0");
@@ -324,39 +334,28 @@ export function mapInTouchProductToStoreProduct(
       ? 10
       : 0;
 
-  const override =
-    productOverrides[item.sku] ||
-    (item.sub_sku ? productOverrides[item.sub_sku] : undefined) ||
-    productOverrides[item.product_id];
+  // Check manual override from admin catalog store
+  const catalogOverride =
+    productOverridesMap?.[item.sku] ||
+    (item.sub_sku ? productOverridesMap?.[item.sub_sku] : undefined) ||
+    productOverridesMap?.[item.product_id];
 
-  const displayName = override?.name || item.product_name;
-  const category = override?.category || defaultCategory || detectCategory(displayName);
+  const displayName = catalogOverride?.name || item.product_name;
+  const category = catalogOverride?.categoryId || defaultCategory || detectCategory(displayName);
 
   // Apply Category-Based Margin Percentage (e.g. 20%)
   const markupPercentage = categoryMarkupMap?.[category] ?? (categoryMarkupMap?.["default"] || 20);
   const markupAmount = Math.round(((basePrice * markupPercentage) / 100) * 100) / 100;
   const ruleCalculatedPrice = Math.round((basePrice + markupAmount) * 100) / 100;
 
-  // Check manual override from admin catalog store or hardcoded override
-  const catalogOverride =
-    productOverridesMap?.[item.sku] ||
-    (item.sub_sku ? productOverridesMap?.[item.sub_sku] : undefined) ||
-    productOverridesMap?.[item.product_id];
-
   let displayPrice = ruleCalculatedPrice;
-  let isOverridden = false;
 
   if (catalogOverride?.isOverridden && catalogOverride.overridePrice != null && catalogOverride.overridePrice > 0) {
     displayPrice = catalogOverride.overridePrice;
-    isOverridden = true;
-  } else if (override?.price !== undefined) {
-    displayPrice = override.price;
-    isOverridden = true;
   }
 
   const image =
-    catalogOverride?.image ||
-    override?.image ||
+    (catalogOverride?.image && catalogOverride.image.trim() !== "" ? catalogOverride.image : null) ||
     selectProductImage(displayName, category, item.sub_sku || item.sku || item.product_id);
 
   const cleanName = displayName
@@ -372,10 +371,7 @@ export function mapInTouchProductToStoreProduct(
     category,
     price: displayPrice,
     image,
-    ...(override?.badge ? { badge: override.badge } : {}),
-    blurb:
-      override?.blurb ||
-      `${displayName} (${item.unit || "unit"}). Genuine InTouch ERP SKU: ${item.sub_sku || item.sku}`,
+    blurb: `${displayName} (${item.unit || "unit"}). Genuine SKU: ${item.sub_sku || item.sku}`,
     specs: [
       { label: "SKU", value: item.sku },
       { label: "Availability", value: "In Stock" },
@@ -386,6 +382,6 @@ export function mapInTouchProductToStoreProduct(
     ],
     rating: 4.8,
     reviews: 0,
-    stock: computedStock,
+    stock: catalogOverride?.stock ?? computedStock,
   };
 }

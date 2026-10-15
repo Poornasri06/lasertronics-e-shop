@@ -15,11 +15,7 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { CartProvider } from "../lib/cart";
 import { Toaster } from "../components/ui/sonner";
 import { PWAProvider } from "../lib/pwa-context";
-import {
-  PWAOfflineBanner,
-  PWAUpdateBanner,
-  PWAInstallBanner,
-} from "../components/pwa/PWAStatusBanners";
+import { PWAUpdateBanner } from "../components/pwa/PWAStatusBanners";
 
 
 function NotFoundComponent() {
@@ -149,11 +145,9 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <PWAProvider>
         <CartProvider>
-          <PWAOfflineBanner />
           {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
           <Outlet />
           <PWAUpdateBanner />
-          <PWAInstallBanner />
           <Toaster position="top-right" richColors closeButton />
         </CartProvider>
       </PWAProvider>

@@ -57,28 +57,6 @@ export const Route = createFileRoute("/")({
 
 const categoryIcons = [Smartphone, CircuitBoard, Tv, Cpu, Wrench];
 
-const benefits = [
-  {
-    icon: Truck,
-    title: "Island-wide delivery",
-    copy: "Dispatched from Colombo within 24 hours.",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Genuine warranty",
-    copy: "Every product covered and locally serviced.",
-  },
-  {
-    icon: Headphones,
-    title: "Engineer support",
-    copy: "Talk to people who actually build things.",
-  },
-  {
-    icon: CreditCard,
-    title: "Secure payments",
-    copy: "Safe and convenient checkout options.",
-  },
-];
 
 const solutionsList = [
   {
@@ -142,30 +120,8 @@ function Index() {
       {/* 1. Hero Carousel */}
       <Hero />
 
-      {/* 2. Benefits Bar */}
-      <section className="py-4 sm:py-6">
-        <div className="container-page">
-          <div className="grid grid-cols-1 xs:grid-cols-2 gap-2.5 sm:gap-4 lg:grid-cols-4">
-            {benefits.map((b) => (
-              <div
-                key={b.title}
-                className="glass-card group relative flex items-start gap-2.5 sm:gap-3.5 rounded-xl sm:rounded-2xl border border-white/80 bg-white/70 p-3 sm:p-4 shadow-[0_4px_20px_-2px_rgba(12,32,68,0.05),inset_0_1px_0_0_rgba(255,255,255,0.95)] backdrop-blur-xl transition-all duration-300 hover:border-blue-400/40 hover:bg-white/85"
-              >
-                <div className="grid size-9 sm:size-11 shrink-0 place-items-center rounded-xl sm:rounded-2xl border border-blue-200/50 bg-gradient-to-br from-blue-500/15 via-sky-400/10 to-transparent text-primary shadow-xs transition-transform duration-300 group-hover:scale-105">
-                  <b.icon className="size-4 sm:size-5" aria-hidden />
-                </div>
-                <div className="min-w-0">
-                  <h3 className="text-xs sm:text-sm font-bold tracking-tight text-foreground/90 leading-snug">{b.title}</h3>
-                  <p className="mt-0.5 sm:mt-1 text-[10px] sm:text-xs leading-relaxed text-muted-foreground line-clamp-2">{b.copy}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 3. Shop by Category */}
-      <section className="container-page py-8 sm:py-12 lg:py-16">
+      {/* 2. Shop by Category */}
+      <section className="container-page pt-6 sm:pt-10 lg:pt-12 pb-8 sm:pb-12 lg:pb-16">
         <div className="text-center">
           <span className="inline-block rounded-full border border-white/80 bg-white/70 px-3.5 py-1 text-xs font-extrabold uppercase tracking-[0.2em] text-primary shadow-xs backdrop-blur-md">
             Curated Ranges
@@ -207,6 +163,17 @@ function Index() {
               </Link>
             );
           })}
+        </div>
+
+        {/* Explore All Categories CTA Button */}
+        <div className="mt-7 sm:mt-9 flex justify-center">
+          <Link
+            to="/shop"
+            className="apple-btn-primary inline-flex min-h-11 sm:min-h-12 items-center justify-center gap-2 rounded-full px-7 sm:px-9 text-xs sm:text-sm font-bold shadow-lg transition-all hover:scale-105 active:scale-95"
+          >
+            <span>Explore All Categories</span>
+            <ArrowRight className="size-4" aria-hidden />
+          </Link>
         </div>
       </section>
 

@@ -9,15 +9,17 @@ export const Route = createFileRoute("/category/$slug")({
   loader: async ({ params }) => {
     const category = getCategory(params.slug);
     if (!category) throw notFound();
+    let live: any[] = [];
     try {
-      const live = await fetchAllProductsFn();
-      if (live && live.length > 0) {
-        registerLiveProducts(live);
+      const res = await fetchAllProductsFn();
+      if (res && res.length > 0) {
+        live = res;
+        registerLiveProducts(res);
       }
     } catch (err) {
       console.error("Failed to load live products in category loader:", err);
     }
-    return { category };
+    return { category, liveProducts: live };
   },
   head: ({ loaderData }) => {
     const name = loaderData?.category.name ?? "Category";
@@ -35,8 +37,12 @@ export const Route = createFileRoute("/category/$slug")({
 });
 
 function CategoryPage() {
-  const { category } = Route.useLoaderData();
-  const items = productsByCategory(category.slug).filter((p) => (p.stock || 0) > 0);
+  const { category, liveProducts } = Route.useLoaderData();
+  const allCategoryProducts =
+    liveProducts && liveProducts.length > 0
+      ? liveProducts.filter((p) => p.category === category.slug)
+      : productsByCategory(category.slug);
+  const items = allCategoryProducts.filter((p) => (p.stock || 0) > 0);
 
   return (
     <SiteLayout>

@@ -27,8 +27,8 @@ interface ImageUploadDialogProps {
   onUpload: (data: {
     filename: string;
     dataUrl: string;
-    categoryId?: string;
-    productSku?: string;
+    categoryId?: string | undefined;
+    productSku?: string | undefined;
   }) => Promise<void>;
 }
 

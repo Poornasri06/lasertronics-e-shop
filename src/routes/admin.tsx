@@ -58,6 +58,11 @@ import {
   Calculator,
   ArrowRight,
   Info,
+  Lock,
+  LogOut,
+  KeyRound,
+  Eye,
+  EyeOff,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -87,10 +92,42 @@ export const Route = createFileRoute("/admin")({
   component: AdminDashboard,
 });
 
+const ADMIN_STORAGE_KEY = "lasertronics_admin_authenticated";
+const ADMIN_PASSCODE = "admin123";
+
 function AdminDashboard() {
   const initialData = Route.useLoaderData();
   const { isOnline, isInstallable, triggerInstall } = usePWA();
   const [isLiveConnected, setIsLiveConnected] = useState<boolean>(isOnline);
+
+  // Security Gate Authentication (Isolated from public site)
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
+    if (typeof window === "undefined") return false;
+    return sessionStorage.getItem(ADMIN_STORAGE_KEY) === "true";
+  });
+  const [passcodeInput, setPasscodeInput] = useState("");
+  const [showPasscode, setShowPasscode] = useState(false);
+  const [authError, setAuthError] = useState("");
+
+  const handleLogin = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    if (passcodeInput.trim() === ADMIN_PASSCODE) {
+      sessionStorage.setItem(ADMIN_STORAGE_KEY, "true");
+      setIsAuthenticated(true);
+      setAuthError("");
+      toast.success("Admin portal unlocked");
+    } else {
+      setAuthError("Incorrect passcode. Access denied.");
+      toast.error("Incorrect passcode");
+    }
+  };
+
+  const handleLogout = () => {
+    sessionStorage.removeItem(ADMIN_STORAGE_KEY);
+    setIsAuthenticated(false);
+    setPasscodeInput("");
+    toast.info("Admin portal locked");
+  };
 
   // Master State
   const [categories, setCategories] = useState<CategoryRecord[]>(initialData.categories);
@@ -361,6 +398,77 @@ function AdminDashboard() {
     setDeleteConfirm({ open: false, type: "product", id: "", name: "" });
   };
 
+  // Security Gate: Private standalone portal screen
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-slate-950 text-slate-100 flex items-center justify-center p-4 selection:bg-blue-600 selection:text-white">
+        <div className="w-full max-w-md rounded-2xl border border-slate-800 bg-slate-900/90 p-8 shadow-2xl backdrop-blur-2xl">
+          <div className="text-center">
+            <div className="mx-auto size-14 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white shadow-lg shadow-blue-500/25 ring-4 ring-blue-500/10">
+              <Shield className="size-7" />
+            </div>
+            <h1 className="mt-5 font-display text-xl font-bold tracking-tight text-white">
+              Lasertronics Admin Portal
+            </h1>
+            <p className="mt-1.5 text-xs text-slate-400">
+              Private Management Hub • Authorized Access Only
+            </p>
+          </div>
+
+          <form onSubmit={handleLogin} className="mt-6 space-y-4">
+            <div>
+              <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                Security Key / Passcode
+              </label>
+              <div className="relative">
+                <Input
+                  type={showPasscode ? "text" : "password"}
+                  value={passcodeInput}
+                  onChange={(e) => {
+                    setPasscodeInput(e.target.value);
+                    if (authError) setAuthError("");
+                  }}
+                  placeholder="Enter passcode (default: admin123)"
+                  autoFocus
+                  className="bg-slate-950 border-slate-800 text-slate-100 placeholder:text-slate-600 pr-10 focus:border-blue-500"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPasscode(!showPasscode)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200 cursor-pointer"
+                  aria-label={showPasscode ? "Hide passcode" : "Show passcode"}
+                >
+                  {showPasscode ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+                </button>
+              </div>
+              {authError && (
+                <p className="mt-1.5 text-xs text-rose-400 flex items-center gap-1">
+                  <AlertTriangle className="size-3.5 shrink-0" /> {authError}
+                </p>
+              )}
+            </div>
+
+            <Button
+              type="submit"
+              className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs h-10 rounded-xl shadow-lg shadow-blue-600/25 transition-all cursor-pointer"
+            >
+              <Lock className="size-3.5 mr-2" /> Unlock Dashboard
+            </Button>
+          </form>
+
+          <div className="mt-6 pt-5 border-t border-slate-800/80 text-center">
+            <Link
+              to="/"
+              className="text-xs text-slate-400 hover:text-slate-200 inline-flex items-center gap-1.5 transition-colors"
+            >
+              <ArrowRight className="size-3.5 rotate-180" /> Return to Customer Storefront
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-slate-900 text-slate-100 flex flex-col antialiased selection:bg-blue-600 selection:text-white">
 
@@ -405,18 +513,7 @@ function AdminDashboard() {
               </div>
             )}
 
-            {/* PWA Install Button */}
-            {isInstallable && (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={triggerInstall}
-                className="hidden md:flex items-center gap-1.5 rounded-xl border-blue-500/50 bg-blue-950/40 text-blue-300 hover:bg-blue-900/60 hover:text-white text-xs h-8"
-              >
-                <DownloadCloud className="size-3.5 text-blue-400" />
-                <span>Install Admin App</span>
-              </Button>
-            )}
+
 
             {/* Refresh Sync */}
             <Button
@@ -438,6 +535,18 @@ function AdminDashboard() {
               <span className="hidden sm:inline">Storefront</span>
               <ExternalLink className="size-3.5 text-slate-400" />
             </Link>
+
+            {/* Lock / Sign Out */}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleLogout}
+              className="inline-flex items-center gap-1.5 rounded-xl border-slate-800 bg-slate-900/80 px-2.5 py-1.5 text-xs font-semibold text-rose-400 hover:bg-rose-950/40 hover:text-rose-300 hover:border-rose-800/60 transition-colors h-8 cursor-pointer"
+              title="Lock Admin Portal"
+            >
+              <LogOut className="size-3.5" />
+              <span className="hidden sm:inline">Lock</span>
+            </Button>
           </div>
         </div>
       </header>

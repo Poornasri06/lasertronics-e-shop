@@ -1,4 +1,4 @@
-﻿import { type ReactNode } from "react";
+import { type ReactNode } from "react";
 import { Header } from "./Header";
 import { Footer } from "./Footer";
 
@@ -14,7 +14,7 @@ export function SiteLayout({ children }: { children: ReactNode }) {
       </div>
 
       <Header />
-      <main className="relative z-10 flex-1 pb-16 xl:pb-0">{children}</main>
+      <main className="relative z-10 flex-1 pb-16 md:pb-0">{children}</main>
       <Footer />
     </div>
   );

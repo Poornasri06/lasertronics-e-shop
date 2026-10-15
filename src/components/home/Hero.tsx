@@ -1,12 +1,9 @@
-﻿import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { Link } from "@tanstack/react-router";
 import {
   ChevronLeft,
   ChevronRight,
   Plus,
-  ShieldCheck,
-  Sparkles,
-  Zap,
 } from "lucide-react";
 import hero1 from "@/assets/hero-1-new.png";
 import hero2 from "@/assets/hero-2.jpg";
@@ -159,21 +156,6 @@ export function Hero() {
                     <p className="mt-2 sm:mt-4 max-w-xl text-xs sm:text-base lg:text-lg leading-relaxed text-slate-200 drop-shadow-sm font-normal line-clamp-3 sm:line-clamp-none">
                       {slide.copy}
                     </p>
-
-                    <div className="mt-3.5 sm:mt-6 flex flex-wrap items-center gap-1.5 sm:gap-2.5">
-                      <span className="inline-flex items-center gap-1 sm:gap-1.5 rounded-full border border-white/20 bg-slate-900/80 px-2 sm:px-3.5 py-0.5 sm:py-1 text-[10px] sm:text-sm font-medium text-white/95 shadow-sm backdrop-blur-md">
-                        <ShieldCheck className="size-3 sm:size-4 text-emerald-400" />
-                        100% Genuine Stock
-                      </span>
-                      <span className="inline-flex items-center gap-1 sm:gap-1.5 rounded-full border border-white/20 bg-slate-900/80 px-2 sm:px-3.5 py-0.5 sm:py-1 text-[10px] sm:text-sm font-medium text-white/95 shadow-sm backdrop-blur-md">
-                        <Zap className="size-3 sm:size-4 text-amber-400" />
-                        24h Colombo Dispatch
-                      </span>
-                      <span className="hidden sm:inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-slate-900/80 px-3.5 py-1 text-xs sm:text-sm font-medium text-white/95 shadow-sm backdrop-blur-md">
-                        <Sparkles className="size-4 text-cyan-400" />
-                        Local Warranty
-                      </span>
-                    </div>
 
                     <div className="mt-5 sm:mt-8 flex flex-col xs:flex-row items-stretch xs:items-center gap-2.5 sm:gap-4">
                       <Link

@@ -553,13 +553,13 @@ export function saveProduct(input: {
   name: string;
   categoryId: string;
   basePrice: number;
-  isPriceOverridden?: boolean;
-  overridePrice?: number | null;
-  image?: string | null;
-  stock?: number;
-  blurb?: string;
-  badge?: string;
-  specs?: ProductSpec[];
+  isPriceOverridden?: boolean | undefined;
+  overridePrice?: number | null | undefined;
+  image?: string | null | undefined;
+  stock?: number | undefined;
+  blurb?: string | undefined;
+  badge?: string | undefined;
+  specs?: ProductSpec[] | undefined;
 }): ProductRecord {
   const store = loadCatalogStore();
   const category = store.categories.find((c) => c.id === input.categoryId);
@@ -605,7 +605,7 @@ export function saveProduct(input: {
     blurb: input.blurb?.trim() || `${cleanName} genuine component.`,
     badge: input.badge?.trim() || undefined,
     specs: Array.isArray(input.specs) ? input.specs : [],
-    createdAt: existingIndex >= 0 ? store.products[existingIndex].createdAt : now,
+    createdAt: existingIndex >= 0 && store.products[existingIndex] ? store.products[existingIndex].createdAt : now,
     updatedAt: now,
   };
 
@@ -641,10 +641,10 @@ export function deleteProduct(sku: string): boolean {
  * are automatically recalculated EXCEPT those with active manual price overrides!
  */
 export function saveCategory(input: {
-  id?: string;
+  id?: string | undefined;
   name: string;
-  tagline?: string;
-  description?: string;
+  tagline?: string | undefined;
+  description?: string | undefined;
   markupPercentage: number;
 }): CategoryRecord {
   const store = loadCatalogStore();
@@ -665,7 +665,7 @@ export function saveCategory(input: {
     tagline: input.tagline?.trim() || "Quality components",
     description: input.description?.trim() || "",
     markupPercentage: markupPct,
-    createdAt: existingIndex >= 0 ? store.categories[existingIndex].createdAt : now,
+    createdAt: existingIndex >= 0 && store.categories[existingIndex] ? store.categories[existingIndex].createdAt : now,
     updatedAt: now,
   };
 
@@ -850,12 +850,12 @@ export function bulkImportProducts(productsToImport: Array<{
   name: string;
   categoryId: string;
   basePrice: number;
-  isPriceOverridden?: boolean;
-  overridePrice?: number | null;
-  image?: string | null;
-  stock?: number;
-  blurb?: string;
-  badge?: string;
+  isPriceOverridden?: boolean | undefined;
+  overridePrice?: number | null | undefined;
+  image?: string | null | undefined;
+  stock?: number | undefined;
+  blurb?: string | undefined;
+  badge?: string | undefined;
 }>): { imported: number; updated: number } {
   let imported = 0;
   let updated = 0;
@@ -943,13 +943,13 @@ export const saveProductFn = createServerFn({ method: "POST" })
     name: string;
     categoryId: string;
     basePrice: number;
-    isPriceOverridden?: boolean;
-    overridePrice?: number | null;
-    image?: string | null;
-    stock?: number;
-    blurb?: string;
-    badge?: string;
-    specs?: ProductSpec[];
+    isPriceOverridden?: boolean | undefined;
+    overridePrice?: number | null | undefined;
+    image?: string | null | undefined;
+    stock?: number | undefined;
+    blurb?: string | undefined;
+    badge?: string | undefined;
+    specs?: ProductSpec[] | undefined;
   }) => data)
   .handler(async ({ data }) => {
     return saveProduct(data);
@@ -963,10 +963,10 @@ export const deleteProductFn = createServerFn({ method: "POST" })
 
 export const saveCategoryFn = createServerFn({ method: "POST" })
   .validator((data: {
-    id?: string;
+    id?: string | undefined;
     name: string;
-    tagline?: string;
-    description?: string;
+    tagline?: string | undefined;
+    description?: string | undefined;
     markupPercentage: number;
   }) => data)
   .handler(async ({ data }) => {
@@ -1003,12 +1003,12 @@ export const bulkImportFn = createServerFn({ method: "POST" })
     name: string;
     categoryId: string;
     basePrice: number;
-    isPriceOverridden?: boolean;
-    overridePrice?: number | null;
-    image?: string | null;
-    stock?: number;
-    blurb?: string;
-    badge?: string;
+    isPriceOverridden?: boolean | undefined;
+    overridePrice?: number | null | undefined;
+    image?: string | null | undefined;
+    stock?: number | undefined;
+    blurb?: string | undefined;
+    badge?: string | undefined;
   }>) => data)
   .handler(async ({ data }) => {
     return bulkImportProducts(data);
@@ -1018,13 +1018,13 @@ export const uploadImageFn = createServerFn({ method: "POST" })
   .validator((data: {
     filename: string;
     dataUrl: string; // Base64 data URI
-    categoryId?: string;
-    productSku?: string;
+    categoryId?: string | undefined;
+    productSku?: string | undefined;
   }) => data)
   .handler(async ({ data }) => {
     // 1. Validate data URI
     const match = data.dataUrl.match(/^data:([a-zA-Z0-9]+\/[a-zA-Z0-9-.+]+);base64,(.+)$/);
-    if (!match) {
+    if (!match || !match[1] || !match[2]) {
       throw new Error("Invalid base64 image data.");
     }
 

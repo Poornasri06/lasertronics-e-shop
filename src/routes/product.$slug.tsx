@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { createFileRoute, Link, notFound, useNavigate } from "@tanstack/react-router";
-import { ChevronRight, Minus, Plus, ShoppingCart, Star, Truck, ShieldCheck, Undo2 } from "lucide-react";
+import { ChevronRight, Minus, Plus, ShoppingCart, Star, Truck, ShieldCheck, Undo2, Package } from "lucide-react";
 import { SiteLayout } from "@/components/layout/SiteLayout";
 import { ProductCard } from "@/components/ProductCard";
 import { formatLKR, getCategory, getProduct, registerLiveProducts, relatedProducts } from "@/data/products";
@@ -9,18 +9,21 @@ import { useCart } from "@/lib/cart";
 
 export const Route = createFileRoute("/product/$slug")({
   loader: async ({ params }) => {
-    let product = getProduct(params.slug);
-    if (!product || (product.stock || 0) <= 0) {
-      try {
-        const live = await fetchProductBySlugOrSkuFn({ data: params.slug });
-        if (live && (live.stock || 0) > 0) {
-          registerLiveProducts([live]);
-          product = live;
-        }
-      } catch (err) {
-        console.error("Failed to load product by slug/SKU from ERP:", err);
+    let product = null;
+    try {
+      const live = await fetchProductBySlugOrSkuFn({ data: params.slug });
+      if (live && (live.stock || 0) > 0) {
+        registerLiveProducts([live]);
+        product = live;
       }
+    } catch (err) {
+      console.error("Failed to load product by slug/SKU from ERP:", err);
     }
+
+    if (!product || (product.stock || 0) <= 0) {
+      product = getProduct(params.slug);
+    }
+
     if (!product || (product.stock || 0) <= 0) throw notFound();
     return { product };
   },
@@ -47,6 +50,7 @@ function ProductPage() {
   const { add } = useCart();
   const navigate = useNavigate();
   const [qty, setQty] = useState(1);
+  const [imgError, setImgError] = useState(false);
 
   return (
     <SiteLayout>
@@ -76,13 +80,24 @@ function ProductPage() {
         {/* Apple Showcase Frosted Image Frame */}
         <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl border border-white/90 bg-white/75 p-3 sm:p-4 shadow-[0_20px_50px_-10px_rgba(10,35,80,0.14),inset_0_1px_0_0_rgba(255,255,255,1)] backdrop-blur-2xl">
           <div className="relative aspect-square overflow-hidden rounded-xl sm:rounded-2xl bg-gradient-to-b from-slate-100/90 to-slate-200/60">
-            <img
-              src={product.image}
-              alt={product.name}
-              width={800}
-              height={800}
-              className="size-full object-cover transition-transform duration-500 hover:scale-105"
-            />
+            {imgError || !product.image ? (
+              <div className="flex size-full flex-col items-center justify-center bg-slate-100 text-slate-400 p-6 select-none">
+                <Package className="size-20 sm:size-24 text-slate-400 mb-2" />
+                <span className="text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-500">
+                  Lasertronics PVT LTD
+                </span>
+                <span className="text-[11px] text-slate-400 mt-1">Image coming soon</span>
+              </div>
+            ) : (
+              <img
+                src={product.image}
+                alt={product.name}
+                width={800}
+                height={800}
+                onError={() => setImgError(true)}
+                className="size-full object-cover transition-transform duration-500 hover:scale-105"
+              />
+            )}
           </div>
         </div>
 

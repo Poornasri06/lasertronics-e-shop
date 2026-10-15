@@ -1,11 +1,13 @@
+import { useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { ShoppingCart, Star } from "lucide-react";
+import { ShoppingCart, Star, Package } from "lucide-react";
 import { formatLKR, type Product } from "@/data/products";
 import { useCart } from "@/lib/cart";
 
 export function ProductCard({ product }: { product: Product }) {
   const { add } = useCart();
   const navigate = useNavigate();
+  const [imgError, setImgError] = useState(false);
 
   return (
     <article className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-[0_2px_10px_rgba(0,0,0,0.03)] transition-all duration-300 hover:shadow-md hover:-translate-y-0.5">
@@ -16,14 +18,24 @@ export function ProductCard({ product }: { product: Product }) {
           params={{ slug: product.slug }}
           className="flex size-full items-center justify-center p-2.5 sm:p-3.5"
         >
-          <img
-            src={product.image}
-            alt={product.name}
-            width={800}
-            height={800}
-            loading="lazy"
-            className="size-full object-contain transition-transform duration-300 group-hover:scale-105"
-          />
+          {imgError || !product.image ? (
+            <div className="flex size-full flex-col items-center justify-center rounded-xl bg-slate-100 text-slate-400 p-2 select-none">
+              <Package className="size-9 sm:size-11 text-slate-400 mb-1" />
+              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
+                Lasertronics
+              </span>
+            </div>
+          ) : (
+            <img
+              src={product.image}
+              alt={product.name}
+              width={800}
+              height={800}
+              loading="lazy"
+              onError={() => setImgError(true)}
+              className="size-full object-contain transition-transform duration-300 group-hover:scale-105"
+            />
+          )}
         </Link>
 
         {product.badge && (

@@ -22,8 +22,19 @@ import {
  * Appears when network connection is lost, informing users without blocking browsing.
  */
 export function PWAOfflineBanner() {
-  const { isOnline } = usePWA();
+  const { isOnline, setOnline, reconnect } = usePWA();
   const [dismissed, setDismissed] = useState(false);
+
+  // Proactively attempt to reconnect every 4s while in offline mode
+  React.useEffect(() => {
+    if (!isOnline) {
+      const timer = setInterval(() => {
+        reconnect();
+      }, 4000);
+      return () => clearInterval(timer);
+    }
+    return undefined;
+  }, [isOnline, reconnect]);
 
   if (isOnline || dismissed) return null;
 
@@ -36,14 +47,26 @@ export function PWAOfflineBanner() {
             <strong>Offline Mode:</strong> You are browsing cached catalog data. Online connectivity is required to place orders or refresh live ERP prices.
           </span>
         </div>
-        <button
-          type="button"
-          onClick={() => setDismissed(true)}
-          className="rounded-full p-1 hover:bg-black/10 transition-colors shrink-0"
-          aria-label="Dismiss offline notice"
-        >
-          <X className="size-3.5" />
-        </button>
+        <div className="flex items-center gap-2 shrink-0">
+          <button
+            type="button"
+            onClick={() => {
+              setOnline(true);
+              setDismissed(true);
+            }}
+            className="rounded-md bg-slate-950 px-2.5 py-1 text-[11px] font-bold text-white shadow hover:bg-slate-800 transition-colors cursor-pointer"
+          >
+            Switch to Online Mode
+          </button>
+          <button
+            type="button"
+            onClick={() => setDismissed(true)}
+            className="rounded-full p-1 hover:bg-black/10 transition-colors shrink-0 cursor-pointer"
+            aria-label="Dismiss offline notice"
+          >
+            <X className="size-3.5" />
+          </button>
+        </div>
       </div>
     </div>
   );

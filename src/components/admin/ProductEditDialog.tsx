@@ -44,7 +44,7 @@ interface ProductEditDialogProps {
     image: string | null;
     stock: number;
     blurb: string;
-    badge?: string;
+    badge?: string | undefined;
     specs: { label: string; value: string }[];
   }) => Promise<void>;
   onUploadImage?: (file: File) => Promise<string>;
@@ -163,8 +163,11 @@ export function ProductEditDialog({
 
   const handleSpecChange = (index: number, field: "label" | "value", val: string) => {
     const next = [...specs];
-    next[index][field] = val;
-    setSpecs(next);
+    const item = next[index];
+    if (item) {
+      item[field] = val;
+      setSpecs(next);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {

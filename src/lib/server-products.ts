@@ -75,15 +75,35 @@ export async function getLiveStoreProducts(): Promise<Product[]> {
           categoryMarkupMap[cat.id] = cat.markupPercentage;
         }
 
-        // Build individual overrides mapping
-        const productOverridesMap: Record<string, { overridePrice?: number | null; isOverridden?: boolean; image?: string | null }> = {};
+        // Build comprehensive admin overrides mapping for all products in catalog store
+        const productOverridesMap: Record<
+          string,
+          {
+            name?: string;
+            categoryId?: string;
+            overridePrice?: number | null;
+            isOverridden?: boolean;
+            image?: string | null;
+            stock?: number;
+          }
+        > = {};
+
         for (const prod of store.products) {
-          if (prod.isPriceOverridden) {
-            productOverridesMap[prod.sku] = {
-              overridePrice: prod.overridePrice,
-              isOverridden: true,
-              image: prod.image,
-            };
+          const overrideData = {
+            name: prod.name,
+            categoryId: prod.categoryId,
+            overridePrice: prod.overridePrice,
+            isOverridden: prod.isPriceOverridden,
+            image: prod.image,
+            stock: prod.stock,
+          };
+          if (prod.sku) {
+            productOverridesMap[prod.sku] = overrideData;
+            productOverridesMap[prod.sku.toLowerCase()] = overrideData;
+          }
+          if (prod.slug) {
+            productOverridesMap[prod.slug] = overrideData;
+            productOverridesMap[prod.slug.toLowerCase()] = overrideData;
           }
         }
 
@@ -96,9 +116,17 @@ export async function getLiveStoreProducts(): Promise<Product[]> {
         });
 
         if (activeInStock.length > 0) {
-          cachedProducts = activeInStock.map((item) =>
+          const erpProducts = activeInStock.map((item) =>
             mapInTouchProductToStoreProduct(item, undefined, categoryMarkupMap, productOverridesMap)
           );
+
+          // Merge any custom products added directly through Admin Dashboard that are not from InTouch ERP
+          const erpSkus = new Set(activeInStock.map((i) => (i.sub_sku || i.sku)?.toLowerCase()));
+          const customAdminProducts = (store.products || [])
+            .filter((p) => (p.stock || 0) > 0 && !erpSkus.has(p.sku.toLowerCase()))
+            .map(mapRecordToProduct);
+
+          cachedProducts = [...customAdminProducts, ...erpProducts];
           lastFetchTime = Date.now();
           return cachedProducts;
         }

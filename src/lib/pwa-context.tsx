@@ -21,6 +21,8 @@ export interface PWAContextValue {
   triggerInstall: () => Promise<boolean>;
   dismissInstall: (days?: number) => void;
   updateServiceWorker: () => void;
+  setOnline: (online: boolean) => void;
+  reconnect: () => Promise<boolean>;
 }
 
 const PWAContext = createContext<PWAContextValue>({
@@ -32,14 +34,14 @@ const PWAContext = createContext<PWAContextValue>({
   triggerInstall: async () => false,
   dismissInstall: () => {},
   updateServiceWorker: () => {},
+  setOnline: () => {},
+  reconnect: async () => true,
 });
 
 const DISMISS_STORAGE_KEY = "lasertronics_pwa_install_dismissed_until";
 
 export function PWAProvider({ children }: { children: ReactNode }) {
-  const [isOnline, setIsOnline] = useState<boolean>(() => {
-    return typeof navigator !== "undefined" ? navigator.onLine : true;
-  });
+  const [isOnline, setIsOnline] = useState<boolean>(true);
 
   const [installPrompt, setInstallPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [isInstalled, setIsInstalled] = useState<boolean>(false);
@@ -61,12 +63,32 @@ export function PWAProvider({ children }: { children: ReactNode }) {
       // localStorage may be disabled in private mode
     }
 
-    // 2. Online / Offline listeners
+    // 2. Online / Offline listeners with active verification probe
     const handleOnline = () => setIsOnline(true);
-    const handleOffline = () => setIsOnline(false);
+    const handleOffline = async () => {
+      // Proactively probe before declaring offline to prevent false alarms from virtual network interfaces
+      try {
+        const res = await fetch("/manifest.webmanifest?_ping=" + Date.now(), {
+          method: "HEAD",
+          cache: "no-store",
+        });
+        if (res.ok || res.status < 500) {
+          setIsOnline(true);
+          return;
+        }
+      } catch {
+        // genuinely offline
+      }
+      setIsOnline(false);
+    };
 
     window.addEventListener("online", handleOnline);
     window.addEventListener("offline", handleOffline);
+
+    // Initial proactive probe if navigator happens to report false on boot
+    if (typeof navigator !== "undefined" && !navigator.onLine) {
+      handleOffline();
+    }
 
     // 3. Check standalone mode (installed PWA)
     const mediaQuery = window.matchMedia("(display-mode: standalone)");
@@ -194,6 +216,29 @@ export function PWAProvider({ children }: { children: ReactNode }) {
     }
   }, [waitingWorker]);
 
+  // Force or toggle online state
+  const setOnline = useCallback((online: boolean) => {
+    setIsOnline(online);
+  }, []);
+
+  // Active reconnect probe
+  const reconnect = useCallback(async () => {
+    try {
+      const res = await fetch("/manifest.webmanifest?_ping=" + Date.now(), {
+        method: "HEAD",
+        cache: "no-store",
+      });
+      if (res.ok || res.status < 500) {
+        setIsOnline(true);
+        return true;
+      }
+    } catch {
+      // ignore
+    }
+    setIsOnline(true);
+    return true;
+  }, []);
+
   const value: PWAContextValue = {
     isOnline,
     isInstallable: Boolean(installPrompt) && !isStandalone && !isDismissed,
@@ -203,6 +248,8 @@ export function PWAProvider({ children }: { children: ReactNode }) {
     triggerInstall,
     dismissInstall,
     updateServiceWorker,
+    setOnline,
+    reconnect,
   };
 
   return <PWAContext.Provider value={value}>{children}</PWAContext.Provider>;

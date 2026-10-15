@@ -18,10 +18,10 @@ interface CategoryEditDialogProps {
   onOpenChange: (open: boolean) => void;
   category?: CategoryRecord | null;
   onSave: (data: {
-    id?: string;
+    id?: string | undefined;
     name: string;
-    tagline?: string;
-    description?: string;
+    tagline?: string | undefined;
+    description?: string | undefined;
     markupPercentage: number;
   }) => Promise<void>;
 }

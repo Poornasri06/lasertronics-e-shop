@@ -30,7 +30,7 @@ export const Route = createFileRoute("/shop")({
       { property: "og:title", content: "All Products | LASERTRONICS PVT LTD" },
       {
         property: "og:description",
-        content: "The full LASERTRONICS PVT LTD electronics catalogue, live from InTouch ERP.",
+        content: "The full LASERTRONICS PVT LTD electronics, components, and tools catalogue.",
       },
     ],
   }),
@@ -96,14 +96,11 @@ function ShopPage() {
       <div className="relative overflow-hidden border-b border-white/60 bg-gradient-to-b from-blue-50/40 via-white/50 to-white/70 py-8 sm:py-12 backdrop-blur-xl lg:py-14">
         <div className="container-page">
           <span className="inline-block rounded-full border border-white/80 bg-white/70 px-3.5 py-1 text-xs font-extrabold uppercase tracking-[0.2em] text-primary shadow-xs backdrop-blur-md">
-            Live ERP Inventory
+            Full Store Catalog
           </span>
           <h1 className="mt-2.5 font-display text-2xl sm:text-4xl font-extrabold tracking-tight text-foreground">
             All Products
           </h1>
-          <p className="mt-1.5 max-w-xl text-xs sm:text-sm text-muted-foreground">
-            {allProducts.length.toLocaleString()} genuine products synchronized live from InTouch ERP, priced in Sri Lankan rupees.
-          </p>
         </div>
       </div>
 
