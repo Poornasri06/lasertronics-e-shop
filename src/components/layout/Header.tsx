@@ -19,6 +19,7 @@ interface NavLinkItem {
   label: string;
   to: string;
   params?: { slug: string };
+  visibility?: string;
 }
 
 const desktopNavLinks: NavLinkItem[] = [
@@ -26,9 +27,9 @@ const desktopNavLinks: NavLinkItem[] = [
   { label: "Shop", to: "/shop" },
   { label: "Mobile Accessories", to: "/category/$slug", params: { slug: "mobile-accessories" } },
   { label: "Electronics", to: "/category/$slug", params: { slug: "electronics" } },
-  { label: "TV Accessories", to: "/category/$slug", params: { slug: "tv-accessories" } },
-  { label: "IoT & Microcontrollers", to: "/category/$slug", params: { slug: "iot-and-microcontrollers" } },
-  { label: "Repair Kits", to: "/category/$slug", params: { slug: "repair-kits" } },
+  { label: "TV Accessories", to: "/category/$slug", params: { slug: "tv-accessories" }, visibility: "hidden xl:inline-flex" },
+  { label: "IoT & Microcontrollers", to: "/category/$slug", params: { slug: "iot-and-microcontrollers" }, visibility: "hidden 2xl:inline-flex" },
+  { label: "Repair Kits", to: "/category/$slug", params: { slug: "repair-kits" }, visibility: "hidden xl:inline-flex" },
   { label: "About", to: "/about" },
   { label: "Contact", to: "/contact" },
 ];
@@ -106,8 +107,9 @@ export function Header() {
 
           {/* Desktop Center Navigation - hidden on mobile/tablet */}
           <nav className="hidden lg:flex items-center gap-0.5 xl:gap-1 rounded-full border border-white/80 bg-white/50 p-1 backdrop-blur-md shadow-[inset_0_1px_2px_rgba(0,0,0,0.02)]">
-            {desktopNavLinks.map((l) =>
-              l.params ? (
+            {desktopNavLinks.map((l) => {
+              const visibilityClass = l.visibility ?? "inline-flex";
+              return l.params ? (
                 <Link
                   key={l.label}
                   to={l.to}
@@ -116,7 +118,7 @@ export function Header() {
                     className:
                       "!bg-primary !text-primary-foreground font-bold shadow-[0_2px_8px_rgba(8,120,209,0.3)]",
                   }}
-                  className="inline-flex h-8 items-center justify-center whitespace-nowrap rounded-full px-2 xl:px-2.5 2xl:px-3 text-[11px] xl:text-xs font-semibold text-foreground/80 transition-all hover:bg-white/80 hover:text-primary active:scale-95"
+                  className={`${visibilityClass} h-8 items-center justify-center whitespace-nowrap rounded-full px-2 xl:px-2.5 2xl:px-3 text-[11px] xl:text-xs font-semibold text-foreground/80 transition-all hover:bg-white/80 hover:text-primary active:scale-95`}
                 >
                   {l.label}
                 </Link>
@@ -128,12 +130,12 @@ export function Header() {
                     className:
                       "!bg-primary !text-primary-foreground font-bold shadow-[0_2px_8px_rgba(8,120,209,0.3)]",
                   }}
-                  className="inline-flex h-8 items-center justify-center whitespace-nowrap rounded-full px-2 xl:px-2.5 2xl:px-3 text-[11px] xl:text-xs font-semibold text-foreground/80 transition-all hover:bg-white/80 hover:text-primary active:scale-95"
+                  className={`${visibilityClass} h-8 items-center justify-center whitespace-nowrap rounded-full px-2 xl:px-2.5 2xl:px-3 text-[11px] xl:text-xs font-semibold text-foreground/80 transition-all hover:bg-white/80 hover:text-primary active:scale-95`}
                 >
                   {l.label}
                 </Link>
-              )
-            )}
+              );
+            })}
           </nav>
 
           {/* Right Action Icons */}

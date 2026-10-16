@@ -134,8 +134,8 @@ function Index() {
           </p>
         </div>
 
-        {/* Mobile: horizontal scroll strip | lg+: 5-column grid */}
-        <div className="mt-6 sm:mt-8 lg:grid lg:grid-cols-5 lg:gap-4 flex gap-3 overflow-x-auto pb-2 snap-x snap-mandatory scrollbar-none -mx-4 px-4 sm:-mx-6 sm:px-6 lg:mx-0 lg:px-0 lg:overflow-visible lg:pb-0">
+        {/* Mobile: horizontal scroll strip | md+: 5-column grid */}
+        <div className="mt-6 sm:mt-8 md:grid md:grid-cols-5 md:gap-3 lg:gap-4 flex gap-3 overflow-x-auto pb-2 snap-x snap-mandatory scrollbar-none -mx-4 px-4 md:mx-0 md:px-0 md:overflow-visible md:pb-0">
           {categories.map((c, i) => {
             const Icon = categoryIcons[i] ?? Cpu;
             return (
@@ -143,7 +143,7 @@ function Index() {
                 key={c.slug}
                 to="/category/$slug"
                 params={{ slug: c.slug }}
-                className="glass-card group relative flex flex-col justify-between overflow-hidden rounded-2xl sm:rounded-3xl border border-white/80 bg-white/70 p-4 sm:p-5 shadow-[0_4px_20px_-2px_rgba(12,32,68,0.06),inset_0_1px_0_0_rgba(255,255,255,0.95)] backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-blue-400/50 hover:bg-white/90 hover:shadow-xl snap-start shrink-0 w-[60vw] xs:w-[48vw] sm:w-[35vw] lg:w-auto"
+                className="glass-card group relative flex flex-col justify-between overflow-hidden rounded-2xl sm:rounded-3xl border border-white/80 bg-white/70 p-3.5 sm:p-4 lg:p-5 shadow-[0_4px_20px_-2px_rgba(12,32,68,0.06),inset_0_1px_0_0_rgba(255,255,255,0.95)] backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-blue-400/50 hover:bg-white/90 hover:shadow-xl snap-start shrink-0 w-[60vw] xs:w-[48vw] sm:w-[38vw] md:w-auto"
               >
                 <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white to-transparent opacity-80" />
 
