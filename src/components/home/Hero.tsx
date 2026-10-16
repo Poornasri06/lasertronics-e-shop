@@ -96,7 +96,7 @@ export function Hero() {
   return (
     <section className="relative w-full overflow-hidden bg-slate-950 select-none">
       <div
-        className={`group relative min-h-[460px] xs:min-h-[500px] sm:min-h-[560px] lg:min-h-[620px] w-full overflow-hidden ${
+        className={`group relative min-h-[370px] sm:min-h-[540px] lg:min-h-[620px] w-full overflow-hidden ${
           isDragging ? "cursor-grabbing" : "cursor-grab"
         }`}
         onMouseDown={(e) => handleDragStart(e.clientX)}
@@ -112,7 +112,7 @@ export function Hero() {
         onTouchEnd={handleDragEnd}
       >
         <div
-          className={`flex h-full min-h-[460px] xs:min-h-[500px] sm:min-h-[560px] lg:min-h-[620px] w-full ${
+          className={`flex h-full min-h-[370px] sm:min-h-[540px] lg:min-h-[620px] w-full ${
             isDragging
               ? "transition-none"
               : "transition-transform duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]"
@@ -126,7 +126,7 @@ export function Hero() {
             return (
               <div
                 key={slide.slug}
-                className="relative flex h-full min-h-[460px] xs:min-h-[500px] sm:min-h-[560px] lg:min-h-[620px] w-full shrink-0 flex-col justify-between"
+                className="relative flex h-full min-h-[370px] sm:min-h-[540px] lg:min-h-[620px] w-full shrink-0 flex-col justify-between"
               >
                 <div className="absolute inset-0 size-full overflow-hidden">
                   <img
@@ -142,7 +142,7 @@ export function Hero() {
                   <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,rgba(8,120,209,0.18),transparent_65%)]" />
                 </div>
 
-                <div className="container-page relative z-10 flex flex-col justify-center pt-8 xs:pt-12 sm:pt-16 lg:pt-20 pb-20 xs:pb-24 sm:pb-24">
+                <div className="container-page relative z-10 flex flex-col justify-center pt-6 sm:pt-16 lg:pt-20 pb-14 sm:pb-24">
                   <div className="max-w-2xl">
                     <div className="inline-flex items-center gap-1.5 rounded-full border border-cyan-400/30 bg-cyan-950/50 px-2.5 py-0.5 sm:px-3 sm:py-1 text-[10px] sm:text-xs font-extrabold uppercase tracking-[0.2em] text-cyan-300 shadow-sm backdrop-blur-xl">
                       <span className="size-1.5 sm:size-2 rounded-full bg-cyan-400 animate-pulse" />
@@ -157,7 +157,7 @@ export function Hero() {
                       {slide.copy}
                     </p>
 
-                    <div className="mt-5 sm:mt-8 flex flex-col xs:flex-row items-stretch xs:items-center gap-2.5 sm:gap-4">
+                    <div className="mt-4 sm:mt-8 flex flex-col xs:flex-row items-stretch xs:items-center gap-2.5 sm:gap-4">
                       <Link
                         to="/category/$slug"
                         params={{ slug: slide.slug }}
