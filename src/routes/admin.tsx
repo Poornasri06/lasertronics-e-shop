@@ -12,6 +12,7 @@ import {
   deleteMediaFn,
   bulkImportFn,
   uploadImageFn,
+  syncProductsFromPosFn,
 } from "@/lib/catalog-store";
 import {
   type ProductRecord,
@@ -64,6 +65,7 @@ import {
   KeyRound,
   Eye,
   EyeOff,
+  Database,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -269,6 +271,46 @@ function AdminDashboard() {
 
     return result;
   }, [products, searchQuery, selectedCategoryFilter, imageFilter, priceFilter, sortBy]);
+
+  // Pagination & Live POS Sync
+  const PRODUCTS_PER_PAGE = 50;
+  const [productsPage, setProductsPage] = useState(1);
+  const [isSyncingPos, setIsSyncingPos] = useState(false);
+
+  useEffect(() => {
+    setProductsPage(1);
+  }, [searchQuery, selectedCategoryFilter, imageFilter, priceFilter, sortBy]);
+
+  const totalFilteredProducts = filteredProducts.length;
+  const totalPages = Math.max(1, Math.ceil(totalFilteredProducts / PRODUCTS_PER_PAGE));
+  const currentPage = Math.min(Math.max(1, productsPage), totalPages);
+  const paginatedProducts = useMemo(() => {
+    const start = (currentPage - 1) * PRODUCTS_PER_PAGE;
+    return filteredProducts.slice(start, start + PRODUCTS_PER_PAGE);
+  }, [filteredProducts, currentPage]);
+
+  const handleSyncPos = async (inStockOnly = true) => {
+    try {
+      setIsSyncingPos(true);
+      toast.loading("Fetching live products from InTouch POS ERP...", { id: "pos-sync" });
+      const res = await syncProductsFromPosFn({ data: inStockOnly });
+      if (res.success) {
+        toast.success(
+          `Successfully synced ${res.syncedCount.toLocaleString()} products from InTouch POS! (${res.newAdded} added, ${res.updated} updated)`,
+          { id: "pos-sync", duration: 6000 }
+        );
+        await refreshData();
+        setProductsPage(1);
+      } else {
+        toast.error("Failed to complete POS sync", { id: "pos-sync" });
+      }
+    } catch (err: unknown) {
+      console.error("POS sync error:", err);
+      toast.error(err instanceof Error ? err.message : "Failed to fetch products from InTouch POS", { id: "pos-sync" });
+    } finally {
+      setIsSyncingPos(false);
+    }
+  };
 
   // Filtered Media
   const filteredMedia = useMemo(() => {
@@ -529,6 +571,19 @@ function AdminDashboard() {
               <Plus className="size-4" />
             </Button>
 
+            {/* Fetch Live Products from InTouch POS */}
+            <Button
+              size="sm"
+              onClick={() => handleSyncPos(true)}
+              disabled={isSyncingPos || isRefreshing}
+              className="h-8 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-xs font-bold gap-1.5 shadow-md shadow-blue-600/25 shrink-0 cursor-pointer px-2 sm:px-3"
+              title="Fetch all live products and inventory directly from InTouch POS ERP"
+            >
+              <RefreshCw className={`size-3.5 shrink-0 ${isSyncingPos ? "animate-spin" : ""}`} />
+              <span className="hidden sm:inline">{isSyncingPos ? "Syncing POS..." : "Fetch POS Products"}</span>
+              <span className="sm:hidden">{isSyncingPos ? "..." : "POS"}</span>
+            </Button>
+
             {/* Refresh Sync */}
             <Button
               variant="ghost"
@@ -647,6 +702,17 @@ function AdminDashboard() {
             <div className="hidden sm:flex items-center gap-1.5 sm:gap-2 shrink-0">
               <Button
                 size="sm"
+                onClick={() => handleSyncPos(true)}
+                disabled={isSyncingPos}
+                className="h-8 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-xs font-bold gap-1.5 shadow-md shadow-blue-600/20 shrink-0 cursor-pointer px-2.5 sm:px-3"
+                title="Fetch products from InTouch POS ERP"
+              >
+                <RefreshCw className={`size-3.5 shrink-0 ${isSyncingPos ? "animate-spin" : ""}`} />
+                <span>{isSyncingPos ? "Fetching POS..." : "Fetch POS"}</span>
+              </Button>
+
+              <Button
+                size="sm"
                 variant="outline"
                 onClick={() => setBulkImportOpen(true)}
                 className="h-8 rounded-xl border-slate-700 bg-slate-800/60 hover:bg-slate-700 text-slate-200 text-xs gap-1.5 hidden md:inline-flex cursor-pointer"
@@ -746,6 +812,42 @@ function AdminDashboard() {
                     Manually overridden prices
                   </p>
                 </div>
+              </div>
+            </div>
+
+            {/* InTouch POS ERP Integration Banner Card */}
+            <div className="p-5 sm:p-6 rounded-2xl bg-gradient-to-r from-blue-950/70 via-slate-900 to-indigo-950/70 border border-blue-800/60 shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+              <div className="flex items-start gap-3 sm:gap-4">
+                <div className="size-11 sm:size-12 rounded-2xl bg-blue-600/20 border border-blue-500/40 text-blue-400 flex items-center justify-center shrink-0 shadow-inner">
+                  <Database className="size-5 sm:size-6 text-blue-400" />
+                </div>
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <h3 className="text-sm sm:text-base font-bold text-white">InTouch POS ERP Live Integration</h3>
+                    <Badge className="bg-emerald-950/90 text-emerald-300 border-emerald-800 text-[10px] font-mono px-2 py-0.5">
+                      <CheckCircle2 className="size-3 mr-1 inline" /> Live POS Connected
+                    </Badge>
+                  </div>
+                  <p className="text-xs text-slate-300 max-w-2xl leading-relaxed">
+                    Direct live connection to InTouch POS (<span className="font-mono text-blue-300">shsx9584.intouchconnects.com</span>). Fetches active inventory, variations, purchase prices, stock quantities, and automatically computes selling prices in LKR using category markup rules.
+                  </p>
+                  <div className="flex items-center gap-3 pt-1 text-[11px] text-slate-400 font-mono flex-wrap">
+                    <span>Active POS Products: <strong className="text-white">{stats.totalProducts.toLocaleString()}</strong></span>
+                    <span>•</span>
+                    <span>Currency: <strong className="text-emerald-400 font-bold">LKR (Sri Lankan Rupee)</strong></span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2 shrink-0 w-full md:w-auto">
+                <Button
+                  onClick={() => handleSyncPos(true)}
+                  disabled={isSyncingPos}
+                  className="w-full md:w-auto h-10 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold text-xs px-4 gap-2 shadow-lg shadow-blue-600/30 transition-all cursor-pointer"
+                >
+                  <RefreshCw className={`size-4 ${isSyncingPos ? "animate-spin" : ""}`} />
+                  {isSyncingPos ? "Fetching from POS..." : "Sync POS Products Now"}
+                </Button>
               </div>
             </div>
 
@@ -1046,7 +1148,10 @@ function AdminDashboard() {
 
               <div className="flex items-center justify-between text-xs text-slate-400 pt-1">
                 <span>
-                  Showing <strong className="text-white">{filteredProducts.length}</strong> of {products.length} products
+                  Showing <strong className="text-white">{totalFilteredProducts === 0 ? 0 : (currentPage - 1) * PRODUCTS_PER_PAGE + 1}</strong>–<strong className="text-white">{Math.min(currentPage * PRODUCTS_PER_PAGE, totalFilteredProducts)}</strong> of <strong className="text-white">{totalFilteredProducts.toLocaleString()}</strong> products
+                  {totalFilteredProducts < products.length && (
+                    <span className="text-slate-500 ml-1"> (filtered from {products.length.toLocaleString()})</span>
+                  )}
                 </span>
                 {(searchQuery || selectedCategoryFilter !== "all" || imageFilter !== "all" || priceFilter !== "all") && (
                   <button
@@ -1075,7 +1180,7 @@ function AdminDashboard() {
                     <p className="text-xs text-slate-400 mt-1">Try resetting filters or adding a new product</p>
                   </div>
                 ) : (
-                  filteredProducts.map((p) => {
+                  paginatedProducts.map((p) => {
                     const cat = categories.find((c) => c.id === p.categoryId);
                     const markupPct = cat?.markupPercentage ?? p.markupPercentage ?? 15;
                     const markupAmount = Math.round(((p.basePrice * markupPct) / 100) * 100) / 100;
@@ -1218,7 +1323,7 @@ function AdminDashboard() {
                         </td>
                       </tr>
                     ) : (
-                      filteredProducts.map((p) => {
+                      paginatedProducts.map((p) => {
                         const cat = categories.find((c) => c.id === p.categoryId);
                         const markupPct = cat?.markupPercentage ?? p.markupPercentage ?? 15;
                         const markupAmount = Math.round(((p.basePrice * markupPct) / 100) * 100) / 100;
@@ -1366,6 +1471,63 @@ function AdminDashboard() {
                   </tbody>
                 </table>
               </div>
+
+              {/* Pagination Controls */}
+              {totalFilteredProducts > 0 && (
+                <div className="p-3.5 sm:p-4 border-t border-slate-700/80 bg-slate-900/70 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+                  <div className="text-slate-400 text-center sm:text-left">
+                    Showing <strong className="text-white">{(currentPage - 1) * PRODUCTS_PER_PAGE + 1}</strong>–<strong className="text-white">{Math.min(currentPage * PRODUCTS_PER_PAGE, totalFilteredProducts)}</strong> of{" "}
+                    <strong className="text-white">{totalFilteredProducts.toLocaleString()}</strong> items
+                    {totalFilteredProducts < products.length && (
+                      <span className="text-slate-500 ml-1"> (filtered from {products.length.toLocaleString()})</span>
+                    )}
+                  </div>
+
+                  <div className="flex items-center gap-1.5 flex-wrap justify-center">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      disabled={currentPage <= 1}
+                      onClick={() => setProductsPage(1)}
+                      className="h-8 px-2.5 rounded-lg border-slate-700 bg-slate-800 text-slate-300 hover:text-white disabled:opacity-40 text-xs cursor-pointer"
+                    >
+                      First
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      disabled={currentPage <= 1}
+                      onClick={() => setProductsPage((p) => Math.max(1, p - 1))}
+                      className="h-8 px-2.5 rounded-lg border-slate-700 bg-slate-800 text-slate-300 hover:text-white disabled:opacity-40 text-xs gap-1 cursor-pointer"
+                    >
+                      <ChevronRight className="size-3.5 rotate-180" /> Prev
+                    </Button>
+
+                    <div className="px-3 py-1 rounded-lg bg-slate-800/90 border border-slate-700 font-mono text-xs text-slate-200">
+                      Page <strong className="text-white">{currentPage}</strong> of <strong className="text-white">{totalPages}</strong>
+                    </div>
+
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      disabled={currentPage >= totalPages}
+                      onClick={() => setProductsPage((p) => Math.min(totalPages, p + 1))}
+                      className="h-8 px-2.5 rounded-lg border-slate-700 bg-slate-800 text-slate-300 hover:text-white disabled:opacity-40 text-xs gap-1 cursor-pointer"
+                    >
+                      Next <ChevronRight className="size-3.5" />
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      disabled={currentPage >= totalPages}
+                      onClick={() => setProductsPage(totalPages)}
+                      className="h-8 px-2.5 rounded-lg border-slate-700 bg-slate-800 text-slate-300 hover:text-white disabled:opacity-40 text-xs cursor-pointer"
+                    >
+                      Last
+                    </Button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         )}

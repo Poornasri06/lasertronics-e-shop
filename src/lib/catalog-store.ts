@@ -7,6 +7,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import * as fs from "node:fs";
 import * as path from "node:path";
+import { fetchInTouchAllProducts } from "./intouch-api";
 
 export * from "./catalog-types";
 import {
@@ -886,6 +887,159 @@ export function bulkImportProducts(productsToImport: Array<{
   return { imported, updated };
 }
 
+/**
+ * Synchronize live products directly from InTouch POS ERP into the Catalog Store
+ */
+export async function syncProductsFromPos(inStockOnly = true): Promise<{
+  success: boolean;
+  totalErpScanned: number;
+  inStockCount: number;
+  syncedCount: number;
+  newAdded: number;
+  updated: number;
+  categoryBreakdown: Record<string, number>;
+}> {
+  const rawItems = await fetchInTouchAllProducts();
+  if (!rawItems || !Array.isArray(rawItems)) {
+    throw new Error("Unable to fetch products from InTouch POS ERP.");
+  }
+
+  const store = loadCatalogStore();
+
+  const filteredItems = inStockOnly
+    ? rawItems.filter((p) => {
+        const qty = parseFloat(p.stock_qty || "0");
+        const price = parseFloat(p.selling_price || "0");
+        return qty > 0 && price > 0 && p.product_name && p.product_name.trim();
+      })
+    : rawItems.filter((p) => p.product_name && p.product_name.trim());
+
+  const existingMap = new Map<string, ProductRecord>();
+  for (const p of store.products) {
+    if (p.sku) existingMap.set(p.sku.toLowerCase(), p);
+  }
+
+  const categoryMarkupMap: Record<string, number> = {};
+  for (const cat of store.categories) {
+    categoryMarkupMap[cat.id] = cat.markupPercentage;
+  }
+
+  function detectCategory(name: string): string {
+    const lower = name.toLowerCase();
+    if (/solder|iron|toolkit|driver|tweezer|desolder|pump|station|flux|paste|cutter|plier|magnif|mat|antistatic|pry/.test(lower)) return "repair-kits";
+    if (/esp32|esp8266|arduino|nodemcu|uno|nano|mega|stm32|raspberry|pi|sensor|ultrasonic|dht|pir|relay|servo|step|motor|oled|lcd|module|iot/.test(lower)) return "iot-and-microcontrollers";
+    if (/tv|remote|hdmi|av|displayport|vga|optical|splitter|switch|converter|wallmount|bracket/.test(lower)) return "tv-accessories";
+    if (/cable|charger|power bank|powerbank|earbuds|headphone|holder|stand|magsafe|battery|usb|type-c|lightning/.test(lower)) return "mobile-accessories";
+    return "electronics";
+  }
+
+  const categoryPools: Record<string, string[]> = {
+    "mobile-accessories": ["/assets/p/usbc-cable.jpg", "/assets/p/powerbank.jpg", "/assets/p/gan-charger.jpg", "/assets/p/magsafe-powerbank.jpg"],
+    "electronics": ["/assets/p/psu-module.jpg", "/assets/p/capacitor-kit.jpg", "/assets/p/resistor-kit.jpg", "/assets/p/led-kit.jpg", "/assets/p/relay.jpg"],
+    "tv-accessories": ["/assets/p/hdmi-cable.jpg", "/assets/p/remote.jpg", "/assets/p/wallmount.jpg", "/assets/p/tv-keyboard.jpg"],
+    "iot-and-microcontrollers": ["/assets/p/esp32.jpg", "/assets/p/nodemcu.jpg", "/assets/p/uno.jpg", "/assets/p/nano.jpg", "/assets/p/ultrasonic.jpg"],
+    "repair-kits": ["/assets/p/soldering-station.jpg", "/assets/p/screwdriver-set.jpg", "/assets/p/multimeter.jpg", "/assets/p/desolder-pump.jpg"],
+  };
+
+  function selectImage(name: string, cat: string, key: string) {
+    const pool = categoryPools[cat] || categoryPools["electronics"];
+    let hash = 0;
+    const str = key || name;
+    for (let i = 0; i < str.length; i++) {
+      hash = (hash << 5) - hash + str.charCodeAt(i);
+      hash |= 0;
+    }
+    const idx = Math.abs(hash) % pool.length;
+    return pool[idx];
+  }
+
+  let newAdded = 0;
+  let updated = 0;
+  const categoryBreakdown: Record<string, number> = {};
+  const now = new Date().toISOString();
+  const syncedList: ProductRecord[] = [];
+
+  for (const item of filteredItems) {
+    const sku = item.sub_sku || item.sku || item.product_id;
+    const existing = existingMap.get(sku.toLowerCase());
+
+    const purchasePrice = parseFloat(item.purchase_price || "0");
+    const rawSellingPrice = parseFloat(item.selling_price || "0");
+    const basePrice = purchasePrice > 0 ? purchasePrice : rawSellingPrice;
+    const stock = Math.max(0, Math.floor(parseFloat(item.stock_qty || "0")));
+
+    const categoryId = existing?.categoryId || detectCategory(item.product_name);
+    categoryBreakdown[categoryId] = (categoryBreakdown[categoryId] || 0) + 1;
+
+    const markupPct = categoryMarkupMap[categoryId] || 15;
+
+    let isPriceOverridden = existing?.isPriceOverridden || false;
+    let overridePrice = existing?.overridePrice ?? null;
+    let sellingPrice = 0;
+
+    if (isPriceOverridden && overridePrice != null && overridePrice > 0) {
+      sellingPrice = overridePrice;
+    } else {
+      const markupAmount = Math.round(((basePrice * markupPct) / 100) * 100) / 100;
+      sellingPrice = Math.round((basePrice + markupAmount) * 100) / 100;
+    }
+
+    const cleanName = item.product_name
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+    const skuPart = sku.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+    const slug = cleanName ? `${cleanName}-${skuPart}` : `prod-${skuPart}`;
+
+    const image = existing?.image || selectImage(item.product_name, categoryId, sku);
+
+    const record: ProductRecord = {
+      sku,
+      slug,
+      name: item.product_name,
+      categoryId,
+      basePrice,
+      markupPercentage: markupPct,
+      isPriceOverridden,
+      overridePrice,
+      sellingPrice,
+      image,
+      stock,
+      blurb: `${item.product_name} (${item.unit || "unit"}). Genuine InTouch POS inventory. SKU: ${sku}`,
+      specs: [
+        { label: "SKU", value: sku },
+        { label: "Unit", value: item.unit || "Pc(s)" },
+        { label: "Availability", value: "In Stock" },
+        ...(item.sub_sku && item.sub_sku !== item.sku ? [{ label: "Variation SKU", value: item.sub_sku }] : []),
+        ...(item.variation_name ? [{ label: "Variation", value: item.variation_name }] : []),
+      ],
+      createdAt: existing?.createdAt || now,
+      updatedAt: now,
+    };
+
+    if (existing) {
+      updated++;
+    } else {
+      newAdded++;
+    }
+
+    syncedList.push(record);
+  }
+
+  store.products = syncedList;
+  saveCatalogStore(store);
+
+  return {
+    success: true,
+    totalErpScanned: rawItems.length,
+    inStockCount: filteredItems.length,
+    syncedCount: syncedList.length,
+    newAdded,
+    updated,
+    categoryBreakdown,
+  };
+}
+
 // ==========================================
 // TanStack Start Server Functions (RPC)
 // ==========================================
@@ -1088,4 +1242,10 @@ export const uploadImageFn = createServerFn({ method: "POST" })
     }
 
     return record;
+  });
+
+export const syncProductsFromPosFn = createServerFn({ method: "POST" })
+  .validator((inStockOnly?: boolean) => inStockOnly ?? true)
+  .handler(async ({ data: inStockOnly }) => {
+    return syncProductsFromPos(inStockOnly);
   });

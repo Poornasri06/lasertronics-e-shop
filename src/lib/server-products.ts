@@ -61,6 +61,19 @@ export async function getLiveStoreProducts(): Promise<Product[]> {
     return cachedProducts;
   }
 
+  // If catalog store already contains synced POS products, serve them directly
+  if (store.products && store.products.length > 0) {
+    const activeProducts = store.products
+      .filter((p) => (p.stock || 0) > 0)
+      .map(mapRecordToProduct);
+
+    if (activeProducts.length > 0) {
+      cachedProducts = activeProducts;
+      lastFetchTime = now;
+      return cachedProducts;
+    }
+  }
+
   if (isFetchingPromise) {
     return isFetchingPromise;
   }
