@@ -23,7 +23,7 @@ export interface ProductRecord {
   slug: string;
   name: string;
   categoryId: string;
-  basePrice: number; // ₹ base cost/purchase price
+  basePrice: number; // LKR base cost/purchase price
   markupPercentage?: number | undefined; // snapshot or product-specific markup %
   isPriceOverridden: boolean; // if true, overridePrice is used instead of category rule
   overridePrice: number | null; // manual selling price override
@@ -92,14 +92,17 @@ export function computeProductPricing(
 }
 
 /**
- * Format currency in Indian Rupees (₹)
+ * Format currency in Sri Lankan Rupees (LKR)
  */
-export function formatINR(value: number): string {
-  if (isNaN(value)) return "₹0.00";
-  return new Intl.NumberFormat("en-IN", {
-    style: "currency",
-    currency: "INR",
+export function formatLKR(value: number): string {
+  if (isNaN(value)) return "LKR 0.00";
+  return `LKR ${value.toLocaleString("en-LK", {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
-  }).format(value);
+  })}`;
 }
+
+/**
+ * Alias for backwards compatibility
+ */
+export const formatINR = formatLKR;

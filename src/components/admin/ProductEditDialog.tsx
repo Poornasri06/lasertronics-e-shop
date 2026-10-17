@@ -307,7 +307,7 @@ export function ProductEditDialog({
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <div className="grid size-7 place-items-center rounded-lg bg-blue-600 text-white shadow-xs">
-                    <span className="font-bold text-xs">₹</span>
+                    <span className="font-bold text-[10px]">LKR</span>
                   </div>
                   <div>
                     <h4 className="text-sm font-bold text-slate-900">
@@ -334,10 +334,10 @@ export function ProductEditDialog({
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
                 <div className="space-y-1.5">
                   <Label htmlFor="base-price" className="text-xs font-semibold text-slate-700">
-                    Base Cost Price (₹) <span className="text-rose-500">*</span>
+                    Base Cost Price (LKR) <span className="text-rose-500">*</span>
                   </Label>
                   <div className="relative">
-                    <span className="absolute left-3 top-2.5 text-slate-400 font-semibold text-sm">₹</span>
+                    <span className="absolute left-3 top-2.5 text-slate-400 font-semibold text-xs">LKR</span>
                     <Input
                       id="base-price"
                       type="number"
@@ -345,7 +345,7 @@ export function ProductEditDialog({
                       step="0.01"
                       value={basePrice}
                       onChange={(e) => setBasePrice(parseFloat(e.target.value) || 0)}
-                      className="rounded-xl pl-8 h-10 text-sm font-semibold text-slate-800"
+                      className="rounded-xl pl-12 h-10 text-sm font-semibold text-slate-800"
                     />
                   </div>
                   <span className="text-[10px] text-slate-500">Purchase or factory unit price</span>
@@ -370,7 +370,7 @@ export function ProductEditDialog({
                   </Label>
                   {isPriceOverridden ? (
                     <div className="relative">
-                      <span className="absolute left-3 top-2.5 text-amber-600 font-bold text-sm">₹</span>
+                      <span className="absolute left-3 top-2.5 text-amber-600 font-bold text-xs">LKR</span>
                       <Input
                         id="override-price"
                         type="number"
@@ -379,7 +379,7 @@ export function ProductEditDialog({
                         placeholder="Custom selling price"
                         value={overridePrice ?? ""}
                         onChange={(e) => setOverridePrice(parseFloat(e.target.value) || null)}
-                        className="rounded-xl pl-8 h-10 text-sm font-bold text-amber-800 border-amber-300 bg-amber-50/50"
+                        className="rounded-xl pl-12 h-10 text-sm font-bold text-amber-800 border-amber-300 bg-amber-50/50"
                       />
                     </div>
                   ) : (

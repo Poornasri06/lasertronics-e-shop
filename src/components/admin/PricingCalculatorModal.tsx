@@ -61,10 +61,10 @@ export function PricingCalculatorModal({
           {/* Base Price input and quick presets */}
           <div className="space-y-3">
             <Label htmlFor="calc-base" className="text-xs font-semibold text-slate-700">
-              Enter Test Base Price (₹)
+              Enter Test Base Price (LKR)
             </Label>
             <div className="relative">
-              <span className="absolute left-3.5 top-2.5 text-slate-400 font-bold text-base">₹</span>
+              <span className="absolute left-3.5 top-3.5 text-slate-400 font-bold text-xs">LKR</span>
               <Input
                 id="calc-base"
                 type="number"
@@ -72,7 +72,7 @@ export function PricingCalculatorModal({
                 step="1"
                 value={testBasePrice}
                 onChange={(e) => setTestBasePrice(parseFloat(e.target.value) || 0)}
-                className="pl-9 h-11 text-lg font-bold text-slate-900 rounded-xl"
+                className="pl-14 h-11 text-lg font-bold text-slate-900 rounded-xl"
               />
             </div>
 
@@ -89,7 +89,7 @@ export function PricingCalculatorModal({
                       : "bg-slate-100 text-slate-700 hover:bg-slate-200"
                   }`}
                 >
-                  ₹{val}
+                  LKR {val}
                 </button>
               ))}
             </div>

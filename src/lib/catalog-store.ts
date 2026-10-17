@@ -1,7 +1,7 @@
 /**
  * Catalog Store & Category-Based Pricing Engine
  * Persistent catalog data management with category markup rules,
- * individual product overrides, image media library, and ₹ (INR) currency support.
+ * individual product overrides, image media library, and LKR currency support.
  */
 
 import { createServerFn } from "@tanstack/react-start";
@@ -17,6 +17,7 @@ import {
   type ProductSpec,
   calculateSellingPrice,
   computeProductPricing,
+  formatLKR,
   formatINR,
 } from "./catalog-types";
 
@@ -77,7 +78,7 @@ const initialProductsSeed: Omit<ProductRecord, "sellingPrice">[] = [
     slug: "65w-gan-fast-charger",
     name: "65W GaN Fast Charger Dual USB-C + USB-A",
     categoryId: "mobile-accessories",
-    basePrice: 1200, // Base ₹1,200 + 20% = ₹1,440
+    basePrice: 1200, // Base LKR 1,200 + 20% = LKR 1,440
     isPriceOverridden: false,
     overridePrice: null,
     image: "/assets/p/gan-charger.jpg",
@@ -97,7 +98,7 @@ const initialProductsSeed: Omit<ProductRecord, "sellingPrice">[] = [
     slug: "braided-usb-c-to-usb-c-cable-2m",
     name: "Braided USB-C to USB-C Cable (2m, 100W PD)",
     categoryId: "mobile-accessories",
-    basePrice: 350, // Base ₹350 + 20% = ₹420
+    basePrice: 350, // Base LKR 350 + 20% = LKR 420
     isPriceOverridden: false,
     overridePrice: null,
     image: "/assets/p/usbc-cable.jpg",
@@ -117,7 +118,7 @@ const initialProductsSeed: Omit<ProductRecord, "sellingPrice">[] = [
     slug: "20000mah-magsafe-power-bank",
     name: "20,000mAh Magnetic Wireless Power Bank",
     categoryId: "mobile-accessories",
-    basePrice: 2200, // Base ₹2,200 + 20% = ₹2,640 (Overridden to ₹2,499 special deal)
+    basePrice: 2200, // Base LKR 2,200 + 20% = LKR 2,640 (Overridden to LKR 2,499 special deal)
     isPriceOverridden: true,
     overridePrice: 2499, // Special deal override
     image: "/assets/p/magsafe-powerbank.jpg",
@@ -137,7 +138,7 @@ const initialProductsSeed: Omit<ProductRecord, "sellingPrice">[] = [
     slug: "lightning-to-usb-c-cable-1m",
     name: "MFi Certified Lightning to USB-C Cable (1.2m)",
     categoryId: "mobile-accessories",
-    basePrice: 400, // Base ₹400 + 20% = ₹480
+    basePrice: 400, // Base LKR 400 + 20% = LKR 480
     isPriceOverridden: false,
     overridePrice: null,
     image: "/assets/p/lightning-cable.jpg",
@@ -155,7 +156,7 @@ const initialProductsSeed: Omit<ProductRecord, "sellingPrice">[] = [
     slug: "esp32-wroom-32d-dev-board",
     name: "ESP32-WROOM-32D Dual-Core Wi-Fi + BLE Dev Board",
     categoryId: "iot-and-microcontrollers",
-    basePrice: 420, // Base ₹420 + 25% = ₹525
+    basePrice: 420, // Base LKR 420 + 25% = LKR 525
     isPriceOverridden: false,
     overridePrice: null,
     image: "/assets/p/esp32.jpg",
@@ -175,7 +176,7 @@ const initialProductsSeed: Omit<ProductRecord, "sellingPrice">[] = [
     slug: "arduino-uno-r3-atmega328p",
     name: "Arduino Uno R3 Compatible Board (DIP ATmega328P)",
     categoryId: "iot-and-microcontrollers",
-    basePrice: 380, // Base ₹380 + 25% = ₹475
+    basePrice: 380, // Base LKR 380 + 25% = LKR 475
     isPriceOverridden: false,
     overridePrice: null,
     image: "/assets/p/uno.jpg",
@@ -194,7 +195,7 @@ const initialProductsSeed: Omit<ProductRecord, "sellingPrice">[] = [
     slug: "ultrasonic-distance-sensor-hcsr04",
     name: "HC-SR04 Ultrasonic Distance Sensor Module",
     categoryId: "iot-and-microcontrollers",
-    basePrice: 90, // Base ₹90 + 25% = ₹112.50
+    basePrice: 90, // Base LKR 90 + 25% = LKR 112.50
     isPriceOverridden: false,
     overridePrice: null,
     image: "/assets/p/ultrasonic.jpg",
@@ -213,7 +214,7 @@ const initialProductsSeed: Omit<ProductRecord, "sellingPrice">[] = [
     slug: "60w-temperature-controlled-soldering-station",
     name: "60W Digital Temperature Controlled Soldering Station",
     categoryId: "repair-kits",
-    basePrice: 2800, // Base ₹2,800 + 18% = ₹3,304
+    basePrice: 2800, // Base LKR 2,800 + 18% = LKR 3,304
     isPriceOverridden: false,
     overridePrice: null,
     image: "/assets/p/soldering-station.jpg",
@@ -233,7 +234,7 @@ const initialProductsSeed: Omit<ProductRecord, "sellingPrice">[] = [
     slug: "128-in-1-precision-screwdriver-kit",
     name: "128-in-1 Precision Magnetic Screwdriver Repair Toolkit",
     categoryId: "repair-kits",
-    basePrice: 1100, // Base ₹1,100 + 18% = ₹1,298
+    basePrice: 1100, // Base LKR 1,100 + 18% = LKR 1,298
     isPriceOverridden: false,
     overridePrice: null,
     image: "/assets/p/screwdriver-set.jpg",
@@ -251,7 +252,7 @@ const initialProductsSeed: Omit<ProductRecord, "sellingPrice">[] = [
     slug: "4k-ultra-hd-hdmi-2-0-cable-3m",
     name: "Ultra HD 4K 60Hz Braided HDMI 2.0 Cable (3m)",
     categoryId: "tv-accessories",
-    basePrice: 320, // Base ₹320 + 10% = ₹352
+    basePrice: 320, // Base LKR 320 + 10% = LKR 352
     isPriceOverridden: false,
     overridePrice: null,
     image: "/assets/p/hdmi-cable.jpg",
@@ -270,7 +271,7 @@ const initialProductsSeed: Omit<ProductRecord, "sellingPrice">[] = [
     slug: "universal-smart-tv-remote-control",
     name: "Universal Smart TV Remote with Voice & Netflix Shortcut",
     categoryId: "tv-accessories",
-    basePrice: 450, // Base ₹450 + 10% = ₹495
+    basePrice: 450, // Base LKR 450 + 10% = LKR 495
     isPriceOverridden: false,
     overridePrice: null,
     image: "/assets/p/remote.jpg",
@@ -288,7 +289,7 @@ const initialProductsSeed: Omit<ProductRecord, "sellingPrice">[] = [
     slug: "breadboard-friendly-3-3v-5v-power-module",
     name: "Breadboard Power Supply Module 3.3V / 5V DC (MB102)",
     categoryId: "electronics",
-    basePrice: 110, // Base ₹110 + 15% = ₹126.50
+    basePrice: 110, // Base LKR 110 + 15% = LKR 126.50
     isPriceOverridden: false,
     overridePrice: null,
     image: "/assets/p/psu-module.jpg",
@@ -307,7 +308,7 @@ const initialProductsSeed: Omit<ProductRecord, "sellingPrice">[] = [
     slug: "electrolytic-capacitor-kit-500pcs",
     name: "500-Piece Electrolytic Capacitor Assortment Kit (24 Values)",
     categoryId: "electronics",
-    basePrice: 650, // Base ₹650 + 15% = ₹747.50
+    basePrice: 650, // Base LKR 650 + 15% = LKR 747.50
     isPriceOverridden: false,
     overridePrice: null,
     image: "/assets/p/capacitor-kit.jpg",
@@ -327,7 +328,7 @@ const initialProductsSeed: Omit<ProductRecord, "sellingPrice">[] = [
     slug: "1-4w-metal-film-resistor-kit-600pcs",
     name: "1/4W 1% Metal Film Resistors Assortment (600 Pieces)",
     categoryId: "electronics",
-    basePrice: 280, // Base ₹280 + 15% = ₹322
+    basePrice: 280, // Base LKR 280 + 15% = LKR 322
     isPriceOverridden: false,
     overridePrice: null,
     image: null, // NO IMAGE - Tests placeholder requirement
@@ -347,7 +348,7 @@ const initialProductsSeed: Omit<ProductRecord, "sellingPrice">[] = [
     slug: "5v-dual-channel-relay-module-optocoupler",
     name: "5V Dual Channel Relay Module with Optocoupler Isolation",
     categoryId: "electronics",
-    basePrice: 150, // Base ₹150 + 15% = ₹172.50. Manual override to ₹185.00
+    basePrice: 150, // Base LKR 150 + 15% = LKR 172.50. Manual override to LKR 185.00
     isPriceOverridden: true,
     overridePrice: 185,
     image: "/assets/p/relay.jpg",

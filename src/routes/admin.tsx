@@ -17,6 +17,7 @@ import {
   type ProductRecord,
   type CategoryRecord,
   type MediaRecord,
+  formatLKR,
   formatINR,
   calculateSellingPrice,
 } from "@/lib/catalog-types";
@@ -792,7 +793,7 @@ function AdminDashboard() {
                         <div className="pt-1 flex items-center justify-between text-xs text-slate-500 border-t border-slate-800/80">
                           <span>{count} products</span>
                           <span className="text-slate-300 font-mono text-[11px]">
-                            ₹100 → <strong className="text-emerald-400">{formatINR(sampleCalculated)}</strong>
+                            LKR 100 → <strong className="text-emerald-400">{formatLKR(sampleCalculated)}</strong>
                           </span>
                         </div>
                       </div>
@@ -815,7 +816,7 @@ function AdminDashboard() {
                   </div>
 
                   <p className="text-xs text-slate-300 leading-relaxed">
-                    Test how changing a category's percentage affects profit margins and final selling prices in Indian Rupees (₹).
+                    Test how changing a category's percentage affects profit margins and final selling prices in Sri Lankan Rupees (LKR).
                   </p>
 
                   <Button
@@ -914,9 +915,9 @@ function AdminDashboard() {
                     <tr className="border-b border-slate-700 text-slate-400 uppercase tracking-wider text-[10px]">
                       <th className="py-2.5 px-3">Product</th>
                       <th className="py-2.5 px-3">Category</th>
-                      <th className="py-2.5 px-3 text-right">Base Price (₹)</th>
+                      <th className="py-2.5 px-3 text-right">Base Price (LKR)</th>
                       <th className="py-2.5 px-3 text-right">Markup %</th>
-                      <th className="py-2.5 px-3 text-right">Selling Price (₹)</th>
+                      <th className="py-2.5 px-3 text-right">Selling Price (LKR)</th>
                       <th className="py-2.5 px-3 text-center">Status</th>
                     </tr>
                   </thead>
@@ -1200,9 +1201,9 @@ function AdminDashboard() {
                     <tr className="border-b border-slate-700/80 bg-slate-900/60 text-slate-400 uppercase tracking-wider text-[10px]">
                       <th className="py-3 px-4">Item & SKU</th>
                       <th className="py-3 px-3">Category</th>
-                      <th className="py-3 px-3 text-right">Base Cost (₹)</th>
+                      <th className="py-3 px-3 text-right">Base Cost (LKR)</th>
                       <th className="py-3 px-3 text-right">Category Markup</th>
-                      <th className="py-3 px-3 text-right">Final Selling Price (₹)</th>
+                      <th className="py-3 px-3 text-right">Final Selling Price (LKR)</th>
                       <th className="py-3 px-3 text-center">Stock</th>
                       <th className="py-3 px-4 text-right">Actions</th>
                     </tr>
@@ -1461,9 +1462,9 @@ function AdminDashboard() {
                           </span>
                         </div>
                         <div className="flex items-center justify-between text-[11px] text-slate-400 border-t border-slate-800 pt-1.5 font-mono">
-                          <span>Base ₹100:</span>
+                          <span>Base LKR 100:</span>
                           <ArrowRight className="size-3 text-slate-500" />
-                          <strong className="text-emerald-400">Selling {formatINR(sampleCalculated)}</strong>
+                          <strong className="text-emerald-400">Selling {formatLKR(sampleCalculated)}</strong>
                         </div>
                       </div>
                     </div>
@@ -1633,9 +1634,9 @@ function AdminDashboard() {
 
                       {/* Pricing Preview Row */}
                       <div className="flex items-center justify-between text-xs p-2.5 rounded-xl bg-slate-900/60 border border-slate-800 font-mono">
-                        <span className="text-slate-400">Base ₹100:</span>
+                        <span className="text-slate-400">Base LKR 100:</span>
                         <ArrowRight className="size-3 text-slate-500" />
-                        <span className="text-emerald-400 font-extrabold">Selling {formatINR(sampleCalculated)}</span>
+                        <span className="text-emerald-400 font-extrabold">Selling {formatLKR(sampleCalculated)}</span>
                         <span className="text-slate-500 font-sans text-[11px]">({count} items)</span>
                       </div>
 
@@ -1734,7 +1735,7 @@ function AdminDashboard() {
                           </td>
 
                           <td className="py-3.5 px-3 text-right font-mono text-slate-400">
-                            ₹100.00
+                            LKR 100.00
                           </td>
 
                           <td className="py-3.5 px-3 text-right font-mono font-extrabold text-emerald-400">
@@ -1826,9 +1827,9 @@ function AdminDashboard() {
                       <tr className="border-b border-amber-900/60 text-amber-300/80 uppercase tracking-wider text-[10px]">
                         <th className="py-2.5 px-3">Product</th>
                         <th className="py-2.5 px-3">Category</th>
-                        <th className="py-2.5 px-3 text-right">Base Cost (₹)</th>
-                        <th className="py-2.5 px-3 text-right">Rule Calculated (₹)</th>
-                        <th className="py-2.5 px-3 text-right">Active Override (₹)</th>
+                        <th className="py-2.5 px-3 text-right">Base Cost (LKR)</th>
+                        <th className="py-2.5 px-3 text-right">Rule Calculated (LKR)</th>
+                        <th className="py-2.5 px-3 text-right">Active Override (LKR)</th>
                         <th className="py-2.5 px-3 text-right">Action</th>
                       </tr>
                     </thead>

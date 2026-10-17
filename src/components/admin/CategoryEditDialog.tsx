@@ -168,9 +168,9 @@ export function CategoryEditDialog({
                   <span className="text-blue-600 font-mono">Selling Price = Base + (Base × {markupPercentage}%)</span>
                 </div>
                 <div className="flex items-center justify-between pt-1 text-slate-500">
-                  <span>Base: ₹{sampleBase}</span>
+                  <span>Base: LKR {sampleBase}</span>
                   <ArrowRight className="size-3 text-slate-400" />
-                  <span>Markup: +₹{sampleMarkupAmount}</span>
+                  <span>Markup: +LKR {sampleMarkupAmount}</span>
                   <ArrowRight className="size-3 text-slate-400" />
                   <strong className="text-slate-900">Selling Price: {formatINR(sampleCalculated)}</strong>
                 </div>

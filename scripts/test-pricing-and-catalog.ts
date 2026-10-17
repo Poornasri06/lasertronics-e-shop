@@ -6,6 +6,7 @@
 import {
   calculateSellingPrice,
   computeProductPricing,
+  formatLKR,
   formatINR,
   saveCategory,
   updateCategoryMarkup,
@@ -51,10 +52,10 @@ async function runTests() {
   const pDecimal = calculateSellingPrice(420, 25);
   assert(pDecimal === 525, `Base 420 + 25% markup must equal 525 (got ${pDecimal})`);
 
-  // 2. Test Currency Formatting (₹ Indian Rupees)
-  console.log("\n--- 2. Testing Currency Formatting in Indian Rupees (₹) ---");
-  const inrSample = formatINR(1440);
-  assert(inrSample.includes("₹") || inrSample.includes("1,440"), `formatINR(1440) formatted with ₹ symbol (got ${inrSample})`);
+  // 2. Test Currency Formatting (Sri Lankan Rupees - LKR)
+  console.log("\n--- 2. Testing Currency Formatting in Sri Lankan Rupees (LKR) ---");
+  const lkrSample = formatLKR(1440);
+  assert(lkrSample.includes("LKR") && lkrSample.includes("1,440"), `formatLKR(1440) formatted with LKR symbol (got ${lkrSample})`);
 
   // 3. Test Category Creation with Markup Percentage
   console.log("\n--- 3. Testing Category Creation & Markup Rule ---");
