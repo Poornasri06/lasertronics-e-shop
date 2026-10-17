@@ -92,7 +92,7 @@ export function CategoryEditDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-md rounded-2xl bg-white border border-slate-200/80 shadow-2xl p-0 overflow-hidden">
+      <DialogContent className="max-w-md w-[95vw] sm:w-full max-h-[92vh] overflow-y-auto rounded-2xl bg-white border border-slate-200/80 shadow-2xl p-0">
         <form onSubmit={handleSubmit}>
           <DialogHeader className="p-5 border-b border-slate-100 bg-slate-50/70">
             <DialogTitle className="text-lg font-bold text-slate-900">

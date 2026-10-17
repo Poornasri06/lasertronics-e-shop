@@ -473,47 +473,60 @@ function AdminDashboard() {
     <div className="min-h-screen bg-slate-900 text-slate-100 flex flex-col antialiased selection:bg-blue-600 selection:text-white">
 
       {/* Top Application Bar */}
-      <header className="sticky top-0 z-40 border-b border-slate-800 bg-slate-950/80 backdrop-blur-xl">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+      <header className="sticky top-0 z-40 border-b border-slate-800 bg-slate-950/95 backdrop-blur-xl">
+        <div className="max-w-7xl mx-auto px-2.5 sm:px-6 lg:px-8 h-14 sm:h-16 flex items-center justify-between gap-1.5 sm:gap-4">
           {/* Brand & Identity */}
-          <div className="flex items-center gap-3">
-            <div className="size-9 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-extrabold shadow-lg shadow-blue-500/20">
-              <Shield className="size-5" />
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+            <div className="size-8 sm:size-9 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-extrabold shadow-lg shadow-blue-500/20 shrink-0">
+              <Shield className="size-4 sm:size-5" />
             </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="font-extrabold text-sm sm:text-base tracking-tight text-white">
+            <div className="min-w-0">
+              <div className="flex items-center gap-1.5 sm:gap-2">
+                <span className="font-extrabold text-xs sm:text-base tracking-tight text-white truncate">
                   Lasertronics Admin
                 </span>
                 <Badge
                   variant="outline"
-                  className="bg-blue-950/80 text-blue-400 border-blue-800/80 text-[10px] font-mono font-bold px-1.5 py-0"
+                  className="bg-blue-950/80 text-blue-400 border-blue-800/80 text-[9px] sm:text-[10px] font-mono font-bold px-1.5 py-0 shrink-0"
                 >
-                  PWA v1.0
+                  v1.0
                 </Badge>
               </div>
-              <span className="text-[10px] text-slate-400 block font-medium">
+              <span className="text-[10px] text-slate-400 hidden md:block font-medium truncate">
                 Product, Category & Pricing Control Hub
               </span>
             </div>
           </div>
 
           {/* Right Header Utilities */}
-          <div className="flex items-center gap-2 sm:gap-3">
+          <div className="flex items-center gap-1 sm:gap-2 shrink-0">
             {/* Live Server / Offline Indicator */}
             {isOnline && isLiveConnected ? (
-              <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium border bg-emerald-950/50 border-emerald-800 text-emerald-400">
-                <span className="size-2 rounded-full bg-emerald-400 animate-pulse" />
-                <span>Live Catalog Connected</span>
+              <div className="flex items-center gap-1 px-2 py-1 rounded-full text-[10px] sm:text-[11px] font-medium border bg-emerald-950/50 border-emerald-800 text-emerald-400 shrink-0 whitespace-nowrap">
+                <span className="size-1.5 sm:size-2 rounded-full bg-emerald-400 animate-pulse shrink-0" />
+                <span className="hidden sm:inline">Live Catalog Connected</span>
+                <span className="sm:hidden font-semibold">Live</span>
               </div>
             ) : (
-              <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium border bg-amber-950/50 border-amber-800 text-amber-400">
-                <span className="size-2 rounded-full bg-amber-400" />
-                <span>Offline / Local Mode</span>
+              <div className="flex items-center gap-1 px-2 py-1 rounded-full text-[10px] sm:text-[11px] font-medium border bg-amber-950/50 border-amber-800 text-amber-400 shrink-0 whitespace-nowrap">
+                <span className="size-1.5 sm:size-2 rounded-full bg-amber-400 shrink-0" />
+                <span className="hidden sm:inline">Offline / Local Mode</span>
+                <span className="sm:hidden font-semibold">Offline</span>
               </div>
             )}
 
-
+            {/* Quick Add Product Button (mobile only - frees up nav space below) */}
+            <Button
+              size="sm"
+              onClick={() => {
+                setSelectedProduct(null);
+                setProductDialogOpen(true);
+              }}
+              className="sm:hidden size-8 p-0 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold shadow-md shadow-blue-600/30 shrink-0 cursor-pointer"
+              title="Add Product"
+            >
+              <Plus className="size-4" />
+            </Button>
 
             {/* Refresh Sync */}
             <Button
@@ -521,19 +534,20 @@ function AdminDashboard() {
               size="sm"
               onClick={refreshData}
               disabled={isRefreshing}
-              className="size-8 p-0 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800"
+              className="size-8 p-0 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800 shrink-0 cursor-pointer"
               title="Refresh Catalog Data"
             >
-              <RefreshCw className={`size-4 ${isRefreshing ? "animate-spin text-blue-400" : ""}`} />
+              <RefreshCw className={`size-3.5 sm:size-4 ${isRefreshing ? "animate-spin text-blue-400" : ""}`} />
             </Button>
 
             {/* Public Storefront Link */}
             <Link
               to="/shop"
-              className="inline-flex items-center gap-1.5 rounded-xl border border-slate-800 bg-slate-900/80 px-3 py-1.5 text-xs font-semibold text-slate-200 hover:bg-slate-800 hover:text-white transition-colors"
+              className="inline-flex items-center justify-center gap-1.5 rounded-xl border border-slate-800 bg-slate-900/80 size-8 sm:size-auto sm:px-3 sm:py-1.5 text-xs font-semibold text-slate-200 hover:bg-slate-800 hover:text-white transition-colors shrink-0"
+              title="View Public Storefront"
             >
-              <span className="hidden sm:inline">Storefront</span>
               <ExternalLink className="size-3.5 text-slate-400" />
+              <span className="hidden sm:inline">Storefront</span>
             </Link>
 
             {/* Lock / Sign Out */}
@@ -541,7 +555,7 @@ function AdminDashboard() {
               variant="outline"
               size="sm"
               onClick={handleLogout}
-              className="inline-flex items-center gap-1.5 rounded-xl border-slate-800 bg-slate-900/80 px-2.5 py-1.5 text-xs font-semibold text-rose-400 hover:bg-rose-950/40 hover:text-rose-300 hover:border-rose-800/60 transition-colors h-8 cursor-pointer"
+              className="inline-flex items-center justify-center gap-1.5 rounded-xl border-slate-800 bg-slate-900/80 size-8 sm:size-auto sm:px-2.5 sm:py-1.5 text-xs font-semibold text-rose-400 hover:bg-rose-950/40 hover:text-rose-300 hover:border-rose-800/60 transition-colors h-8 cursor-pointer shrink-0"
               title="Lock Admin Portal"
             >
               <LogOut className="size-3.5" />
@@ -552,103 +566,106 @@ function AdminDashboard() {
       </header>
 
       {/* Main Navigation Sub-Bar */}
-      <nav className="border-b border-slate-800 bg-slate-950/50 backdrop-blur-md sticky top-16 z-30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between overflow-x-auto py-2 gap-2">
-          <div className="flex items-center gap-1">
-            <button
-              onClick={() => setActiveTab("overview")}
-              className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all ${
-                activeTab === "overview"
-                  ? "bg-blue-600 text-white shadow-md shadow-blue-600/30"
-                  : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/60"
-              }`}
-            >
-              <LayoutDashboard className="size-3.5" />
-              <span>Overview</span>
-            </button>
+      <nav className="border-b border-slate-800 bg-slate-950/95 backdrop-blur-md sticky top-14 sm:top-16 z-30">
+        <div className="max-w-7xl mx-auto px-2.5 sm:px-6 lg:px-8 py-1.5 sm:py-2">
+          <div className="flex items-center justify-between gap-2">
+            {/* Scrollable Tabs Track */}
+            <div className="touch-scroll-x flex items-center gap-1 sm:gap-1.5 w-full sm:flex-1 py-0.5">
+              <button
+                onClick={() => setActiveTab("overview")}
+                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold shrink-0 whitespace-nowrap transition-all cursor-pointer ${
+                  activeTab === "overview"
+                    ? "bg-blue-600 text-white shadow-md shadow-blue-600/30"
+                    : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/60"
+                }`}
+              >
+                <LayoutDashboard className="size-3.5 shrink-0" />
+                <span>Overview</span>
+              </button>
 
-            <button
-              onClick={() => setActiveTab("products")}
-              className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all ${
-                activeTab === "products"
-                  ? "bg-blue-600 text-white shadow-md shadow-blue-600/30"
-                  : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/60"
-              }`}
-            >
-              <Package className="size-3.5" />
-              <span>Products ({products.length})</span>
-            </button>
+              <button
+                onClick={() => setActiveTab("products")}
+                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold shrink-0 whitespace-nowrap transition-all cursor-pointer ${
+                  activeTab === "products"
+                    ? "bg-blue-600 text-white shadow-md shadow-blue-600/30"
+                    : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/60"
+                }`}
+              >
+                <Package className="size-3.5 shrink-0" />
+                <span>Products ({products.length})</span>
+              </button>
 
-            <button
-              onClick={() => setActiveTab("categories")}
-              className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all ${
-                activeTab === "categories"
-                  ? "bg-blue-600 text-white shadow-md shadow-blue-600/30"
-                  : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/60"
-              }`}
-            >
-              <FolderTree className="size-3.5" />
-              <span>Categories ({categories.length})</span>
-            </button>
+              <button
+                onClick={() => setActiveTab("categories")}
+                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold shrink-0 whitespace-nowrap transition-all cursor-pointer ${
+                  activeTab === "categories"
+                    ? "bg-blue-600 text-white shadow-md shadow-blue-600/30"
+                    : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/60"
+                }`}
+              >
+                <FolderTree className="size-3.5 shrink-0" />
+                <span>Categories ({categories.length})</span>
+              </button>
 
-            <button
-              onClick={() => setActiveTab("pricing")}
-              className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all ${
-                activeTab === "pricing"
-                  ? "bg-blue-600 text-white shadow-md shadow-blue-600/30"
-                  : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/60"
-              }`}
-            >
-              <Percent className="size-3.5" />
-              <span>Pricing Rules</span>
-              {stats.overriddenPriceCount > 0 && (
-                <span className="size-4 rounded-full bg-amber-500 text-amber-950 font-bold text-[10px] flex items-center justify-center">
-                  {stats.overriddenPriceCount}
-                </span>
-              )}
-            </button>
+              <button
+                onClick={() => setActiveTab("pricing")}
+                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold shrink-0 whitespace-nowrap transition-all cursor-pointer ${
+                  activeTab === "pricing"
+                    ? "bg-blue-600 text-white shadow-md shadow-blue-600/30"
+                    : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/60"
+                }`}
+              >
+                <Percent className="size-3.5 shrink-0" />
+                <span>Pricing Rules</span>
+                {stats.overriddenPriceCount > 0 && (
+                  <span className="size-4 rounded-full bg-amber-500 text-amber-950 font-bold text-[10px] flex items-center justify-center shrink-0">
+                    {stats.overriddenPriceCount}
+                  </span>
+                )}
+              </button>
 
-            <button
-              onClick={() => setActiveTab("images")}
-              className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all ${
-                activeTab === "images"
-                  ? "bg-blue-600 text-white shadow-md shadow-blue-600/30"
-                  : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/60"
-              }`}
-            >
-              <ImageIcon className="size-3.5" />
-              <span>Media Library</span>
-              {stats.productsWithoutImages > 0 && (
-                <span className="size-4 rounded-full bg-rose-500 text-white font-bold text-[10px] flex items-center justify-center" title={`${stats.productsWithoutImages} products without images`}>
-                  {stats.productsWithoutImages}
-                </span>
-              )}
-            </button>
-          </div>
+              <button
+                onClick={() => setActiveTab("images")}
+                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold shrink-0 whitespace-nowrap transition-all cursor-pointer ${
+                  activeTab === "images"
+                    ? "bg-blue-600 text-white shadow-md shadow-blue-600/30"
+                    : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/60"
+                }`}
+              >
+                <ImageIcon className="size-3.5 shrink-0" />
+                <span>Media Library</span>
+                {stats.productsWithoutImages > 0 && (
+                  <span className="size-4 rounded-full bg-rose-500 text-white font-bold text-[10px] flex items-center justify-center shrink-0" title={`${stats.productsWithoutImages} products without images`}>
+                    {stats.productsWithoutImages}
+                  </span>
+                )}
+              </button>
+            </div>
 
-          {/* Quick Primary Actions */}
-          <div className="flex items-center gap-2 shrink-0">
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={() => setBulkImportOpen(true)}
-              className="h-8 rounded-xl border-slate-700 bg-slate-800/60 hover:bg-slate-700 text-slate-200 text-xs gap-1.5"
-            >
-              <Upload className="size-3.5 text-slate-400" />
-              <span className="hidden sm:inline">Bulk CSV</span>
-            </Button>
+            {/* Quick Primary Actions (Tablet & Desktop only; on mobile, +Add is in header) */}
+            <div className="hidden sm:flex items-center gap-1.5 sm:gap-2 shrink-0">
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => setBulkImportOpen(true)}
+                className="h-8 rounded-xl border-slate-700 bg-slate-800/60 hover:bg-slate-700 text-slate-200 text-xs gap-1.5 hidden md:inline-flex cursor-pointer"
+              >
+                <Upload className="size-3.5 text-slate-400" />
+                <span>Bulk CSV</span>
+              </Button>
 
-            <Button
-              size="sm"
-              onClick={() => {
-                setSelectedProduct(null);
-                setProductDialogOpen(true);
-              }}
-              className="h-8 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs gap-1.5 shadow-md shadow-blue-600/30 font-semibold"
-            >
-              <Plus className="size-3.5" />
-              <span>Add Product</span>
-            </Button>
+              <Button
+                size="sm"
+                onClick={() => {
+                  setSelectedProduct(null);
+                  setProductDialogOpen(true);
+                }}
+                className="h-8 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold gap-1 sm:gap-1.5 shadow-md shadow-blue-600/20 shrink-0 cursor-pointer px-2.5 sm:px-3"
+              >
+                <Plus className="size-3.5 shrink-0" />
+                <span>Add Product</span>
+              </Button>
+            </div>
           </div>
         </div>
       </nav>
@@ -734,8 +751,8 @@ function AdminDashboard() {
             {/* Middle Split: Category Markup Breakdown & Quick Calculator Card */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               {/* Category Pricing Rules Card */}
-              <div className="lg:col-span-2 p-6 rounded-2xl bg-slate-800/40 border border-slate-700/60 shadow-lg space-y-4">
-                <div className="flex items-center justify-between">
+              <div className="lg:col-span-2 p-4 sm:p-6 rounded-2xl bg-slate-800/40 border border-slate-700/60 shadow-lg space-y-4">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                   <div>
                     <h3 className="text-base font-bold text-white flex items-center gap-2">
                       <FolderTree className="size-4 text-blue-400" />
@@ -749,7 +766,7 @@ function AdminDashboard() {
                     variant="outline"
                     size="sm"
                     onClick={() => setActiveTab("pricing")}
-                    className="h-8 rounded-xl border-slate-700 bg-slate-800 hover:bg-slate-700 text-xs text-slate-200"
+                    className="h-8 rounded-xl border-slate-700 bg-slate-800 hover:bg-slate-700 text-xs text-slate-200 shrink-0 self-start sm:self-auto cursor-pointer"
                   >
                     Manage Rules <ChevronRight className="size-3.5 ml-1" />
                   </Button>
@@ -784,11 +801,11 @@ function AdminDashboard() {
                 </div>
               </div>
 
-              {/* Quick Launchpad & PWA Info */}
-              <div className="p-6 rounded-2xl bg-gradient-to-br from-blue-950/40 via-slate-900 to-indigo-950/40 border border-blue-900/40 shadow-lg space-y-5 flex flex-col justify-between">
+              {/* Quick Launchpad & Catalog Status */}
+              <div className="p-4 sm:p-6 rounded-2xl bg-gradient-to-br from-blue-950/40 via-slate-900 to-indigo-950/40 border border-blue-900/40 shadow-lg space-y-5 flex flex-col justify-between">
                 <div className="space-y-3">
                   <div className="flex items-center gap-2">
-                    <div className="size-8 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold">
+                    <div className="size-8 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold shrink-0">
                       <Calculator className="size-4" />
                     </div>
                     <div>
@@ -803,7 +820,7 @@ function AdminDashboard() {
 
                   <Button
                     onClick={() => setPricingCalculatorOpen(true)}
-                    className="w-full rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold h-10 shadow-md shadow-blue-600/30 gap-2"
+                    className="w-full rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold h-10 shadow-md shadow-blue-600/30 gap-2 cursor-pointer"
                   >
                     <Calculator className="size-4" />
                     Open Price Simulator
@@ -816,16 +833,16 @@ function AdminDashboard() {
                     <strong className="text-white font-mono">{formatINR(stats.totalStockValue)}</strong>
                   </div>
                   <div className="flex items-center justify-between text-slate-400">
-                    <span>PWA Installation:</span>
-                    <strong className="text-emerald-400">{isInstallable ? "Available" : "Active / Browser"}</strong>
+                    <span>Sync Status:</span>
+                    <strong className="text-emerald-400">{isOnline ? "Active / Online" : "Offline Mode"}</strong>
                   </div>
                 </div>
               </div>
             </div>
 
             {/* Recent Product Updates Preview Table */}
-            <div className="p-6 rounded-2xl bg-slate-800/40 border border-slate-700/60 shadow-lg space-y-4">
-              <div className="flex items-center justify-between">
+            <div className="p-4 sm:p-6 rounded-2xl bg-slate-800/40 border border-slate-700/60 shadow-lg space-y-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div>
                   <h3 className="text-base font-bold text-white flex items-center gap-2">
                     <Package className="size-4 text-blue-400" />
@@ -837,14 +854,62 @@ function AdminDashboard() {
                   variant="outline"
                   size="sm"
                   onClick={() => setActiveTab("products")}
-                  className="h-8 rounded-xl border-slate-700 bg-slate-800 hover:bg-slate-700 text-xs text-slate-200"
+                  className="h-8 rounded-xl border-slate-700 bg-slate-800 hover:bg-slate-700 text-xs text-slate-200 shrink-0 self-start sm:self-auto cursor-pointer"
                 >
                   View All Products <ChevronRight className="size-3.5 ml-1" />
                 </Button>
               </div>
 
-              <div className="overflow-x-auto">
-                <table className="w-full text-left text-xs">
+              {/* Mobile Card List (screens < md) */}
+              <div className="md:hidden divide-y divide-slate-800">
+                {products.slice(0, 5).map((p) => {
+                  const cat = categories.find((c) => c.id === p.categoryId);
+                  return (
+                    <div key={p.sku} className="py-3 flex items-center justify-between gap-3">
+                      <div className="flex items-center gap-2.5 min-w-0">
+                        <ProductImage
+                          src={p.image}
+                          alt={p.name}
+                          category={p.categoryId}
+                          size="sm"
+                          className="rounded-lg shrink-0"
+                        />
+                        <div className="min-w-0">
+                          <span className="font-semibold text-white text-xs block truncate">{p.name}</span>
+                          <div className="flex items-center gap-1.5 text-[10px] text-slate-400 mt-0.5 font-mono">
+                            <span>{p.sku}</span>
+                            <span>•</span>
+                            <span className="text-slate-300 truncate">{cat?.name || p.categoryId}</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="text-right shrink-0">
+                        <span className="font-mono font-extrabold text-xs text-white block">
+                          {formatINR(p.sellingPrice)}
+                        </span>
+                        <div className="flex items-center justify-end gap-1 mt-0.5">
+                          <span className="text-[10px] text-blue-400 font-mono">
+                            +{cat?.markupPercentage ?? p.markupPercentage ?? 15}%
+                          </span>
+                          {p.isPriceOverridden ? (
+                            <Badge className="bg-amber-950/80 text-amber-300 border-amber-800 text-[8px] px-1 py-0">
+                              Overridden
+                            </Badge>
+                          ) : (
+                            <Badge className="bg-emerald-950/80 text-emerald-300 border-emerald-800 text-[8px] px-1 py-0">
+                              Calculated
+                            </Badge>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Desktop Table (screens md and up) */}
+              <div className="hidden md:block overflow-x-auto">
+                <table className="w-full text-left text-xs min-w-[580px]">
                   <thead>
                     <tr className="border-b border-slate-700 text-slate-400 uppercase tracking-wider text-[10px]">
                       <th className="py-2.5 px-3">Product</th>
@@ -998,10 +1063,139 @@ function AdminDashboard() {
               </div>
             </div>
 
-            {/* Products Table */}
+            {/* Products Table & Mobile Cards */}
             <div className="rounded-2xl bg-slate-800/40 border border-slate-700/60 shadow-lg overflow-hidden">
-              <div className="overflow-x-auto">
-                <table className="w-full text-left text-xs">
+              {/* Mobile Card List (screens < md) */}
+              <div className="md:hidden divide-y divide-slate-800">
+                {filteredProducts.length === 0 ? (
+                  <div className="py-12 text-center text-slate-500 px-4">
+                    <Package className="size-8 mx-auto mb-2 text-slate-600" />
+                    <p className="text-sm font-semibold">No products match your filters</p>
+                    <p className="text-xs text-slate-400 mt-1">Try resetting filters or adding a new product</p>
+                  </div>
+                ) : (
+                  filteredProducts.map((p) => {
+                    const cat = categories.find((c) => c.id === p.categoryId);
+                    const markupPct = cat?.markupPercentage ?? p.markupPercentage ?? 15;
+                    const markupAmount = Math.round(((p.basePrice * markupPct) / 100) * 100) / 100;
+
+                    return (
+                      <div key={p.sku} className="p-3.5 space-y-3 hover:bg-slate-800/30 transition-colors">
+                        <div className="flex items-start gap-3">
+                          <ProductImage
+                            src={p.image}
+                            alt={p.name}
+                            category={p.categoryId}
+                            size="md"
+                            className="rounded-xl shrink-0"
+                          />
+                          <div className="min-w-0 flex-1">
+                            <div className="flex items-center gap-1.5 flex-wrap">
+                              <span className="font-bold text-white text-xs sm:text-sm leading-snug">
+                                {p.name}
+                              </span>
+                              {p.badge && (
+                                <Badge className="bg-blue-950 text-blue-300 border-blue-800 text-[9px] px-1.5 py-0">
+                                  {p.badge}
+                                </Badge>
+                              )}
+                            </div>
+                            <div className="flex items-center gap-2 mt-1 text-[10px] text-slate-400 font-mono">
+                              <span>SKU: {p.sku}</span>
+                              <span>•</span>
+                              <Badge
+                                variant="outline"
+                                className="bg-slate-900 border-slate-700 text-slate-300 text-[9px] px-1.5 py-0 font-sans"
+                              >
+                                {cat?.name || p.categoryId}
+                              </Badge>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Pricing details */}
+                        <div className="grid grid-cols-3 gap-2 p-2.5 rounded-xl bg-slate-900/60 border border-slate-800 text-center font-mono text-xs">
+                          <div>
+                            <span className="text-[10px] text-slate-400 block font-sans">Base Cost</span>
+                            <span className="text-slate-300 font-semibold">{formatINR(p.basePrice)}</span>
+                          </div>
+                          <div>
+                            <span className="text-[10px] text-slate-400 block font-sans">Markup</span>
+                            <span className="text-blue-400 font-bold">+{markupPct}%</span>
+                          </div>
+                          <div>
+                            <span className="text-[10px] text-slate-400 block font-sans">Selling Price</span>
+                            <span className="text-white font-extrabold">{formatINR(p.sellingPrice)}</span>
+                          </div>
+                        </div>
+
+                        {/* Status, Stock & Actions */}
+                        <div className="flex items-center justify-between gap-2 pt-0.5">
+                          <div className="flex items-center gap-1.5 flex-wrap">
+                            {p.isPriceOverridden ? (
+                              <Badge className="bg-amber-950/80 text-amber-300 border-amber-800 text-[9px] px-1.5 py-0 font-bold">
+                                Overridden
+                              </Badge>
+                            ) : (
+                              <Badge className="bg-emerald-950/80 text-emerald-300 border-emerald-800 text-[9px] px-1.5 py-0 font-bold">
+                                Rule-Based
+                              </Badge>
+                            )}
+                            <span className="text-[10px] text-slate-400 font-mono">
+                              Stock: <strong className={p.stock <= 5 ? "text-rose-400" : "text-slate-300"}>{p.stock}</strong>
+                            </span>
+                          </div>
+
+                          <div className="flex items-center gap-1">
+                            {p.isPriceOverridden && (
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => handleResetOverride(p.sku)}
+                                className="h-8 px-2 text-xs rounded-lg text-amber-400 hover:bg-amber-950/50"
+                                title="Reset to formula"
+                              >
+                                <RotateCcw className="size-3.5 mr-1" /> Revert
+                              </Button>
+                            )}
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => {
+                                setSelectedProduct(p);
+                                setProductDialogOpen(true);
+                              }}
+                              className="h-8 px-2.5 text-xs rounded-lg text-blue-400 hover:text-white hover:bg-blue-600/20"
+                            >
+                              <Edit className="size-3.5 mr-1" /> Edit
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() =>
+                                setDeleteConfirm({
+                                  open: true,
+                                  type: "product",
+                                  id: p.sku,
+                                  name: p.name,
+                                })
+                              }
+                              className="size-8 p-0 rounded-lg text-slate-400 hover:text-rose-400 hover:bg-rose-950/40"
+                              title="Delete product"
+                            >
+                              <Trash2 className="size-3.5" />
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })
+                )}
+              </div>
+
+              {/* Desktop Table (screens md and up) */}
+              <div className="hidden md:block overflow-x-auto">
+                <table className="w-full text-left text-xs min-w-[760px]">
                   <thead>
                     <tr className="border-b border-slate-700/80 bg-slate-900/60 text-slate-400 uppercase tracking-wider text-[10px]">
                       <th className="py-3 px-4">Item & SKU</th>
@@ -1393,7 +1587,7 @@ function AdminDashboard() {
             </div>
 
             {/* Category Markup Percentages Cards & Table */}
-            <div className="p-6 rounded-2xl bg-slate-800/40 border border-slate-700/60 shadow-lg space-y-4">
+            <div className="p-4 sm:p-6 rounded-2xl bg-slate-800/40 border border-slate-700/60 shadow-lg space-y-4">
               <div className="flex items-center justify-between">
                 <div>
                   <h4 className="text-sm font-bold text-white">Category-Wise Price Margin Setup</h4>
@@ -1401,8 +1595,71 @@ function AdminDashboard() {
                 </div>
               </div>
 
-              <div className="overflow-x-auto">
-                <table className="w-full text-left text-xs">
+              {/* Mobile Category Pricing Cards (screens < md) */}
+              <div className="md:hidden divide-y divide-slate-800">
+                {categories.map((c) => {
+                  const count = products.filter((p) => p.categoryId === c.id).length;
+                  const sampleCalculated = calculateSellingPrice(100, c.markupPercentage);
+
+                  return (
+                    <div key={c.id} className="py-4 space-y-3">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <span className="font-bold text-white text-sm block">{c.name}</span>
+                          <span className="text-[10px] text-slate-400">{c.tagline}</span>
+                        </div>
+                        <Badge className="bg-blue-950 text-blue-300 border-blue-800 text-xs font-mono font-bold px-2 py-0.5">
+                          +{c.markupPercentage}%
+                        </Badge>
+                      </div>
+
+                      {/* Quick Margin Presets */}
+                      <div className="flex items-center gap-1.5 flex-wrap">
+                        {[10, 15, 20, 25, 30].map((preset) => (
+                          <button
+                            key={preset}
+                            type="button"
+                            onClick={() => handleUpdateCategoryMarkup(c.id, preset)}
+                            className={`px-2.5 py-1 rounded-lg text-xs font-bold font-mono transition-all ${
+                              c.markupPercentage === preset
+                                ? "bg-blue-600 text-white shadow-xs"
+                                : "bg-slate-900 text-slate-400 hover:text-white hover:bg-slate-700 border border-slate-800"
+                            }`}
+                          >
+                            {preset}%
+                          </button>
+                        ))}
+                      </div>
+
+                      {/* Pricing Preview Row */}
+                      <div className="flex items-center justify-between text-xs p-2.5 rounded-xl bg-slate-900/60 border border-slate-800 font-mono">
+                        <span className="text-slate-400">Base ₹100:</span>
+                        <ArrowRight className="size-3 text-slate-500" />
+                        <span className="text-emerald-400 font-extrabold">Selling {formatINR(sampleCalculated)}</span>
+                        <span className="text-slate-500 font-sans text-[11px]">({count} items)</span>
+                      </div>
+
+                      <div className="flex items-center justify-end gap-2 pt-1">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            setSelectedCategory(c);
+                            setCategoryDialogOpen(true);
+                          }}
+                          className="h-8 text-xs rounded-xl border-slate-700 bg-slate-800 text-slate-300 hover:text-white"
+                        >
+                          Edit Rule Details
+                        </Button>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Desktop Table (screens md and up) */}
+              <div className="hidden md:block overflow-x-auto">
+                <table className="w-full text-left text-xs min-w-[700px]">
                   <thead>
                     <tr className="border-b border-slate-700 text-slate-400 uppercase tracking-wider text-[10px]">
                       <th className="py-2.5 px-3">Category</th>
@@ -1516,7 +1773,7 @@ function AdminDashboard() {
 
             {/* Overridden Products List */}
             {stats.overriddenPriceCount > 0 && (
-              <div className="p-6 rounded-2xl bg-amber-950/20 border border-amber-900/50 shadow-lg space-y-4">
+              <div className="p-4 sm:p-6 rounded-2xl bg-amber-950/20 border border-amber-900/50 shadow-lg space-y-4">
                 <div className="flex items-center justify-between">
                   <div>
                     <h4 className="text-sm font-bold text-amber-300 flex items-center gap-2">
@@ -1529,8 +1786,42 @@ function AdminDashboard() {
                   </div>
                 </div>
 
-                <div className="overflow-x-auto">
-                  <table className="w-full text-left text-xs">
+                {/* Mobile Overridden Products Cards */}
+                <div className="md:hidden divide-y divide-amber-900/40">
+                  {products
+                    .filter((p) => p.isPriceOverridden)
+                    .map((p) => {
+                      const cat = categories.find((c) => c.id === p.categoryId);
+                      const calculated = calculateSellingPrice(p.basePrice, cat?.markupPercentage ?? 15);
+
+                      return (
+                        <div key={p.sku} className="py-3 space-y-2">
+                          <div className="flex items-center justify-between">
+                            <span className="font-semibold text-white text-xs">{p.name}</span>
+                            <span className="font-mono text-[10px] text-slate-400">{p.sku}</span>
+                          </div>
+                          <div className="flex items-center justify-between text-xs font-mono">
+                            <span className="text-slate-400">Rule: <span className="line-through">{formatINR(calculated)}</span></span>
+                            <span className="text-amber-300 font-extrabold font-mono">Override: {formatINR(p.sellingPrice)}</span>
+                          </div>
+                          <div className="flex justify-end pt-1">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => handleResetOverride(p.sku)}
+                              className="h-7 text-xs rounded-lg border-amber-800 bg-amber-950/60 text-amber-200 hover:bg-amber-900 gap-1"
+                            >
+                              <RotateCcw className="size-3" /> Revert to Category Rule
+                            </Button>
+                          </div>
+                        </div>
+                      );
+                    })}
+                </div>
+
+                {/* Desktop Overridden Products Table */}
+                <div className="hidden md:block overflow-x-auto">
+                  <table className="w-full text-left text-xs min-w-[650px]">
                     <thead>
                       <tr className="border-b border-amber-900/60 text-amber-300/80 uppercase tracking-wider text-[10px]">
                         <th className="py-2.5 px-3">Product</th>
@@ -1667,7 +1958,7 @@ function AdminDashboard() {
                             name: m.filename,
                           })
                         }
-                        className="absolute top-2 right-2 size-7 rounded-lg bg-slate-950/80 text-slate-400 hover:text-rose-400 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
+                        className="absolute top-2 right-2 size-7 rounded-lg bg-slate-950/85 text-slate-300 hover:text-rose-400 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity flex items-center justify-center shadow-md"
                         title="Delete image"
                       >
                         <Trash2 className="size-3.5" />

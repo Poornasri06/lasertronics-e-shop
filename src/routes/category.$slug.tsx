@@ -36,60 +36,116 @@ export const Route = createFileRoute("/category/$slug")({
   component: CategoryPage,
 });
 
+import { useMemo, useState } from "react";
+
 function CategoryPage() {
   const { category, liveProducts } = Route.useLoaderData();
-  const allCategoryProducts =
-    liveProducts && liveProducts.length > 0
-      ? liveProducts.filter((p) => p.category === category.slug)
-      : productsByCategory(category.slug);
-  const items = allCategoryProducts.filter((p) => (p.stock || 0) > 0);
+  const [sort, setSort] = useState<"featured" | "price-asc" | "price-desc" | "rating">("featured");
+
+  const allCategoryProducts = useMemo(() => {
+    const raw =
+      liveProducts && liveProducts.length > 0
+        ? liveProducts.filter((p) => p.category === category.slug)
+        : productsByCategory(category.slug);
+    return raw.filter((p) => (p.stock || 0) > 0);
+  }, [liveProducts, category.slug]);
+
+  const sortedProducts = useMemo(() => {
+    let list = [...allCategoryProducts];
+    if (sort === "price-asc") list.sort((a, b) => a.price - b.price);
+    if (sort === "price-desc") list.sort((a, b) => b.price - a.price);
+    if (sort === "rating") list.sort((a, b) => b.rating - a.rating);
+    return list;
+  }, [allCategoryProducts, sort]);
 
   return (
     <SiteLayout>
-      {/* iOS Frosted Glass Banner */}
-      <div className="relative overflow-hidden border-b border-white/60 bg-gradient-to-b from-blue-50/40 via-white/50 to-white/70 py-8 sm:py-12 backdrop-blur-xl lg:py-14">
+      {/* Category Header & Breadcrumb Banner */}
+      <div className="relative border-b border-slate-200/80 bg-gradient-to-b from-slate-50 via-white to-white py-6 sm:py-8 lg:py-10">
         <div className="container-page">
-          <nav className="flex items-center gap-1.5 text-xs text-muted-foreground flex-wrap">
+          <nav className="flex items-center gap-2 text-xs text-muted-foreground flex-wrap">
             <Link to="/" className="hover:text-primary transition-colors">
               Home
             </Link>
-            <ChevronRight className="size-3" aria-hidden />
+            <ChevronRight className="size-3 text-slate-400" aria-hidden />
             <Link to="/shop" className="hover:text-primary transition-colors">
               Categories
             </Link>
-            <ChevronRight className="size-3" aria-hidden />
-            <span className="truncate font-semibold text-foreground">{category.name}</span>
+            <ChevronRight className="size-3 text-slate-400" aria-hidden />
+            <span className="font-bold text-foreground">{category.name}</span>
           </nav>
-          <span className="mt-3.5 sm:mt-4 inline-block rounded-full border border-white/80 bg-white/75 px-3.5 py-1 text-xs font-extrabold uppercase tracking-[0.2em] text-primary shadow-xs backdrop-blur-md">
-            {category.tagline}
-          </span>
-          <h1 className="mt-2 font-display text-2xl sm:text-4xl font-extrabold tracking-tight text-foreground">
-            {category.name}
-          </h1>
-          <p className="mt-1.5 sm:mt-2 max-w-xl text-xs sm:text-sm leading-relaxed text-muted-foreground">
-            {category.description}
-          </p>
+
+          <div className="mt-4 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+            <div className="max-w-2xl">
+              <span className="inline-block rounded-full bg-blue-50 border border-blue-200/60 px-3 py-0.5 text-[11px] font-extrabold uppercase tracking-wider text-primary">
+                {category.tagline}
+              </span>
+              <h1 className="mt-2 font-display text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-foreground">
+                {category.name}
+              </h1>
+              <p className="mt-2 text-xs sm:text-sm leading-relaxed text-muted-foreground">
+                {category.description}
+              </p>
+            </div>
+
+            <div className="shrink-0 flex items-center gap-2 bg-white border border-slate-200 rounded-xl px-4 py-2 shadow-2xs">
+              <span className="text-xs font-semibold text-slate-500">Available:</span>
+              <span className="text-sm font-extrabold text-foreground">{sortedProducts.length} items</span>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div className="container-page py-6 sm:py-10 lg:py-14">
-        <div className="flex items-center justify-between border-b border-white/80 pb-3 sm:pb-4">
-          <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
-            Showing all {items.length} products
+      <div className="container-page py-6 sm:py-8 lg:py-10">
+        {/* Toolbar: Count & Sort */}
+        <div className="flex items-center justify-between border-b border-slate-200 pb-4">
+          <p className="text-xs font-bold text-slate-600">
+            Showing all <strong className="text-foreground">{sortedProducts.length}</strong> items in{" "}
+            {category.name}
           </p>
+
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-semibold text-slate-500 hidden sm:inline">Sort:</span>
+            <select
+              value={sort}
+              onChange={(e) => setSort(e.target.value as any)}
+              className="rounded-xl border border-slate-200 bg-white px-3.5 py-1.5 text-xs font-bold text-foreground outline-none transition-all focus:border-primary cursor-pointer shadow-2xs"
+            >
+              <option value="featured">Featured</option>
+              <option value="price-asc">Price: Low to High</option>
+              <option value="price-desc">Price: High to Low</option>
+              <option value="rating">Highest Rated</option>
+            </select>
+          </div>
         </div>
 
-        {/* Responsive Grid */}
-        <div className="mt-4 sm:mt-6 grid grid-cols-2 gap-2.5 sm:gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-          {items.map((p) => (
+        {/* Desktop Product Grid: 4 cols on lg, 5 cols on xl */}
+        <div className="mt-6 grid grid-cols-2 gap-3.5 sm:gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+          {sortedProducts.map((p) => (
             <ProductCard key={p.slug} product={p} />
           ))}
         </div>
 
-        {/* Other categories as iOS frosted pills */}
-        <div className="mt-10 sm:mt-14 border-t border-white/80 pt-6 sm:pt-8">
-          <h2 className="font-display text-sm sm:text-base font-bold text-foreground">Explore Other Ranges</h2>
-          <div className="mt-3 sm:mt-4 flex flex-wrap gap-2 sm:gap-2.5">
+        {/* Related categories shelf */}
+        <div className="mt-12 sm:mt-16 border-t border-slate-200 pt-8 sm:pt-10">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <h2 className="font-display text-base sm:text-lg font-bold text-foreground">
+                Explore Other Electronics Ranges
+              </h2>
+              <p className="text-xs text-muted-foreground mt-0.5">
+                Browse our other specialized component and tooling departments.
+              </p>
+            </div>
+            <Link
+              to="/shop"
+              className="text-xs font-bold text-primary hover:underline hidden sm:inline-flex items-center gap-1"
+            >
+              All Categories <ChevronRight className="size-3.5" />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
             {categories
               .filter((c) => c.slug !== category.slug)
               .map((c) => (
@@ -97,9 +153,12 @@ function CategoryPage() {
                   key={c.slug}
                   to="/category/$slug"
                   params={{ slug: c.slug }}
-                  className="apple-btn-glass rounded-full px-3.5 sm:px-4.5 py-1.5 sm:py-2 text-xs font-bold text-foreground transition-all hover:text-primary active:scale-95"
+                  className="rounded-xl border border-slate-200/80 bg-white p-4 shadow-2xs hover:border-primary/50 hover:shadow-sm transition-all group"
                 >
-                  {c.name}
+                  <h3 className="font-display text-xs sm:text-sm font-bold text-foreground group-hover:text-primary transition-colors">
+                    {c.name}
+                  </h3>
+                  <p className="text-[11px] text-muted-foreground line-clamp-1 mt-1">{c.tagline}</p>
                 </Link>
               ))}
           </div>

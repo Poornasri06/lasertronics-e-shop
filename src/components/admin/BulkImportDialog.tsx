@@ -159,11 +159,11 @@ export function BulkImportDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl rounded-2xl bg-white border border-slate-200/80 shadow-2xl p-0 overflow-hidden">
-        <DialogHeader className="p-6 border-b border-slate-100 bg-slate-50/70">
-          <div className="flex items-center justify-between">
+      <DialogContent className="max-w-2xl w-[95vw] sm:w-full max-h-[92vh] overflow-y-auto rounded-2xl bg-white border border-slate-200/80 shadow-2xl p-0">
+        <DialogHeader className="p-4 sm:p-6 border-b border-slate-100 bg-slate-50/70">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
-              <DialogTitle className="text-lg font-bold text-slate-900">
+              <DialogTitle className="text-base sm:text-lg font-bold text-slate-900">
                 Bulk Product Import & Update
               </DialogTitle>
               <p className="text-xs text-slate-500 mt-0.5">
@@ -175,7 +175,7 @@ export function BulkImportDialog({
               variant="outline"
               size="sm"
               onClick={handleDownloadTemplate}
-              className="gap-1.5 text-xs rounded-xl h-8 border-slate-200 text-blue-700 hover:bg-blue-50"
+              className="gap-1.5 text-xs rounded-xl h-8 border-slate-200 text-blue-700 hover:bg-blue-50 self-start sm:self-auto shrink-0"
             >
               <Download className="size-3.5" /> Download Template
             </Button>

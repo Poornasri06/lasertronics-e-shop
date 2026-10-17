@@ -215,12 +215,12 @@ export function ProductEditDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-3xl max-h-[92vh] overflow-y-auto p-0 rounded-2xl bg-white border border-slate-200/80 shadow-2xl">
+      <DialogContent className="max-w-3xl w-[95vw] sm:w-full max-h-[92vh] overflow-y-auto p-0 rounded-2xl bg-white border border-slate-200/80 shadow-2xl">
         <form onSubmit={handleSubmit}>
-          <DialogHeader className="p-6 border-b border-slate-100 bg-slate-50/70">
+          <DialogHeader className="p-4 sm:p-6 border-b border-slate-100 bg-slate-50/70">
             <div className="flex items-center justify-between">
               <div>
-                <DialogTitle className="text-xl font-bold tracking-tight text-slate-900">
+                <DialogTitle className="text-lg sm:text-xl font-bold tracking-tight text-slate-900">
                   {isEditing ? `Edit Product: ${product?.name}` : "Add New Product"}
                 </DialogTitle>
                 <p className="text-xs text-slate-500 mt-0.5">
@@ -231,13 +231,13 @@ export function ProductEditDialog({
           </DialogHeader>
 
           {error && (
-            <div className="mx-6 mt-4 p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-center gap-2">
+            <div className="mx-4 sm:mx-6 mt-4 p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-center gap-2">
               <AlertCircle className="size-4 shrink-0 text-rose-500" />
               <span>{error}</span>
             </div>
           )}
 
-          <div className="p-6 space-y-6">
+          <div className="p-4 sm:p-6 space-y-5 sm:space-y-6">
             {/* Primary Details */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-1.5">
@@ -546,24 +546,24 @@ export function ProductEditDialog({
             </div>
           </div>
 
-          <DialogFooter className="p-4 px-6 border-t border-slate-100 bg-slate-50/50 flex items-center justify-between">
-            <span className="text-xs text-slate-500 font-medium">
-              Selling Price: <strong className="text-slate-900">{formatINR(finalSellingPrice)}</strong>
+          <DialogFooter className="p-4 sm:px-6 border-t border-slate-100 bg-slate-50/50 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+            <span className="text-xs text-slate-500 font-medium text-center sm:text-left">
+              Selling Price: <strong className="text-slate-900 font-mono text-sm">{formatINR(finalSellingPrice)}</strong>
             </span>
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center justify-end gap-2">
               <Button
                 type="button"
                 variant="outline"
                 onClick={() => onOpenChange(false)}
-                className="rounded-xl h-9 text-xs"
+                className="rounded-xl h-9 text-xs flex-1 sm:flex-initial"
               >
                 Cancel
               </Button>
               <Button
                 type="submit"
                 disabled={isSaving}
-                className="rounded-xl h-9 text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white shadow-xs"
+                className="rounded-xl h-9 text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white shadow-xs flex-1 sm:flex-initial"
               >
                 {isSaving ? "Saving..." : isEditing ? "Update Product" : "Create Product"}
               </Button>

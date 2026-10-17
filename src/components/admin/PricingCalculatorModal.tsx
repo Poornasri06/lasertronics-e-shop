@@ -30,14 +30,14 @@ export function PricingCalculatorModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl rounded-2xl bg-white border border-slate-200/80 shadow-2xl p-0 overflow-hidden">
-        <DialogHeader className="p-6 border-b border-slate-100 bg-slate-50/70">
+      <DialogContent className="max-w-2xl w-[95vw] sm:w-full max-h-[90vh] overflow-y-auto rounded-2xl bg-white border border-slate-200/80 shadow-2xl p-0">
+        <DialogHeader className="p-4 sm:p-6 border-b border-slate-100 bg-slate-50/70">
           <div className="flex items-center gap-3">
-            <div className="grid size-10 place-items-center rounded-xl bg-blue-600 text-white shadow-xs">
+            <div className="grid size-10 place-items-center rounded-xl bg-blue-600 text-white shadow-xs shrink-0">
               <Calculator className="size-5" />
             </div>
             <div>
-              <DialogTitle className="text-lg font-bold text-slate-900">
+              <DialogTitle className="text-base sm:text-lg font-bold text-slate-900">
                 Interactive Category Pricing Calculator
               </DialogTitle>
               <p className="text-xs text-slate-500 mt-0.5">
@@ -47,13 +47,13 @@ export function PricingCalculatorModal({
           </div>
         </DialogHeader>
 
-        <div className="p-6 space-y-6">
+        <div className="p-4 sm:p-6 space-y-5 sm:space-y-6">
           {/* Formula banner */}
-          <div className="rounded-xl border border-blue-200/70 bg-gradient-to-r from-blue-50 to-indigo-50/50 p-4">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-blue-700 block mb-1">
+          <div className="rounded-xl border border-blue-200/70 bg-gradient-to-r from-blue-50 to-indigo-50/50 p-3.5 sm:p-4">
+            <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-blue-700 block mb-1">
               Standard Formula Applied
             </span>
-            <p className="font-mono text-sm font-bold text-slate-900">
+            <p className="font-mono text-xs sm:text-sm font-bold text-slate-900 break-words">
               Selling Price = Base Price + (Base Price × Category Markup % ÷ 100)
             </p>
           </div>
@@ -101,8 +101,9 @@ export function PricingCalculatorModal({
               Category Impact Comparison
             </Label>
 
-            <div className="rounded-xl border border-slate-200 overflow-hidden divide-y divide-slate-100">
-              <div className="grid grid-cols-12 bg-slate-50/80 px-4 py-2 text-[11px] font-bold text-slate-600 uppercase tracking-wider">
+            <div className="overflow-x-auto -mx-2 px-2 sm:mx-0 sm:px-0">
+              <div className="min-w-[480px] rounded-xl border border-slate-200 overflow-hidden divide-y divide-slate-100">
+                <div className="grid grid-cols-12 bg-slate-50/80 px-4 py-2 text-[11px] font-bold text-slate-600 uppercase tracking-wider">
                 <div className="col-span-5">Category & Tagline</div>
                 <div className="col-span-2 text-right">Markup %</div>
                 <div className="col-span-2 text-right">Markup Amount</div>
@@ -142,6 +143,7 @@ export function PricingCalculatorModal({
                   </div>
                 );
               })}
+              </div>
             </div>
           </div>
         </div>
