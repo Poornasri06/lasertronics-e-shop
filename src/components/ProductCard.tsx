@@ -16,7 +16,6 @@ export function ProductCard({ product }: { product: Product }) {
         <Link
           to="/product/$slug"
           params={{ slug: product.slug }}
-          aria-label={product.name}
           className="flex size-full items-center justify-center p-2.5 sm:p-3.5"
         >
           {imgError || !product.image ? (
@@ -29,19 +28,18 @@ export function ProductCard({ product }: { product: Product }) {
           ) : (
             <img
               src={product.image}
-              alt=""
-              aria-hidden="true"
+              alt={product.name}
               width={800}
               height={800}
               loading="lazy"
               onError={() => setImgError(true)}
-              className="size-full object-contain transition-transform duration-300 group-hover:scale-105 text-transparent select-none"
+              className="size-full object-contain transition-transform duration-300 group-hover:scale-105"
             />
           )}
         </Link>
 
         {product.badge && (
-          <span className="pointer-events-none absolute left-2 top-2 sm:left-2.5 sm:top-2.5 z-10 rounded-full bg-[#0066FF] px-2 sm:px-2.5 py-0.5 text-[9px] sm:text-[10px] font-extrabold uppercase tracking-wide text-white shadow-xs">
+          <span className="absolute left-2 top-2 sm:left-2.5 sm:top-2.5 rounded-full bg-[#0066FF] px-2 sm:px-2.5 py-0.5 text-[9px] sm:text-[10px] font-extrabold uppercase tracking-wide text-white shadow-xs">
             {product.badge}
           </span>
         )}

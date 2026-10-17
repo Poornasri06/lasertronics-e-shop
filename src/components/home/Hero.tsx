@@ -96,7 +96,7 @@ export function Hero() {
   return (
     <section className="relative w-full overflow-hidden bg-slate-950 select-none">
       <div
-        className={`group relative min-h-[370px] sm:min-h-[540px] lg:min-h-[620px] w-full overflow-hidden ${
+        className={`group relative min-h-[280px] xs:min-h-[300px] sm:min-h-[540px] lg:min-h-[620px] w-full overflow-hidden ${
           isDragging ? "cursor-grabbing" : "cursor-grab"
         }`}
         onMouseDown={(e) => handleDragStart(e.clientX)}
@@ -112,7 +112,7 @@ export function Hero() {
         onTouchEnd={handleDragEnd}
       >
         <div
-          className={`flex h-full min-h-[370px] sm:min-h-[540px] lg:min-h-[620px] w-full ${
+          className={`flex h-full min-h-[280px] xs:min-h-[300px] sm:min-h-[540px] lg:min-h-[620px] w-full ${
             isDragging
               ? "transition-none"
               : "transition-transform duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]"
@@ -126,7 +126,7 @@ export function Hero() {
             return (
               <div
                 key={slide.slug}
-                className="relative flex h-full min-h-[370px] sm:min-h-[540px] lg:min-h-[620px] w-full shrink-0 flex-col justify-between"
+                className="relative flex h-full min-h-[280px] xs:min-h-[300px] sm:min-h-[540px] lg:min-h-[620px] w-full shrink-0 flex-col justify-start sm:justify-between"
               >
                 <div className="absolute inset-0 size-full overflow-hidden">
                   <img
@@ -142,26 +142,26 @@ export function Hero() {
                   <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,rgba(8,120,209,0.18),transparent_65%)]" />
                 </div>
 
-                <div className="container-page relative z-10 flex flex-col justify-center pt-6 sm:pt-16 lg:pt-20 pb-14 sm:pb-24">
+                <div className="container-page relative z-10 flex flex-col justify-start sm:justify-center pt-5 xs:pt-6 sm:pt-16 lg:pt-20 pb-10 sm:pb-24">
                   <div className="max-w-2xl">
                     <div className="inline-flex items-center gap-1.5 rounded-full border border-cyan-400/30 bg-cyan-950/50 px-2.5 py-0.5 sm:px-3 sm:py-1 text-[10px] sm:text-xs font-extrabold uppercase tracking-[0.2em] text-cyan-300 shadow-sm backdrop-blur-xl">
                       <span className="size-1.5 sm:size-2 rounded-full bg-cyan-400 animate-pulse" />
                       {slide.eyebrow}
                     </div>
 
-                    <h1 className="mt-2.5 sm:mt-4 font-display text-2xl xs:text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white drop-shadow-md leading-[1.15]">
+                    <h1 className="mt-2 sm:mt-4 font-display text-2xl xs:text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white drop-shadow-md leading-[1.15]">
                       {slide.title}
                     </h1>
 
-                    <p className="mt-2 sm:mt-4 max-w-xl text-xs sm:text-base lg:text-lg leading-relaxed text-slate-200 drop-shadow-sm font-normal line-clamp-3 sm:line-clamp-none">
+                    <p className="mt-1.5 sm:mt-4 max-w-xl text-xs sm:text-base lg:text-lg leading-relaxed text-slate-200 drop-shadow-sm font-normal line-clamp-3 sm:line-clamp-none">
                       {slide.copy}
                     </p>
 
-                    <div className="mt-4 sm:mt-8 flex flex-col xs:flex-row items-stretch xs:items-center gap-2.5 sm:gap-4">
+                    <div className="mt-3.5 sm:mt-8 flex flex-col xs:flex-row items-stretch xs:items-center gap-2 sm:gap-4">
                       <Link
                         to="/category/$slug"
                         params={{ slug: slide.slug }}
-                        className="inline-flex min-h-11 sm:min-h-12 items-center justify-center gap-2 rounded-full bg-[#0878D1] hover:bg-[#0768b5] px-5 sm:px-8 text-xs sm:text-base font-bold text-white shadow-lg shadow-blue-500/30 transition-all duration-200 active:scale-95 cursor-pointer text-center"
+                        className="inline-flex min-h-10 sm:min-h-12 items-center justify-center gap-2 rounded-full bg-[#0878D1] hover:bg-[#0768b5] px-5 sm:px-8 text-xs sm:text-base font-bold text-white shadow-lg shadow-blue-500/30 transition-all duration-200 active:scale-95 cursor-pointer text-center"
                       >
                         {slide.cta}
                         <Plus className="size-4 stroke-[2.5]" aria-hidden />
@@ -169,7 +169,7 @@ export function Hero() {
 
                       <Link
                         to="/shop"
-                        className="inline-flex min-h-11 sm:min-h-12 items-center justify-center rounded-full border border-white/30 bg-white/10 px-4 sm:px-7 text-xs sm:text-base font-bold text-white shadow-sm backdrop-blur-md transition-all duration-200 hover:bg-white/20 active:scale-95 cursor-pointer text-center"
+                        className="inline-flex min-h-10 sm:min-h-12 items-center justify-center rounded-full border border-white/30 bg-white/10 px-4 sm:px-7 text-xs sm:text-base font-bold text-white shadow-sm backdrop-blur-md transition-all duration-200 hover:bg-white/20 active:scale-95 cursor-pointer text-center"
                       >
                         Browse All Products
                       </Link>
@@ -181,8 +181,8 @@ export function Hero() {
           })}
         </div>
 
-        <div className="container-page absolute inset-x-0 bottom-0 z-20 flex items-center justify-between py-3 sm:py-6 pointer-events-none">
-          <div className="flex items-center gap-2.5 sm:gap-3 pointer-events-auto">
+        <div className="container-page absolute inset-x-0 bottom-0 z-20 flex items-center justify-between py-1.5 sm:py-6 pointer-events-none">
+          <div className="flex items-center gap-2 sm:gap-3 pointer-events-auto">
             <div className="flex items-center gap-1.5 sm:gap-2 rounded-full border border-white/20 bg-slate-900/80 p-1 sm:p-1.5 backdrop-blur-md shadow-md">
               {slides.map((_, i) => (
                 <button
@@ -190,10 +190,10 @@ export function Hero() {
                   type="button"
                   aria-label={`Go to slide ${i + 1}`}
                   onClick={() => setIndex(i)}
-                  className={`relative h-2 sm:h-2.5 overflow-hidden rounded-full transition-all duration-300 cursor-pointer ${
+                  className={`relative h-1.5 sm:h-2.5 overflow-hidden rounded-full transition-all duration-300 cursor-pointer ${
                     i === index
-                      ? "w-7 sm:w-9 bg-[#0878D1]/30 shadow-[0_0_12px_rgba(8,120,209,0.9)]"
-                      : "w-2 sm:w-2.5 bg-white/40 hover:bg-white/80"
+                      ? "w-6 sm:w-9 bg-[#0878D1]/30 shadow-[0_0_12px_rgba(8,120,209,0.9)]"
+                      : "w-1.5 sm:w-2.5 bg-white/40 hover:bg-white/80"
                   }`}
                 >
                   {i === index && (
@@ -208,27 +208,27 @@ export function Hero() {
                 </button>
               ))}
             </div>
-            <span className="text-[11px] sm:text-sm font-bold tracking-wide text-white/90 drop-shadow">
+            <span className="text-[10px] sm:text-sm font-bold tracking-wide text-white/90 drop-shadow">
               0{index + 1} / 0{slides.length}
             </span>
           </div>
 
-          <div className="flex items-center gap-1.5 sm:gap-2 pointer-events-auto">
+          <div className="flex items-center gap-1 sm:gap-2 pointer-events-auto">
             <button
               type="button"
               aria-label="Previous slide"
               onClick={prevSlide}
-              className="grid size-9 sm:size-11 place-items-center rounded-full border border-white/20 bg-slate-900/80 text-white shadow-md backdrop-blur-md transition-all hover:bg-white/25 hover:scale-105 active:scale-90 cursor-pointer"
+              className="grid size-8 sm:size-11 place-items-center rounded-full border border-white/20 bg-slate-900/80 text-white shadow-md backdrop-blur-md transition-all hover:bg-white/25 hover:scale-105 active:scale-90 cursor-pointer"
             >
-              <ChevronLeft className="size-4.5 sm:size-5" aria-hidden />
+              <ChevronLeft className="size-4 sm:size-5" aria-hidden />
             </button>
             <button
               type="button"
               aria-label="Next slide"
               onClick={nextSlide}
-              className="grid size-9 sm:size-11 place-items-center rounded-full border border-white/20 bg-slate-900/80 text-white shadow-md backdrop-blur-md transition-all hover:bg-white/25 hover:scale-105 active:scale-90 cursor-pointer"
+              className="grid size-8 sm:size-11 place-items-center rounded-full border border-white/20 bg-slate-900/80 text-white shadow-md backdrop-blur-md transition-all hover:bg-white/25 hover:scale-105 active:scale-90 cursor-pointer"
             >
-              <ChevronRight className="size-4.5 sm:size-5" aria-hidden />
+              <ChevronRight className="size-4 sm:size-5" aria-hidden />
             </button>
           </div>
         </div>
