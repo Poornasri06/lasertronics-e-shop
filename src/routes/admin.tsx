@@ -82,6 +82,7 @@ import {
   Calendar,
   Truck,
   Check,
+  ChevronDown,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -110,6 +111,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export const Route = createFileRoute("/admin")({
   loader: async () => {
@@ -710,17 +717,54 @@ function AdminDashboard() {
             </Button>
 
             {/* Fetch Live Products from InTouch POS */}
-            <Button
-              size="sm"
-              onClick={() => handleSyncPos(true)}
-              disabled={isSyncingPos || isRefreshing}
-              className="h-8 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-xs font-bold gap-1.5 shadow-md shadow-blue-600/25 shrink-0 cursor-pointer px-2 sm:px-3"
-              title="Fetch all live products and inventory directly from InTouch POS ERP"
-            >
-              <RefreshCw className={`size-3.5 shrink-0 ${isSyncingPos ? "animate-spin" : ""}`} />
-              <span className="hidden sm:inline">{isSyncingPos ? "Syncing POS..." : "Fetch POS Products"}</span>
-              <span className="sm:hidden">{isSyncingPos ? "..." : "POS"}</span>
-            </Button>
+            <div className="inline-flex rounded-xl shadow-md shadow-blue-600/25 shrink-0 overflow-hidden">
+              <Button
+                size="sm"
+                onClick={() => handleSyncPos(true)}
+                disabled={isSyncingPos || isRefreshing}
+                className="h-8 rounded-none rounded-l-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-xs font-bold gap-1.5 cursor-pointer px-2 sm:px-3 border-r border-blue-400/30"
+                title="Fetch live active in-stock products from InTouch POS ERP"
+              >
+                <RefreshCw className={`size-3.5 shrink-0 ${isSyncingPos ? "animate-spin" : ""}`} />
+                <span className="hidden sm:inline">{isSyncingPos ? "Syncing POS..." : "Fetch POS Products"}</span>
+                <span className="sm:hidden">{isSyncingPos ? "..." : "POS"}</span>
+              </Button>
+
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    size="sm"
+                    disabled={isSyncingPos || isRefreshing}
+                    className="h-8 px-1.5 rounded-none rounded-r-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs cursor-pointer"
+                    title="More POS Sync Options"
+                  >
+                    <ChevronDown className="size-3" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="bg-slate-900 border-slate-800 text-slate-200 text-xs w-72">
+                  <DropdownMenuItem
+                    onClick={() => handleSyncPos(true)}
+                    className="cursor-pointer gap-2 py-2"
+                  >
+                    <CheckCircle2 className="size-3.5 text-emerald-400 shrink-0" />
+                    <div>
+                      <span className="font-semibold text-white block">Fetch In-Stock POS Products</span>
+                      <span className="text-[10px] text-slate-400 block">Syncs active products with stock &gt; 0 (Recommended)</span>
+                    </div>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => handleSyncPos(false)}
+                    className="cursor-pointer gap-2 py-2"
+                  >
+                    <Database className="size-3.5 text-blue-400 shrink-0" />
+                    <div>
+                      <span className="font-semibold text-white block">Fetch ALL POS Products</span>
+                      <span className="text-[10px] text-slate-400 block">Syncs every single item in POS (including zero stock)</span>
+                    </div>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
 
             {/* Refresh Sync */}
             <Button
