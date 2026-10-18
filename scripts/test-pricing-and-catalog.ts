@@ -16,6 +16,8 @@ import {
   bulkImportProducts,
   getProductBySku,
   loadCatalogStore,
+  assignProductsToCategory,
+  addPosProductsToCategory,
 } from "../src/lib/catalog-store";
 
 import * as fs from "node:fs";
@@ -170,8 +172,42 @@ async function runTests() {
   const movedProd = getProductBySku("TEST-001");
   assert(movedProd?.categoryId === "electronics", `Products in deleted category reassigned to electronics`);
 
+  // 11. Test Assign Products to Category
+  console.log("\n--- 11. Testing Assign Products to Category with Markup Recalculation ---");
+  const assignRes = assignProductsToCategory(["TEST-001"], "tv-accessories");
+  assert(assignRes.success === true, `assignProductsToCategory returned success`);
+  assert(assignRes.updatedCount === 1, `1 product updated`);
+  const reassignedProd = getProductBySku("TEST-001");
+  assert(reassignedProd?.categoryId === "tv-accessories", `TEST-001 category is now tv-accessories`);
+  assert(
+    reassignedProd?.markupPercentage === assignRes.markupPercentage,
+    `Markup percentage updated to category rule`
+  );
+
+  // 12. Test Add Direct POS Products into a Category
+  console.log("\n--- 12. Testing Add Direct POS Products to Category ---");
+  const posAddRes = addPosProductsToCategory(
+    [
+      {
+        sku: "POS-TEST-NEW-1",
+        name: "POS Smart Sensor Shield",
+        basePrice: 500,
+        stock: 15,
+        unit: "Pc(s)",
+      },
+    ],
+    "mobile-accessories"
+  );
+  assert(posAddRes.success === true, `addPosProductsToCategory returned success`);
+  assert(posAddRes.addedCount === 1, `1 new product added from POS`);
+  const newPosProd = getProductBySku("POS-TEST-NEW-1");
+  assert(newPosProd !== undefined, `New POS product exists in store`);
+  assert(newPosProd?.categoryId === "mobile-accessories", `Assigned to mobile-accessories`);
+  // mobile-accessories has 20% markup, base 500 + 20% = 600
+  assert(newPosProd?.sellingPrice === 600, `Base 500 + 20% markup = 600 (got ${newPosProd?.sellingPrice})`);
+
   console.log("\n=======================================================");
-  console.log("🎉 ALL TESTS PASSED SUCCESSFULLY! 10/10 VERIFIED");
+  console.log("🎉 ALL TESTS PASSED SUCCESSFULLY! 12/12 VERIFIED");
   console.log("=======================================================\n");
   } finally {
     if (originalBackup) {

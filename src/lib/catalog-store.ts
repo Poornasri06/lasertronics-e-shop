@@ -971,6 +971,161 @@ export function deleteOrder(orderId: string): boolean {
 }
 
 /**
+ * Assign one or more existing catalog/POS products to a category
+ * and recalculate selling prices based on the category's markup percentage.
+ */
+export function assignProductsToCategory(
+  productSkus: string[],
+  categoryId: string
+): {
+  success: boolean;
+  updatedCount: number;
+  categoryName: string;
+  markupPercentage: number;
+} {
+  const store = loadCatalogStore();
+  const category = store.categories.find((c) => c.id === categoryId);
+  if (!category) {
+    throw new Error(`Category "${categoryId}" not found.`);
+  }
+
+  const skuSet = new Set(productSkus.map((s) => s.toLowerCase().trim()));
+  let updatedCount = 0;
+  const now = new Date().toISOString();
+
+  for (const product of store.products) {
+    if (skuSet.has(product.sku.toLowerCase().trim())) {
+      product.categoryId = categoryId;
+      product.markupPercentage = category.markupPercentage;
+      if (!product.isPriceOverridden) {
+        const markupAmount =
+          Math.round(((product.basePrice * category.markupPercentage) / 100) * 100) / 100;
+        product.sellingPrice = Math.round((product.basePrice + markupAmount) * 100) / 100;
+      }
+      product.updatedAt = now;
+      updatedCount++;
+    }
+  }
+
+  if (updatedCount > 0) {
+    saveCatalogStore(store);
+  }
+
+  return {
+    success: true,
+    updatedCount,
+    categoryName: category.name,
+    markupPercentage: category.markupPercentage,
+  };
+}
+
+/**
+ * Add or update products from POS into a specific category.
+ * If product exists in store, its category is changed to categoryId and price recalculated.
+ * If product does not exist, it is imported directly from POS into this category!
+ */
+export function addPosProductsToCategory(
+  items: {
+    sku: string;
+    name: string;
+    basePrice: number;
+    stock: number;
+    unit?: string;
+    image?: string | null;
+  }[],
+  categoryId: string
+): {
+  success: boolean;
+  addedCount: number;
+  updatedCount: number;
+  categoryName: string;
+  markupPercentage: number;
+} {
+  const store = loadCatalogStore();
+  const category = store.categories.find((c) => c.id === categoryId);
+  if (!category) {
+    throw new Error(`Category "${categoryId}" not found.`);
+  }
+
+  const existingMap = new Map<string, ProductRecord>();
+  for (const p of store.products) {
+    existingMap.set(p.sku.toLowerCase().trim(), p);
+  }
+
+  let addedCount = 0;
+  let updatedCount = 0;
+  const now = new Date().toISOString();
+  const markupPct = category.markupPercentage;
+
+  for (const item of items) {
+    const sku = item.sku.trim();
+    if (!sku) continue;
+
+    const existing = existingMap.get(sku.toLowerCase());
+    const basePrice = Math.max(0, Number(item.basePrice) || 0);
+    const markupAmount = Math.round(((basePrice * markupPct) / 100) * 100) / 100;
+    const sellingPrice = Math.round((basePrice + markupAmount) * 100) / 100;
+
+    if (existing) {
+      existing.categoryId = categoryId;
+      existing.markupPercentage = markupPct;
+      if (!existing.isPriceOverridden) {
+        existing.sellingPrice = sellingPrice;
+      }
+      if (item.stock !== undefined) {
+        existing.stock = Math.max(0, Math.floor(Number(item.stock) || 0));
+      }
+      existing.updatedAt = now;
+      updatedCount++;
+    } else {
+      const cleanName = item.name.trim();
+      const slugPart = cleanName
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "");
+      const skuPart = sku.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+      const slug = slugPart ? `${slugPart}-${skuPart}` : `prod-${skuPart}`;
+
+      const newRecord: ProductRecord = {
+        sku,
+        slug,
+        name: cleanName,
+        categoryId,
+        basePrice,
+        markupPercentage: markupPct,
+        isPriceOverridden: false,
+        overridePrice: null,
+        sellingPrice,
+        image: item.image || null,
+        stock: Math.max(0, Math.floor(Number(item.stock) || 0)),
+        blurb: `${cleanName} (${item.unit || "unit"}). InTouch POS catalog item. SKU: ${sku}`,
+        specs: [
+          { label: "SKU", value: sku },
+          { label: "Unit", value: item.unit || "Pc(s)" },
+          { label: "Source", value: "InTouch POS" },
+        ],
+        createdAt: now,
+        updatedAt: now,
+      };
+
+      store.products.unshift(newRecord);
+      existingMap.set(sku.toLowerCase(), newRecord);
+      addedCount++;
+    }
+  }
+
+  saveCatalogStore(store);
+
+  return {
+    success: true,
+    addedCount,
+    updatedCount,
+    categoryName: category.name,
+    markupPercentage: category.markupPercentage,
+  };
+}
+
+/**
  * Synchronize live products directly from InTouch POS ERP into the Catalog Store
  */
 export async function syncProductsFromPos(inStockOnly = true): Promise<{
@@ -1373,4 +1528,64 @@ export const deleteOrderFn = createServerFn({ method: "POST" })
   .handler(async ({ data: orderId }) => {
     return deleteOrder(orderId);
   });
+
+export const assignProductsToCategoryFn = createServerFn({ method: "POST" })
+  .validator((data: { productSkus: string[]; categoryId: string }) => data)
+  .handler(async ({ data }) => {
+    return assignProductsToCategory(data.productSkus, data.categoryId);
+  });
+
+export const addPosProductsToCategoryFn = createServerFn({ method: "POST" })
+  .validator(
+    (data: {
+      items: {
+        sku: string;
+        name: string;
+        basePrice: number;
+        stock: number;
+        unit?: string;
+        image?: string | null;
+      }[];
+      categoryId: string;
+    }) => data
+  )
+  .handler(async ({ data }) => {
+    return addPosProductsToCategory(data.items, data.categoryId);
+  });
+
+export const fetchLivePosItemsFn = createServerFn({ method: "POST" })
+  .validator((inStockOnly?: boolean) => inStockOnly ?? true)
+  .handler(async ({ data: inStockOnly }) => {
+    try {
+      const rawItems = await fetchInTouchAllProducts();
+      if (!rawItems || !Array.isArray(rawItems)) {
+        return { success: false, items: [], message: "No items returned from InTouch POS" };
+      }
+      const filtered = (
+        inStockOnly
+          ? rawItems.filter((p) => parseFloat(p.stock_qty || "0") > 0 && p.product_name)
+          : rawItems.filter((p) => Boolean(p.product_name))
+      ).map((p) => ({
+        sku: p.sub_sku || p.sku || p.product_id,
+        name: p.product_name,
+        basePrice:
+          parseFloat(p.purchase_price || "0") > 0
+            ? parseFloat(p.purchase_price || "0")
+            : parseFloat(p.selling_price || "0"),
+        sellingPrice: parseFloat(p.selling_price || "0"),
+        stock: Math.max(0, Math.floor(parseFloat(p.stock_qty || "0"))),
+        unit: p.unit || "Pc(s)",
+        variation: p.variation_name || "",
+      }));
+
+      return { success: true, items: filtered };
+    } catch (err: unknown) {
+      return {
+        success: false,
+        items: [],
+        message: err instanceof Error ? err.message : "Failed to fetch live POS items",
+      };
+    }
+  });
+
 

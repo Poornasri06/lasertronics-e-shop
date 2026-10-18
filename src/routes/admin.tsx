@@ -15,6 +15,7 @@ import {
   syncProductsFromPosFn,
   updateOrderStatusFn,
   deleteOrderFn,
+  assignProductsToCategoryFn,
 } from "@/lib/catalog-store";
 import {
   type ProductRecord,
@@ -33,6 +34,8 @@ import { CategoryEditDialog } from "@/components/admin/CategoryEditDialog";
 import { PricingCalculatorModal } from "@/components/admin/PricingCalculatorModal";
 import { BulkImportDialog } from "@/components/admin/BulkImportDialog";
 import { ImageUploadDialog } from "@/components/admin/ImageUploadDialog";
+import { PosCategoryImportModal } from "@/components/admin/PosCategoryImportModal";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   LayoutDashboard,
   Package,
@@ -178,6 +181,15 @@ function AdminDashboard() {
   const [pricingCalculatorOpen, setPricingCalculatorOpen] = useState(false);
   const [bulkImportOpen, setBulkImportOpen] = useState(false);
   const [imageUploadOpen, setImageUploadOpen] = useState(false);
+
+  // POS Category Importer Dialog State
+  const [posCategoryModalOpen, setPosCategoryModalOpen] = useState(false);
+  const [posCategoryModalTarget, setPosCategoryModalTarget] = useState<string | undefined>(undefined);
+
+  // Products Tab Multi-Select & Batch Category Assignment
+  const [selectedProductSkus, setSelectedProductSkus] = useState<Set<string>>(new Set());
+  const [bulkTargetCategory, setBulkTargetCategory] = useState<string>("");
+  const [isBulkAssigning, setIsBulkAssigning] = useState(false);
 
   // Delete Confirmation State
   const [deleteConfirm, setDeleteConfirm] = useState<{
@@ -533,6 +545,38 @@ function AdminDashboard() {
       await handleDeleteOrder(id);
     }
     setDeleteConfirm({ open: false, type: "product", id: "", name: "" });
+  };
+
+  // Bulk Assign Selected Products to Category
+  const handleBulkAssignCategory = async () => {
+    if (selectedProductSkus.size === 0 || !bulkTargetCategory) {
+      toast.warning("Please select at least one product and a target category.");
+      return;
+    }
+    try {
+      setIsBulkAssigning(true);
+      const res = await assignProductsToCategoryFn({
+        data: {
+          productSkus: Array.from(selectedProductSkus),
+          categoryId: bulkTargetCategory,
+        },
+      });
+      toast.success(
+        `Successfully moved ${res.updatedCount} products into "${res.categoryName}"! Pricing recalculated with +${res.markupPercentage}% markup.`
+      );
+      setSelectedProductSkus(new Set());
+      await refreshData();
+    } catch (err: unknown) {
+      toast.error(err instanceof Error ? err.message : "Failed to assign products to category");
+    } finally {
+      setIsBulkAssigning(false);
+    }
+  };
+
+  // Open POS Category Importer Modal for a specific category
+  const handleOpenPosCategoryModal = (categoryId?: string) => {
+    setPosCategoryModalTarget(categoryId);
+    setPosCategoryModalOpen(true);
   };
 
   // Security Gate: Private standalone portal screen
@@ -1902,8 +1946,29 @@ function AdminDashboard() {
                     const markupAmount = Math.round(((p.basePrice * markupPct) / 100) * 100) / 100;
 
                     return (
-                      <div key={p.sku} className="p-3.5 space-y-3 hover:bg-slate-800/30 transition-colors">
+                      <div
+                        key={p.sku}
+                        className={`p-3.5 space-y-3 transition-colors ${
+                          selectedProductSkus.has(p.sku)
+                            ? "bg-blue-950/40 border-l-4 border-l-blue-500"
+                            : "hover:bg-slate-800/30"
+                        }`}
+                      >
                         <div className="flex items-start gap-3">
+                          <div className="pt-1 shrink-0" onClick={(e) => e.stopPropagation()}>
+                            <Checkbox
+                              checked={selectedProductSkus.has(p.sku)}
+                              onCheckedChange={() => {
+                                setSelectedProductSkus((prev) => {
+                                  const next = new Set(prev);
+                                  if (next.has(p.sku)) next.delete(p.sku);
+                                  else next.add(p.sku);
+                                  return next;
+                                });
+                              }}
+                              className="border-slate-600 data-[state=checked]:bg-blue-600"
+                            />
+                          </div>
                           <ProductImage
                             src={p.image}
                             alt={p.name}
@@ -2020,6 +2085,30 @@ function AdminDashboard() {
                 <table className="w-full text-left text-xs min-w-[760px]">
                   <thead>
                     <tr className="border-b border-slate-700/80 bg-slate-900/60 text-slate-400 uppercase tracking-wider text-[10px]">
+                      <th className="py-3 px-3 w-10 text-center">
+                        <Checkbox
+                          checked={
+                            paginatedProducts.length > 0 &&
+                            paginatedProducts.every((p) => selectedProductSkus.has(p.sku))
+                          }
+                          onCheckedChange={() => {
+                            const allOnPage =
+                              paginatedProducts.length > 0 &&
+                              paginatedProducts.every((p) => selectedProductSkus.has(p.sku));
+                            setSelectedProductSkus((prev) => {
+                              const next = new Set(prev);
+                              if (allOnPage) {
+                                paginatedProducts.forEach((p) => next.delete(p.sku));
+                              } else {
+                                paginatedProducts.forEach((p) => next.add(p.sku));
+                              }
+                              return next;
+                            });
+                          }}
+                          className="border-slate-600 data-[state=checked]:bg-blue-600"
+                          title="Select / Deselect all on this page"
+                        />
+                      </th>
                       <th className="py-3 px-4">Item & SKU</th>
                       <th className="py-3 px-3">Category</th>
                       <th className="py-3 px-3 text-right">Base Cost (LKR)</th>
@@ -2032,7 +2121,7 @@ function AdminDashboard() {
                   <tbody className="divide-y divide-slate-800">
                     {filteredProducts.length === 0 ? (
                       <tr>
-                        <td colSpan={7} className="py-12 text-center text-slate-500">
+                        <td colSpan={8} className="py-12 text-center text-slate-500">
                           <Package className="size-8 mx-auto mb-2 text-slate-600" />
                           <p className="text-sm font-semibold">No products match your filters</p>
                           <p className="text-xs text-slate-400 mt-1">Try resetting filters or adding a new product</p>
@@ -2043,9 +2132,33 @@ function AdminDashboard() {
                         const cat = categories.find((c) => c.id === p.categoryId);
                         const markupPct = cat?.markupPercentage ?? p.markupPercentage ?? 15;
                         const markupAmount = Math.round(((p.basePrice * markupPct) / 100) * 100) / 100;
+                        const isSelected = selectedProductSkus.has(p.sku);
 
                         return (
-                          <tr key={p.sku} className="hover:bg-slate-800/60 transition-colors">
+                          <tr
+                            key={p.sku}
+                            className={`transition-colors ${
+                              isSelected
+                                ? "bg-blue-950/40 hover:bg-blue-950/60"
+                                : "hover:bg-slate-800/60"
+                            }`}
+                          >
+                            {/* Checkbox */}
+                            <td className="py-3 px-3 text-center" onClick={(e) => e.stopPropagation()}>
+                              <Checkbox
+                                checked={isSelected}
+                                onCheckedChange={() => {
+                                  setSelectedProductSkus((prev) => {
+                                    const next = new Set(prev);
+                                    if (next.has(p.sku)) next.delete(p.sku);
+                                    else next.add(p.sku);
+                                    return next;
+                                  });
+                                }}
+                                className="border-slate-600 data-[state=checked]:bg-blue-600"
+                              />
+                            </td>
+
                             {/* Product Info + Thumbnail */}
                             <td className="py-3 px-4">
                               <div className="flex items-center gap-3">
@@ -2245,6 +2358,63 @@ function AdminDashboard() {
                 </div>
               )}
             </div>
+
+            {/* Floating Bulk Category Assignment Action Bar */}
+            {selectedProductSkus.size > 0 && (
+              <div className="sticky bottom-4 z-40 p-3 sm:p-4 rounded-2xl bg-slate-900/95 border border-blue-500/50 shadow-2xl backdrop-blur-xl flex flex-col sm:flex-row items-center justify-between gap-3 animate-in fade-in slide-in-from-bottom-3">
+                <div className="flex items-center gap-3">
+                  <div className="size-8 rounded-xl bg-blue-600 flex items-center justify-center text-white font-bold text-xs shrink-0">
+                    {selectedProductSkus.size}
+                  </div>
+                  <div>
+                    <span className="text-xs font-bold text-white block">
+                      {selectedProductSkus.size} product{selectedProductSkus.size === 1 ? "" : "s"} selected
+                    </span>
+                    <span className="text-[11px] text-slate-400">
+                      Add/move selected products into a category
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2 w-full sm:w-auto">
+                  <Select value={bulkTargetCategory} onValueChange={setBulkTargetCategory}>
+                    <SelectTrigger className="h-9 min-w-[170px] rounded-xl bg-slate-800 border-slate-700 text-xs text-white">
+                      <SelectValue placeholder="Choose Category..." />
+                    </SelectTrigger>
+                    <SelectContent className="bg-slate-900 border-slate-800 text-slate-200 text-xs">
+                      {categories.map((c) => (
+                        <SelectItem key={c.id} value={c.id}>
+                          {c.name} (+{c.markupPercentage}%)
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+
+                  <Button
+                    size="sm"
+                    onClick={handleBulkAssignCategory}
+                    disabled={!bulkTargetCategory || isBulkAssigning}
+                    className="h-9 px-4 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs gap-1.5 shadow-md shadow-blue-600/30 shrink-0 cursor-pointer"
+                  >
+                    {isBulkAssigning ? (
+                      <RefreshCw className="size-3.5 animate-spin" />
+                    ) : (
+                      <CheckCircle2 className="size-3.5" />
+                    )}
+                    Assign to Category
+                  </Button>
+
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => setSelectedProductSkus(new Set())}
+                    className="h-9 px-2 text-xs text-slate-400 hover:text-white cursor-pointer"
+                  >
+                    Deselect
+                  </Button>
+                </div>
+              </div>
+            )}
           </div>
         )}
 
@@ -2261,16 +2431,27 @@ function AdminDashboard() {
                 </p>
               </div>
 
-              <Button
-                onClick={() => {
-                  setSelectedCategory(null);
-                  setCategoryDialogOpen(true);
-                }}
-                className="rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold h-9 shadow-md shadow-blue-600/30 gap-1.5"
-              >
-                <Plus className="size-3.5" />
-                <span>Create New Category</span>
-              </Button>
+              <div className="flex flex-wrap items-center gap-2.5 w-full sm:w-auto">
+                <Button
+                  onClick={() => handleOpenPosCategoryModal()}
+                  className="rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-xs font-semibold h-9 shadow-md shadow-blue-600/30 gap-1.5 flex-1 sm:flex-none"
+                >
+                  <Package className="size-3.5" />
+                  <span>Add Products from POS</span>
+                </Button>
+
+                <Button
+                  onClick={() => {
+                    setSelectedCategory(null);
+                    setCategoryDialogOpen(true);
+                  }}
+                  variant="outline"
+                  className="rounded-xl border-slate-700 bg-slate-800 text-slate-200 hover:bg-slate-700 text-xs font-semibold h-9 gap-1.5 flex-1 sm:flex-none"
+                >
+                  <Plus className="size-3.5" />
+                  <span>Create New Category</span>
+                </Button>
+              </div>
             </div>
 
             {/* Categories Cards Grid */}
@@ -2347,19 +2528,32 @@ function AdminDashboard() {
                       </div>
                     </div>
 
-                    <div className="pt-3 border-t border-slate-700/80 flex items-center justify-between text-xs">
-                      <span className="text-slate-400">
-                        Assigned: <strong className="text-white">{count} products</strong>
-                      </span>
-                      <button
-                        onClick={() => {
-                          setSelectedCategoryFilter(c.id);
-                          setActiveTab("products");
-                        }}
-                        className="text-blue-400 hover:text-blue-300 font-semibold flex items-center gap-1"
+                    <div className="pt-3 border-t border-slate-700/80 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5 text-xs">
+                      <div className="flex items-center justify-between sm:justify-start gap-3">
+                        <span className="text-slate-400">
+                          Assigned: <strong className="text-white">{count} products</strong>
+                        </span>
+                        <button
+                          onClick={() => {
+                            setSelectedCategoryFilter(c.id);
+                            setActiveTab("products");
+                          }}
+                          className="text-blue-400 hover:text-blue-300 font-semibold flex items-center gap-1 text-[11px]"
+                        >
+                          View <ChevronRight className="size-3" />
+                        </button>
+                      </div>
+
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => handleOpenPosCategoryModal(c.id)}
+                        className="h-7 px-2.5 rounded-lg border-blue-800/80 bg-blue-950/40 text-blue-300 hover:bg-blue-900/60 hover:text-white text-[11px] font-semibold gap-1 shrink-0"
+                        title={`Add or import products from POS directly into ${c.name}`}
                       >
-                        View Products <ChevronRight className="size-3" />
-                      </button>
+                        <Plus className="size-3" />
+                        Add from POS
+                      </Button>
                     </div>
                   </div>
                 );
@@ -2929,6 +3123,16 @@ function AdminDashboard() {
         categories={categories}
         products={products}
         onUpload={handleUploadImage}
+      />
+
+      {/* POS Category Importer Modal */}
+      <PosCategoryImportModal
+        open={posCategoryModalOpen}
+        onOpenChange={setPosCategoryModalOpen}
+        categories={categories}
+        defaultCategoryId={posCategoryModalTarget}
+        allStoreProducts={products}
+        onSuccess={refreshData}
       />
 
       {/* Order Details Receipt Modal */}
