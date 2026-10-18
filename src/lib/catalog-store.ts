@@ -14,6 +14,10 @@ import {
   type CategoryRecord,
   type ProductRecord,
   type MediaRecord,
+  type OrderRecord,
+  type OrderItem,
+  type CustomerDetails,
+  type OrderStatus,
   type CatalogData,
   type ProductSpec,
   calculateSellingPrice,
@@ -430,6 +434,7 @@ function buildInitialData(): CatalogData {
     categories: initialCategories,
     products,
     media,
+    orders: [],
     version: 1,
     lastUpdated: new Date().toISOString(),
   };
@@ -454,7 +459,7 @@ function getDbFilePath(): string {
  */
 export function loadCatalogStore(): CatalogData {
   if (typeof window !== "undefined") {
-    return memoryStore || { categories: initialCategories, products: [], media: [], version: 1, lastUpdated: "" };
+    return memoryStore || { categories: initialCategories, products: [], media: [], orders: [], version: 1, lastUpdated: "" };
   }
 
   const dbPath = getDbFilePath();
@@ -463,6 +468,7 @@ export function loadCatalogStore(): CatalogData {
       const raw = fs.readFileSync(dbPath, "utf-8");
       const parsed = JSON.parse(raw) as CatalogData;
       if (parsed && Array.isArray(parsed.categories) && Array.isArray(parsed.products)) {
+        parsed.orders = Array.isArray(parsed.orders) ? parsed.orders : [];
         memoryStore = parsed;
         return memoryStore;
       }
@@ -888,6 +894,83 @@ export function bulkImportProducts(productsToImport: Array<{
 }
 
 /**
+ * Create a new customer order in the persistent catalog store
+ */
+export function createOrder(data: {
+  customer: CustomerDetails;
+  items: OrderItem[];
+  subtotal: number;
+  shipping: number;
+  total: number;
+  paymentMethod: "cod" | "bank" | "card";
+}): OrderRecord {
+  const store = loadCatalogStore();
+  store.orders = Array.isArray(store.orders) ? store.orders : [];
+
+  const now = new Date().toISOString();
+  const randomSuffix = Math.floor(1000 + Math.random() * 9000);
+  const id = `LT-${Date.now().toString().slice(-6)}-${randomSuffix}`;
+
+  const newOrder: OrderRecord = {
+    id,
+    customer: data.customer,
+    items: data.items,
+    subtotal: Math.round(data.subtotal * 100) / 100,
+    shipping: Math.round(data.shipping * 100) / 100,
+    total: Math.round(data.total * 100) / 100,
+    paymentMethod: data.paymentMethod,
+    status: "pending",
+    createdAt: now,
+    updatedAt: now,
+  };
+
+  store.orders.unshift(newOrder); // Newest orders first
+  saveCatalogStore(store);
+
+  return newOrder;
+}
+
+/**
+ * Update the status of an existing order
+ */
+export function updateOrderStatus(orderId: string, status: OrderStatus): OrderRecord {
+  const store = loadCatalogStore();
+  store.orders = Array.isArray(store.orders) ? store.orders : [];
+
+  const idx = store.orders.findIndex((o) => o.id === orderId);
+  if (idx === -1) {
+    throw new Error(`Order ${orderId} not found`);
+  }
+
+  const updated: OrderRecord = {
+    ...store.orders[idx],
+    status,
+    updatedAt: new Date().toISOString(),
+  };
+
+  store.orders[idx] = updated;
+  saveCatalogStore(store);
+
+  return updated;
+}
+
+/**
+ * Delete an order
+ */
+export function deleteOrder(orderId: string): boolean {
+  const store = loadCatalogStore();
+  store.orders = Array.isArray(store.orders) ? store.orders : [];
+
+  const initialLen = store.orders.length;
+  store.orders = store.orders.filter((o) => o.id !== orderId);
+  if (store.orders.length !== initialLen) {
+    saveCatalogStore(store);
+    return true;
+  }
+  return false;
+}
+
+/**
  * Synchronize live products directly from InTouch POS ERP into the Catalog Store
  */
 export async function syncProductsFromPos(inStockOnly = true): Promise<{
@@ -1048,6 +1131,7 @@ export interface AdminCatalogResponse {
   categories: CategoryRecord[];
   products: ProductRecord[];
   media: MediaRecord[];
+  orders: OrderRecord[];
   stats: {
     totalProducts: number;
     totalCategories: number;
@@ -1055,6 +1139,9 @@ export interface AdminCatalogResponse {
     overriddenPriceCount: number;
     totalStockValue: number;
     averageMarkupPercentage: number;
+    totalOrders: number;
+    pendingOrdersCount: number;
+    totalRevenue: number;
   };
 }
 
@@ -1064,6 +1151,7 @@ export const fetchAdminCatalogFn = createServerFn({ method: "GET" }).handler(
     const categories = store.categories;
     const products = store.products;
     const media = store.media;
+    const orders = Array.isArray(store.orders) ? store.orders : [];
 
     const productsWithoutImages = products.filter((p) => !p.image || p.image.trim() === "").length;
     const overriddenPriceCount = products.filter((p) => p.isPriceOverridden).length;
@@ -1076,10 +1164,16 @@ export const fetchAdminCatalogFn = createServerFn({ method: "GET" }).handler(
           ) / 10
         : 0;
 
+    const pendingOrdersCount = orders.filter((o) => o.status === "pending").length;
+    const totalRevenue = orders
+      .filter((o) => o.status !== "cancelled")
+      .reduce((sum, o) => sum + o.total, 0);
+
     return {
       categories,
       products,
       media,
+      orders,
       stats: {
         totalProducts: products.length,
         totalCategories: categories.length,
@@ -1087,6 +1181,9 @@ export const fetchAdminCatalogFn = createServerFn({ method: "GET" }).handler(
         overriddenPriceCount,
         totalStockValue,
         averageMarkupPercentage: avgMarkup,
+        totalOrders: orders.length,
+        pendingOrdersCount,
+        totalRevenue: Math.round(totalRevenue * 100) / 100,
       },
     };
   }
@@ -1249,3 +1346,31 @@ export const syncProductsFromPosFn = createServerFn({ method: "POST" })
   .handler(async ({ data: inStockOnly }) => {
     return syncProductsFromPos(inStockOnly);
   });
+
+export const createOrderFn = createServerFn({ method: "POST" })
+  .validator(
+    (data: {
+      customer: CustomerDetails;
+      items: OrderItem[];
+      subtotal: number;
+      shipping: number;
+      total: number;
+      paymentMethod: "cod" | "bank" | "card";
+    }) => data
+  )
+  .handler(async ({ data }) => {
+    return createOrder(data);
+  });
+
+export const updateOrderStatusFn = createServerFn({ method: "POST" })
+  .validator((data: { orderId: string; status: OrderStatus }) => data)
+  .handler(async ({ data }) => {
+    return updateOrderStatus(data.orderId, data.status);
+  });
+
+export const deleteOrderFn = createServerFn({ method: "POST" })
+  .validator((orderId: string) => orderId)
+  .handler(async ({ data: orderId }) => {
+    return deleteOrder(orderId);
+  });
+

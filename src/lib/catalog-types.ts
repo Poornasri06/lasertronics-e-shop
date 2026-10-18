@@ -48,10 +48,44 @@ export interface MediaRecord {
   uploadedAt: string;
 }
 
+export interface OrderItem {
+  sku: string;
+  slug?: string;
+  name: string;
+  price: number;
+  quantity: number;
+  image?: string | null;
+}
+
+export interface CustomerDetails {
+  name: string;
+  email: string;
+  phone: string;
+  address: string;
+  city: string;
+  postal: string;
+}
+
+export type OrderStatus = "pending" | "confirmed" | "dispatched" | "delivered" | "cancelled";
+
+export interface OrderRecord {
+  id: string;
+  customer: CustomerDetails;
+  items: OrderItem[];
+  subtotal: number;
+  shipping: number;
+  total: number;
+  paymentMethod: "cod" | "bank" | "card";
+  status: OrderStatus;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface CatalogData {
   categories: CategoryRecord[];
   products: ProductRecord[];
   media: MediaRecord[];
+  orders?: OrderRecord[];
   version: number;
   lastUpdated: string;
 }
