@@ -1,0 +1,29 @@
+services:
+  - type: web
+    name: lasertronics-e-shop
+    runtime: node
+    plan: free
+    region: oregon
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NITRO_PRESET
+        value: node-server
+      - key: NODE_VERSION
+        value: 20
+      - key: INTOUCH_API_BASE_URL
+        value: https://shsx9584.intouchconnects.com/index.php
+      - key: INTOUCH_WEBIPAN
+        value: dsfgdsg446fads2414dfs14521#((*&GHBADHS
+      - key: INTOUCH_CLIENT_ID
+        value: 9edba68d-2fa4-4ade-b926-54a59fdbcd80
+      - key: INTOUCH_CLIENT_SECRET
+        value: e218b1a9-be1c-406a-abb6-d0abcadf375d
+      - key: VITE_INTOUCH_API_BASE_URL
+        value: https://shsx9584.intouchconnects.com/index.php
+      - key: VITE_INTOUCH_WEBIPAN
+        value: dsfgdsg446fads2414dfs14521#((*&GHBADHS
+      - key: VITE_INTOUCH_CLIENT_ID
+        value: 9edba68d-2fa4-4ade-b926-54a59fdbcd80
+      - key: VITE_INTOUCH_CLIENT_SECRET
+        value: e218b1a9-be1c-406a-abb6-d0abcadf375d
