@@ -233,6 +233,16 @@ export const fetchAllProductsFn = createServerFn({ method: "GET" }).handler(asyn
 });
 
 /**
+ * Server function to fetch live products for a specific category
+ */
+export const fetchCategoryProductsFn = createServerFn({ method: "GET" })
+  .validator((categorySlug: string) => categorySlug)
+  .handler(async ({ data: categorySlug }): Promise<Product[]> => {
+    const all = await getLiveStoreProducts();
+    return all.filter((p) => p.category === categorySlug && (p.stock || 0) > 0);
+  });
+
+/**
  * Server function to fetch single product by slug or SKU
  */
 export const fetchProductBySlugOrSkuFn = createServerFn({ method: "GET" })

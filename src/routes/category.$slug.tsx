@@ -1,9 +1,9 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { SiteLayout } from "@/components/layout/SiteLayout";
 import { ProductCard } from "@/components/ProductCard";
 import { categories, getCategory, productsByCategory, registerLiveProducts } from "@/data/products";
-import { fetchAllProductsFn } from "@/lib/server-products";
+import { fetchCategoryProductsFn } from "@/lib/server-products";
 
 export const Route = createFileRoute("/category/$slug")({
   loader: async ({ params }) => {
@@ -11,13 +11,13 @@ export const Route = createFileRoute("/category/$slug")({
     if (!category) throw notFound();
     let live: any[] = [];
     try {
-      const res = await fetchAllProductsFn();
+      const res = await fetchCategoryProductsFn({ data: params.slug });
       if (res && res.length > 0) {
         live = res;
         registerLiveProducts(res);
       }
     } catch (err) {
-      console.error("Failed to load live products in category loader:", err);
+      console.error("Failed to load category products in loader:", err);
     }
     return { category, liveProducts: live };
   },
@@ -38,14 +38,17 @@ export const Route = createFileRoute("/category/$slug")({
 
 import { useMemo, useState } from "react";
 
+const PAGE_SIZE = 30;
+
 function CategoryPage() {
   const { category, liveProducts } = Route.useLoaderData();
   const [sort, setSort] = useState<"featured" | "price-asc" | "price-desc" | "rating">("featured");
+  const [page, setPage] = useState<number>(1);
 
   const allCategoryProducts = useMemo(() => {
     const raw =
       liveProducts && liveProducts.length > 0
-        ? liveProducts.filter((p) => p.category === category.slug)
+        ? liveProducts
         : productsByCategory(category.slug);
     return raw.filter((p) => (p.stock || 0) > 0);
   }, [liveProducts, category.slug]);
@@ -57,6 +60,22 @@ function CategoryPage() {
     if (sort === "rating") list.sort((a, b) => b.rating - a.rating);
     return list;
   }, [allCategoryProducts, sort]);
+
+  const totalPages = Math.max(1, Math.ceil(sortedProducts.length / PAGE_SIZE));
+  const currentPage = Math.min(page, totalPages);
+
+  const paginatedProducts = useMemo(() => {
+    const start = (currentPage - 1) * PAGE_SIZE;
+    return sortedProducts.slice(start, start + PAGE_SIZE);
+  }, [sortedProducts, currentPage]);
+
+  const handleSortChange = (newSort: "featured" | "price-asc" | "price-desc" | "rating") => {
+    setSort(newSort);
+    setPage(1);
+  };
+
+  const showingStart = sortedProducts.length === 0 ? 0 : (currentPage - 1) * PAGE_SIZE + 1;
+  const showingEnd = Math.min(currentPage * PAGE_SIZE, sortedProducts.length);
 
   return (
     <SiteLayout>
@@ -100,15 +119,23 @@ function CategoryPage() {
         {/* Toolbar: Count & Sort */}
         <div className="flex items-center justify-between border-b border-slate-200 pb-4">
           <p className="text-xs font-bold text-slate-600">
-            Showing all <strong className="text-foreground">{sortedProducts.length}</strong> items in{" "}
-            {category.name}
+            {sortedProducts.length > PAGE_SIZE ? (
+              <>
+                Showing <strong className="text-foreground">{showingStart}–{showingEnd}</strong> of{" "}
+                <strong className="text-foreground">{sortedProducts.length}</strong> items in {category.name}
+              </>
+            ) : (
+              <>
+                Showing all <strong className="text-foreground">{sortedProducts.length}</strong> items in {category.name}
+              </>
+            )}
           </p>
 
           <div className="flex items-center gap-2">
             <span className="text-xs font-semibold text-slate-500 hidden sm:inline">Sort:</span>
             <select
               value={sort}
-              onChange={(e) => setSort(e.target.value as any)}
+              onChange={(e) => handleSortChange(e.target.value as any)}
               className="rounded-xl border border-slate-200 bg-white px-3.5 py-1.5 text-xs font-bold text-foreground outline-none transition-all focus:border-primary cursor-pointer shadow-2xs"
             >
               <option value="featured">Featured</option>
@@ -121,10 +148,77 @@ function CategoryPage() {
 
         {/* Desktop Product Grid: 4 cols on lg, 5 cols on xl */}
         <div className="mt-6 grid grid-cols-2 gap-3.5 sm:gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-          {sortedProducts.map((p) => (
+          {paginatedProducts.map((p) => (
             <ProductCard key={p.slug} product={p} />
           ))}
         </div>
+
+        {/* Pagination controls */}
+        {totalPages > 1 && (
+          <div className="mt-10 flex items-center justify-between border-t border-slate-200 pt-5">
+            <button
+              type="button"
+              disabled={currentPage <= 1}
+              onClick={() => {
+                setPage((prev) => Math.max(1, prev - 1));
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }}
+              className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-4 py-2 text-xs font-bold text-foreground shadow-2xs disabled:opacity-40 disabled:pointer-events-none hover:border-primary hover:text-primary cursor-pointer"
+            >
+              <ChevronLeft className="size-4" /> Previous
+            </button>
+
+            <div className="flex items-center gap-1">
+              {[...Array(totalPages)].map((_, i) => {
+                const pNum = i + 1;
+                if (
+                  totalPages > 6 &&
+                  pNum !== 1 &&
+                  pNum !== totalPages &&
+                  Math.abs(pNum - currentPage) > 1
+                ) {
+                  if (pNum === 2 || pNum === totalPages - 1) {
+                    return (
+                      <span key={pNum} className="px-1 text-xs text-slate-400">
+                        ...
+                      </span>
+                    );
+                  }
+                  return null;
+                }
+                return (
+                  <button
+                    key={pNum}
+                    type="button"
+                    onClick={() => {
+                      setPage(pNum);
+                      window.scrollTo({ top: 0, behavior: "smooth" });
+                    }}
+                    className={`size-8 rounded-lg text-xs font-bold cursor-pointer transition-colors ${
+                      currentPage === pNum
+                        ? "bg-primary text-white shadow-xs"
+                        : "bg-white text-slate-700 hover:bg-slate-100 border border-slate-200"
+                    }`}
+                  >
+                    {pNum}
+                  </button>
+                );
+              })}
+            </div>
+
+            <button
+              type="button"
+              disabled={currentPage >= totalPages}
+              onClick={() => {
+                setPage((prev) => Math.min(totalPages, prev + 1));
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }}
+              className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-4 py-2 text-xs font-bold text-foreground shadow-2xs disabled:opacity-40 disabled:pointer-events-none hover:border-primary hover:text-primary cursor-pointer"
+            >
+              Next <ChevronRight className="size-4" />
+            </button>
+          </div>
+        )}
 
         {/* Related categories shelf */}
         <div className="mt-12 sm:mt-16 border-t border-slate-200 pt-8 sm:pt-10">

@@ -7,6 +7,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import * as fs from "node:fs";
 import * as path from "node:path";
+import catalogDbJson from "@/data/catalog-db.json";
 import { fetchInTouchAllProducts } from "./intouch-api";
 
 export * from "./catalog-types";
@@ -373,11 +374,16 @@ const initialProductsSeed: Omit<ProductRecord, "sellingPrice">[] = [
 // Helper to build initial data
 function buildInitialData(): CatalogData {
   const catMap = new Map<string, number>();
-  for (const c of initialCategories) {
+  const categoriesToUse: CategoryRecord[] =
+    catalogDbJson?.categories && catalogDbJson.categories.length > 0
+      ? (catalogDbJson.categories as CategoryRecord[])
+      : initialCategories;
+
+  for (const c of categoriesToUse) {
     catMap.set(c.id, c.markupPercentage);
   }
 
-  const products: ProductRecord[] = initialProductsSeed.map((p) => {
+  const seedProducts: ProductRecord[] = initialProductsSeed.map((p) => {
     const markup = catMap.get(p.categoryId) ?? 15;
     const computed = computeProductPricing(p, markup);
     return {
@@ -387,56 +393,67 @@ function buildInitialData(): CatalogData {
     };
   });
 
-  const media: MediaRecord[] = [
-    {
-      id: "med-1",
-      filename: "gan-charger.jpg",
-      url: "/assets/p/gan-charger.jpg",
-      sizeBytes: 42000,
-      mimeType: "image/jpeg",
-      categoryId: "mobile-accessories",
-      productSku: "LT-1001",
-      uploadedAt: new Date().toISOString(),
-    },
-    {
-      id: "med-2",
-      filename: "usbc-cable.jpg",
-      url: "/assets/p/usbc-cable.jpg",
-      sizeBytes: 41460,
-      mimeType: "image/jpeg",
-      categoryId: "mobile-accessories",
-      productSku: "LT-1002",
-      uploadedAt: new Date().toISOString(),
-    },
-    {
-      id: "med-3",
-      filename: "esp32.jpg",
-      url: "/assets/p/esp32.jpg",
-      sizeBytes: 46910,
-      mimeType: "image/jpeg",
-      categoryId: "iot-and-microcontrollers",
-      productSku: "LT-2001",
-      uploadedAt: new Date().toISOString(),
-    },
-    {
-      id: "med-4",
-      filename: "soldering-station.jpg",
-      url: "/assets/p/soldering-station.jpg",
-      sizeBytes: 40020,
-      mimeType: "image/jpeg",
-      categoryId: "repair-kits",
-      productSku: "LT-3001",
-      uploadedAt: new Date().toISOString(),
-    },
+  const baseProducts = ((catalogDbJson as any)?.products as ProductRecord[]) || [];
+  const existingSkus = new Set(baseProducts.map((p) => p.sku?.toLowerCase()));
+
+  const mergedProducts = [
+    ...seedProducts.filter((p) => !existingSkus.has(p.sku?.toLowerCase())),
+    ...baseProducts,
   ];
 
+  const media: MediaRecord[] =
+    (catalogDbJson as any)?.media && (catalogDbJson as any).media.length > 0
+      ? (catalogDbJson as any).media
+      : [
+          {
+            id: "med-1",
+            filename: "gan-charger.jpg",
+            url: "/assets/p/gan-charger.jpg",
+            sizeBytes: 42000,
+            mimeType: "image/jpeg",
+            categoryId: "mobile-accessories",
+            productSku: "LT-1001",
+            uploadedAt: new Date().toISOString(),
+          },
+          {
+            id: "med-2",
+            filename: "usbc-cable.jpg",
+            url: "/assets/p/usbc-cable.jpg",
+            sizeBytes: 41460,
+            mimeType: "image/jpeg",
+            categoryId: "mobile-accessories",
+            productSku: "LT-1002",
+            uploadedAt: new Date().toISOString(),
+          },
+          {
+            id: "med-3",
+            filename: "esp32.jpg",
+            url: "/assets/p/esp32.jpg",
+            sizeBytes: 46910,
+            mimeType: "image/jpeg",
+            categoryId: "iot-and-microcontrollers",
+            productSku: "LT-2001",
+            uploadedAt: new Date().toISOString(),
+          },
+          {
+            id: "med-4",
+            filename: "soldering-station.jpg",
+            url: "/assets/p/soldering-station.jpg",
+            sizeBytes: 40020,
+            mimeType: "image/jpeg",
+            categoryId: "repair-kits",
+            productSku: "LT-3001",
+            uploadedAt: new Date().toISOString(),
+          },
+        ];
+
   return {
-    categories: initialCategories,
-    products,
+    categories: categoriesToUse,
+    products: mergedProducts,
     media,
-    orders: [],
+    orders: (catalogDbJson as any)?.orders || [],
     version: 1,
-    lastUpdated: new Date().toISOString(),
+    lastUpdated: (catalogDbJson as any)?.lastUpdated || new Date().toISOString(),
   };
 }
 
@@ -458,8 +475,13 @@ function getDbFilePath(): string {
  * Load or initialize catalog data from storage
  */
 export function loadCatalogStore(): CatalogData {
+  if (memoryStore) {
+    return memoryStore;
+  }
+
   if (typeof window !== "undefined") {
-    return memoryStore || { categories: initialCategories, products: [], media: [], orders: [], version: 1, lastUpdated: "" };
+    memoryStore = buildInitialData();
+    return memoryStore;
   }
 
   const dbPath = getDbFilePath();
@@ -467,18 +489,14 @@ export function loadCatalogStore(): CatalogData {
     if (fs && typeof fs.existsSync === "function" && fs.existsSync(dbPath)) {
       const raw = fs.readFileSync(dbPath, "utf-8");
       const parsed = JSON.parse(raw) as CatalogData;
-      if (parsed && Array.isArray(parsed.categories) && Array.isArray(parsed.products)) {
+      if (parsed && Array.isArray(parsed.categories) && Array.isArray(parsed.products) && parsed.products.length > 0) {
         parsed.orders = Array.isArray(parsed.orders) ? parsed.orders : [];
         memoryStore = parsed;
         return memoryStore;
       }
     }
   } catch (err) {
-    console.warn("Could not read catalog-db.json from disk, fallback to memory:", err);
-  }
-
-  if (memoryStore) {
-    return memoryStore;
+    console.warn("Could not read catalog-db.json from disk, fallback to bundled data:", err);
   }
 
   // Initialize and write to disk
