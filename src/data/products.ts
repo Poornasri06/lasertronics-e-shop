@@ -166,36 +166,10 @@ export const categories: Category[] = [
   },
 ];
 
-import catalogDb from "./catalog-db.json";
+import { seedProducts } from "./seed-products";
 
-// Authentic Lasertronics products from catalog database (in-stock only)
-export const products: Product[] = (catalogDb.products || [])
-  .filter((r: any) => (r.stock || 0) > 0)
-  .map((r: any) => ({
-    slug: r.slug,
-    name: r.name,
-    category: r.categoryId,
-    price: r.sellingPrice,
-    image: r.image && r.image.trim() !== "" ? r.image : "/favicon.png",
-    blurb: r.blurb,
-    ...(r.badge ? { badge: r.badge } : {}),
-    specs: [
-      { label: "SKU", value: r.sku },
-      { label: "Availability", value: "In Stock" },
-      ...(r.specs || []).filter(
-        (s: any) =>
-          s.label !== "Available Stock" &&
-          s.label !== "Stock Enabled" &&
-          s.label !== "Base Price" &&
-          s.label !== "Base Cost" &&
-          s.label !== "Markup" &&
-          s.label !== "Category Margin"
-      ),
-    ],
-    rating: 4.8,
-    reviews: 14,
-    stock: r.stock,
-  }));
+// Initial fallback products (full live catalog is served via server functions)
+export const products: Product[] = seedProducts;
 
 // Dynamic InTouch ERP & catalog live products cache
 const liveProductsMap = new Map<string, Product>();

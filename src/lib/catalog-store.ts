@@ -7,7 +7,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import * as fs from "node:fs";
 import * as path from "node:path";
-import catalogDbJson from "@/data/catalog-db.json";
 import { fetchInTouchAllProducts } from "./intouch-api";
 
 export * from "./catalog-types";
@@ -374,16 +373,11 @@ const initialProductsSeed: Omit<ProductRecord, "sellingPrice">[] = [
 // Helper to build initial data
 function buildInitialData(): CatalogData {
   const catMap = new Map<string, number>();
-  const categoriesToUse: CategoryRecord[] =
-    catalogDbJson?.categories && catalogDbJson.categories.length > 0
-      ? (catalogDbJson.categories as CategoryRecord[])
-      : initialCategories;
-
-  for (const c of categoriesToUse) {
+  for (const c of initialCategories) {
     catMap.set(c.id, c.markupPercentage);
   }
 
-  const seedProducts: ProductRecord[] = initialProductsSeed.map((p) => {
+  const products: ProductRecord[] = initialProductsSeed.map((p) => {
     const markup = catMap.get(p.categoryId) ?? 15;
     const computed = computeProductPricing(p, markup);
     return {
@@ -393,67 +387,56 @@ function buildInitialData(): CatalogData {
     };
   });
 
-  const baseProducts = ((catalogDbJson as any)?.products as ProductRecord[]) || [];
-  const existingSkus = new Set(baseProducts.map((p) => p.sku?.toLowerCase()));
-
-  const mergedProducts = [
-    ...seedProducts.filter((p) => !existingSkus.has(p.sku?.toLowerCase())),
-    ...baseProducts,
+  const media: MediaRecord[] = [
+    {
+      id: "med-1",
+      filename: "gan-charger.jpg",
+      url: "/assets/p/gan-charger.jpg",
+      sizeBytes: 42000,
+      mimeType: "image/jpeg",
+      categoryId: "mobile-accessories",
+      productSku: "LT-1001",
+      uploadedAt: new Date().toISOString(),
+    },
+    {
+      id: "med-2",
+      filename: "usbc-cable.jpg",
+      url: "/assets/p/usbc-cable.jpg",
+      sizeBytes: 41460,
+      mimeType: "image/jpeg",
+      categoryId: "mobile-accessories",
+      productSku: "LT-1002",
+      uploadedAt: new Date().toISOString(),
+    },
+    {
+      id: "med-3",
+      filename: "esp32.jpg",
+      url: "/assets/p/esp32.jpg",
+      sizeBytes: 46910,
+      mimeType: "image/jpeg",
+      categoryId: "iot-and-microcontrollers",
+      productSku: "LT-2001",
+      uploadedAt: new Date().toISOString(),
+    },
+    {
+      id: "med-4",
+      filename: "soldering-station.jpg",
+      url: "/assets/p/soldering-station.jpg",
+      sizeBytes: 40020,
+      mimeType: "image/jpeg",
+      categoryId: "repair-kits",
+      productSku: "LT-3001",
+      uploadedAt: new Date().toISOString(),
+    },
   ];
 
-  const media: MediaRecord[] =
-    (catalogDbJson as any)?.media && (catalogDbJson as any).media.length > 0
-      ? (catalogDbJson as any).media
-      : [
-          {
-            id: "med-1",
-            filename: "gan-charger.jpg",
-            url: "/assets/p/gan-charger.jpg",
-            sizeBytes: 42000,
-            mimeType: "image/jpeg",
-            categoryId: "mobile-accessories",
-            productSku: "LT-1001",
-            uploadedAt: new Date().toISOString(),
-          },
-          {
-            id: "med-2",
-            filename: "usbc-cable.jpg",
-            url: "/assets/p/usbc-cable.jpg",
-            sizeBytes: 41460,
-            mimeType: "image/jpeg",
-            categoryId: "mobile-accessories",
-            productSku: "LT-1002",
-            uploadedAt: new Date().toISOString(),
-          },
-          {
-            id: "med-3",
-            filename: "esp32.jpg",
-            url: "/assets/p/esp32.jpg",
-            sizeBytes: 46910,
-            mimeType: "image/jpeg",
-            categoryId: "iot-and-microcontrollers",
-            productSku: "LT-2001",
-            uploadedAt: new Date().toISOString(),
-          },
-          {
-            id: "med-4",
-            filename: "soldering-station.jpg",
-            url: "/assets/p/soldering-station.jpg",
-            sizeBytes: 40020,
-            mimeType: "image/jpeg",
-            categoryId: "repair-kits",
-            productSku: "LT-3001",
-            uploadedAt: new Date().toISOString(),
-          },
-        ];
-
   return {
-    categories: categoriesToUse,
-    products: mergedProducts,
+    categories: initialCategories,
+    products,
     media,
-    orders: (catalogDbJson as any)?.orders || [],
+    orders: [],
     version: 1,
-    lastUpdated: (catalogDbJson as any)?.lastUpdated || new Date().toISOString(),
+    lastUpdated: new Date().toISOString(),
   };
 }
 
@@ -463,7 +446,17 @@ let memoryStore: CatalogData | null = null;
 function getDbFilePath(): string {
   if (typeof process !== "undefined" && typeof process.cwd === "function" && path && typeof path.resolve === "function") {
     try {
-      return path.resolve(process.cwd(), "src/data/catalog-db.json");
+      const candidates = [
+        path.resolve(process.cwd(), "src/data/catalog-db.json"),
+        path.resolve(process.cwd(), "data/catalog-db.json"),
+        path.resolve(process.cwd(), "catalog-db.json"),
+        path.resolve(process.cwd(), ".output/server/catalog-db.json"),
+      ];
+      for (const c of candidates) {
+        if (fs && typeof fs.existsSync === "function" && fs.existsSync(c)) {
+          return c;
+        }
+      }
     } catch {
       return "src/data/catalog-db.json";
     }

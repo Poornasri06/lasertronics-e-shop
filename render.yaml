@@ -4,13 +4,15 @@ services:
     runtime: node
     plan: free
     region: oregon
-    buildCommand: npm install && npm run build
+    buildCommand: npm install --prefer-offline --no-audit --no-fund && npm run build
     startCommand: npm start
     envVars:
       - key: NITRO_PRESET
         value: node-server
       - key: NODE_VERSION
         value: 20
+      - key: NODE_OPTIONS
+        value: --max-old-space-size=400
       - key: INTOUCH_API_BASE_URL
         value: https://shsx9584.intouchconnects.com/index.php
       - key: INTOUCH_WEBIPAN
