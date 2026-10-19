@@ -450,7 +450,11 @@ function getDbFilePath(): string {
         path.resolve(process.cwd(), "src/data/catalog-db.json"),
         path.resolve(process.cwd(), "data/catalog-db.json"),
         path.resolve(process.cwd(), "catalog-db.json"),
+        path.resolve(process.cwd(), "public/data/catalog-db.json"),
+        path.resolve(process.cwd(), "public/catalog-db.json"),
         path.resolve(process.cwd(), ".output/server/catalog-db.json"),
+        "/var/task/src/data/catalog-db.json",
+        "/var/task/public/data/catalog-db.json",
       ];
       for (const c of candidates) {
         if (fs && typeof fs.existsSync === "function" && fs.existsSync(c)) {
