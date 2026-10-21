@@ -486,7 +486,12 @@ function AdminDashboard() {
   const handleSaveCategory = async (data: Parameters<typeof saveCategoryFn>[0]["data"]) => {
     try {
       const updated = await saveCategoryFn({ data });
-      toast.success(`Category "${updated.name}" configured with ${updated.markupPercentage}% markup!`);
+      toast.success(`Category "${updated.name}" saved! It is now live in admin & storefront.`, {
+        action: {
+          label: "View Storefront",
+          onClick: () => window.open(`/category/${updated.id}`, "_blank"),
+        },
+      });
       await refreshData();
     } catch (err: unknown) {
       toast.error(err instanceof Error ? err.message : "Failed to save category");
@@ -2516,6 +2521,15 @@ function AdminDashboard() {
                           Slug: {c.id}
                         </span>
                         <div className="flex items-center gap-1">
+                          <a
+                            href={`/category/${c.id}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="size-7 grid place-items-center rounded-lg text-slate-400 hover:text-blue-400 hover:bg-slate-700 transition-colors"
+                            title={`View "${c.name}" in storefront`}
+                          >
+                            <ExternalLink className="size-3.5" />
+                          </a>
                           <Button
                             variant="ghost"
                             size="sm"

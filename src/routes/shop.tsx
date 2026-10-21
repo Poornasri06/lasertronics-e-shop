@@ -19,9 +19,11 @@ import {
   categories,
   products as defaultFallbackProducts,
   registerLiveProducts,
+  registerLiveCategories,
+  useStoreCategories,
   formatLKR,
 } from "@/data/products";
-import { fetchAllProductsFn } from "@/lib/server-products";
+import { fetchAllProductsFn, fetchAllCategoriesFn } from "@/lib/server-products";
 
 type ShopSearch = {
   q?: string;
@@ -43,7 +45,13 @@ export const Route = createFileRoute("/shop")({
   }),
   loader: async () => {
     try {
-      const live = await fetchAllProductsFn();
+      const [live, liveCats] = await Promise.all([
+        fetchAllProductsFn().catch(() => null),
+        fetchAllCategoriesFn().catch(() => null),
+      ]);
+      if (liveCats && liveCats.length > 0) {
+        registerLiveCategories(liveCats);
+      }
       if (live && live.length > 0) {
         registerLiveProducts(live);
         return { liveProducts: live };
@@ -86,6 +94,7 @@ function ShopPage() {
   const { liveProducts } = Route.useLoaderData();
   const searchParams = Route.useSearch();
   const navigate = useNavigate();
+  const categories = useStoreCategories();
 
   const allProducts = useMemo(() => {
     const raw = liveProducts && liveProducts.length > 0 ? liveProducts : defaultFallbackProducts;
@@ -121,7 +130,7 @@ function ShopPage() {
       counts[cat.slug] = allProducts.filter((p) => p.category === cat.slug).length;
     }
     return counts;
-  }, [allProducts]);
+  }, [allProducts, categories]);
 
   const activeBucket = useMemo(
     () => PRICE_BUCKETS.find((b) => b.id === priceBucket) || PRICE_BUCKETS[0],

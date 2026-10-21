@@ -1,9 +1,10 @@
-﻿import { Link } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
 import logoAsset from "@/assets/logo.jpg";
-import { categories } from "@/data/products";
+import { useStoreCategories } from "@/data/products";
 
 export function Footer() {
+  const categories = useStoreCategories();
   return (
     <footer className="mt-16 sm:mt-20 border-t border-white/10 bg-[#0A192F]/95 text-ink-foreground backdrop-blur-2xl shadow-[0_-8px_32px_rgba(0,0,0,0.12)]">
       <div className="container-page grid gap-6 sm:gap-8 py-8 sm:py-14 grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">

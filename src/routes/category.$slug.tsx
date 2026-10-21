@@ -2,13 +2,32 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { SiteLayout } from "@/components/layout/SiteLayout";
 import { ProductCard } from "@/components/ProductCard";
-import { categories, getCategory, productsByCategory, registerLiveProducts } from "@/data/products";
-import { fetchCategoryProductsFn } from "@/lib/server-products";
+import {
+  categories,
+  getCategory,
+  productsByCategory,
+  registerLiveProducts,
+  registerLiveCategories,
+  useStoreCategories,
+} from "@/data/products";
+import { fetchCategoryProductsFn, fetchAllCategoriesFn } from "@/lib/server-products";
 
 export const Route = createFileRoute("/category/$slug")({
   loader: async ({ params }) => {
-    const category = getCategory(params.slug);
+    let category = getCategory(params.slug);
+    if (!category) {
+      try {
+        const liveCats = await fetchAllCategoriesFn();
+        if (liveCats && liveCats.length > 0) {
+          registerLiveCategories(liveCats);
+          category = getCategory(params.slug);
+        }
+      } catch (err) {
+        console.error("Failed to fetch live categories in /category loader:", err);
+      }
+    }
     if (!category) throw notFound();
+
     let live: any[] = [];
     try {
       const res = await fetchCategoryProductsFn({ data: params.slug });
@@ -42,6 +61,7 @@ const PAGE_SIZE = 30;
 
 function CategoryPage() {
   const { category, liveProducts } = Route.useLoaderData();
+  const categories = useStoreCategories();
   const [sort, setSort] = useState<"featured" | "price-asc" | "price-desc" | "rating">("featured");
   const [page, setPage] = useState<number>(1);
 

@@ -1,8 +1,22 @@
-import { type ReactNode } from "react";
+import { useEffect, type ReactNode } from "react";
 import { Header } from "./Header";
 import { Footer } from "./Footer";
+import { fetchAllCategoriesFn } from "@/lib/server-products";
+import { registerLiveCategories } from "@/data/products";
 
 export function SiteLayout({ children }: { children: ReactNode }) {
+  useEffect(() => {
+    fetchAllCategoriesFn()
+      .then((cats) => {
+        if (cats && cats.length > 0) {
+          registerLiveCategories(cats);
+        }
+      })
+      .catch((err) => {
+        console.warn("Could not sync live categories in SiteLayout:", err);
+      });
+  }, []);
+
   return (
     <div className="relative flex min-h-screen flex-col overflow-x-hidden bg-[#f4f7fb]">
       {/* Dynamic ambient gradient glow orbs for glass refraction */}

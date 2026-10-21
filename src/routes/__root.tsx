@@ -16,6 +16,8 @@ import { CartProvider } from "../lib/cart";
 import { Toaster } from "../components/ui/sonner";
 import { PWAProvider } from "../lib/pwa-context";
 import { PWAUpdateBanner } from "../components/pwa/PWAStatusBanners";
+import { fetchAllCategoriesFn } from "../lib/server-products";
+import { registerLiveCategories, categories } from "../data/products";
 
 
 function NotFoundComponent() {
@@ -117,6 +119,19 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
     ],
   }),
+
+  loader: async () => {
+    try {
+      const liveCats = await fetchAllCategoriesFn();
+      if (liveCats && liveCats.length > 0) {
+        registerLiveCategories(liveCats);
+        return { liveCategories: liveCats };
+      }
+    } catch (err) {
+      console.warn("Root loader failed to fetch categories:", err);
+    }
+    return { liveCategories: categories };
+  },
 
   shellComponent: RootShell,
   component: RootComponent,

@@ -4,9 +4,9 @@ import {
   fetchInTouchProductBySku,
   mapInTouchProductToStoreProduct,
 } from "./intouch-api";
-import { products as fallbackProducts, type Product } from "@/data/products";
-
-import { loadCatalogStore, setCatalogChangedCallback, type ProductRecord } from "./catalog-store";
+import type { Product } from "@/data/products";
+import { seedProducts as fallbackProducts } from "@/data/seed-products";
+import { loadCatalogStore, setCatalogChangedCallback, type ProductRecord, type CategoryRecord } from "./catalog-store";
 
 // Automatically clear in-memory storefront product cache whenever admin modifies markup or products
 setCatalogChangedCallback(() => {
@@ -231,6 +231,30 @@ export const fetchAllProductsFn = createServerFn({ method: "GET" }).handler(asyn
   const all = await getLiveStoreProducts();
   return all.filter((p) => (p.stock || 0) > 0);
 });
+
+/**
+ * Helper to get all categories from catalog store formatted for storefront
+ */
+export function getLiveStoreCategories(): CategoryRecord[] {
+  try {
+    const store = loadCatalogStore();
+    if (store && Array.isArray(store.categories) && store.categories.length > 0) {
+      return store.categories;
+    }
+  } catch (err) {
+    console.warn("Could not load categories from catalog store:", err);
+  }
+  return [];
+}
+
+/**
+ * Server function to fetch all live categories for the storefront
+ */
+export const fetchAllCategoriesFn = createServerFn({ method: "GET" }).handler(
+  async (): Promise<CategoryRecord[]> => {
+    return getLiveStoreCategories();
+  }
+);
 
 /**
  * Server function to fetch live products for a specific category

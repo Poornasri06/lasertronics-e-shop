@@ -20,13 +20,25 @@ import { SiteLayout } from "@/components/layout/SiteLayout";
 import { Hero } from "@/components/home/Hero";
 import { CategoryRail } from "@/components/home/CategoryRail";
 import { ProductCard } from "@/components/ProductCard";
-import { categories, products as defaultFallbackProducts, registerLiveProducts } from "@/data/products";
-import { fetchAllProductsFn } from "@/lib/server-products";
+import {
+  categories,
+  products as defaultFallbackProducts,
+  registerLiveProducts,
+  registerLiveCategories,
+  useStoreCategories,
+} from "@/data/products";
+import { fetchAllProductsFn, fetchAllCategoriesFn } from "@/lib/server-products";
 
 export const Route = createFileRoute("/")({
   loader: async () => {
     try {
-      const live = await fetchAllProductsFn();
+      const [live, liveCats] = await Promise.all([
+        fetchAllProductsFn().catch(() => null),
+        fetchAllCategoriesFn().catch(() => null),
+      ]);
+      if (liveCats && liveCats.length > 0) {
+        registerLiveCategories(liveCats);
+      }
       if (live && live.length > 0) {
         registerLiveProducts(live);
         return { liveProducts: live };
@@ -109,6 +121,7 @@ const testimonials = [
 
 function Index() {
   const { liveProducts } = Route.useLoaderData();
+  const categories = useStoreCategories();
   const allProducts = (liveProducts && liveProducts.length > 0 ? liveProducts : defaultFallbackProducts).filter(
     (p) => (p.stock || 0) > 0
   );
@@ -130,14 +143,14 @@ function Index() {
             Shop by Category
           </h2>
           <p className="mx-auto mt-1.5 max-w-xl text-xs text-muted-foreground sm:text-sm">
-            Five focused ranges for Sri Lankan makers, technicians and households.
+            Explore our curated electronics, components and accessories ranges for makers, technicians and businesses.
           </p>
         </div>
 
-        {/* Mobile: horizontal scroll strip | md+: 5-column grid */}
-        <div className="mt-6 sm:mt-8 md:grid md:grid-cols-5 md:gap-3 lg:gap-4 flex gap-3 overflow-x-auto pb-2 snap-x snap-mandatory scrollbar-none -mx-4 px-4 md:mx-0 md:px-0 md:overflow-visible md:pb-0">
+        {/* Mobile: horizontal scroll strip | md+: responsive dynamic grid */}
+        <div className="mt-6 sm:mt-8 flex md:grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4 overflow-x-auto md:overflow-visible pb-2 md:pb-0 snap-x snap-mandatory scrollbar-none -mx-4 px-4 md:mx-0 md:px-0">
           {categories.map((c, i) => {
-            const Icon = categoryIcons[i] ?? Cpu;
+            const Icon = categoryIcons[i % categoryIcons.length] ?? Cpu;
             return (
               <Link
                 key={c.slug}

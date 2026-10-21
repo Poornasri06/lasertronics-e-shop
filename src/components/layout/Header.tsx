@@ -10,7 +10,6 @@ import {
   ChevronDown,
   Home,
   LayoutGrid,
-  Shield,
   Truck,
   Sparkles,
   MapPin,
@@ -24,7 +23,7 @@ import {
 import { useState, useEffect, useRef } from "react";
 import logoAsset from "@/assets/logo.jpg";
 import { useCart } from "@/lib/cart";
-import { categories, formatLKR } from "@/data/products";
+import { useStoreCategories, formatLKR } from "@/data/products";
 
 const categoryIconsMap: Record<string, typeof Smartphone> = {
   "mobile-accessories": Smartphone,
@@ -35,6 +34,7 @@ const categoryIconsMap: Record<string, typeof Smartphone> = {
 };
 
 export function Header() {
+  const categories = useStoreCategories();
   const { count, subtotal } = useCart();
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -113,14 +113,6 @@ export function Header() {
               <Phone className="size-3.5 text-sky-400" />
               <span className="font-semibold">+94 77 788 2156</span>
             </a>
-            <span className="text-slate-700">|</span>
-            <Link
-              to="/admin"
-              className="flex items-center gap-1 text-slate-400 hover:text-sky-300 transition-colors"
-            >
-              <Shield className="size-3 text-sky-400" />
-              <span>Admin Hub</span>
-            </Link>
           </div>
         </div>
       </div>

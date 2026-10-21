@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import usbcCable from "@/assets/p/usbc-cable.jpg";
 import lightningCable from "@/assets/p/lightning-cable.jpg";
 import powerbank from "@/assets/p/powerbank.jpg";
@@ -128,7 +129,7 @@ export type Product = {
   stock: number;
 };
 
-export const categories: Category[] = [
+export const defaultCategories: Category[] = [
   {
     slug: "mobile-accessories",
     name: "Mobile Accessories",
@@ -166,6 +167,73 @@ export const categories: Category[] = [
   },
 ];
 
+// Live in-memory categories array (mutated in place to keep all existing module references in sync)
+export const categories: Category[] = [...defaultCategories];
+
+// Dynamic map for O(1) slug lookup
+const liveCategoriesMap = new Map<string, Category>();
+for (const cat of defaultCategories) {
+  liveCategoriesMap.set(cat.slug, cat);
+  liveCategoriesMap.set(cat.slug.toLowerCase(), cat);
+}
+
+// React subscriber listeners for reactive components
+const categoryListeners = new Set<() => void>();
+
+export function subscribeCategories(listener: () => void): () => void {
+  categoryListeners.add(listener);
+  return () => {
+    categoryListeners.delete(listener);
+  };
+}
+
+export function registerLiveCategories(items: Array<{ id?: string; slug?: string; name: string; tagline?: string; description?: string }>) {
+  if (!items || !Array.isArray(items) || items.length === 0) return;
+
+  for (const item of items) {
+    const slug = item?.slug || item?.id;
+    if (!slug) continue;
+    const cat: Category = {
+      slug,
+      name: item.name,
+      tagline: item.tagline || "",
+      description: item.description || "",
+    };
+    liveCategoriesMap.set(slug, cat);
+    liveCategoriesMap.set(slug.toLowerCase(), cat);
+  }
+
+  const uniqueCats = Array.from(new Set(liveCategoriesMap.values()));
+  categories.length = 0;
+  categories.push(...uniqueCats);
+
+  categoryListeners.forEach((fn) => {
+    try {
+      fn();
+    } catch (e) {
+      console.warn("Category listener error:", e);
+    }
+  });
+}
+
+export function getCategories(): Category[] {
+  return categories;
+}
+
+export function useStoreCategories(): Category[] {
+  const [cats, setCats] = useState<Category[]>(() => [...categories]);
+
+  useEffect(() => {
+    setCats([...categories]);
+    const unsubscribe = subscribeCategories(() => {
+      setCats([...categories]);
+    });
+    return unsubscribe;
+  }, []);
+
+  return cats;
+}
+
 import { seedProducts } from "./seed-products";
 
 // Initial fallback products (full live catalog is served via server functions)
@@ -201,7 +269,15 @@ export function getRegisteredLiveProducts(): Product[] {
 export const formatLKR = (value: number) =>
   `LKR ${value.toLocaleString("en-LK", { maximumFractionDigits: 0 })}`;
 
-export const getCategory = (slug: string) => categories.find((c) => c.slug === slug);
+export const getCategory = (slug: string) => {
+  if (!slug) return undefined;
+  const lower = slug.toLowerCase();
+  return (
+    liveCategoriesMap.get(slug) ||
+    liveCategoriesMap.get(lower) ||
+    categories.find((c) => c.slug === slug || c.slug.toLowerCase() === lower)
+  );
+};
 
 export const productsByCategory = (slug: string, limit?: number) => {
   const liveList = getRegisteredLiveProducts().filter(
