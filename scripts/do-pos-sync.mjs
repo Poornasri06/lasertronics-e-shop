@@ -27,13 +27,11 @@ async function run() {
   const rawProducts = json.data;
   console.log("Total POS items fetched:", rawProducts.length);
 
-  // Filter for items with stock > 0 and price > 0
-  const inStock = rawProducts.filter((p) => {
-    const qty = parseFloat(p.stock_qty || "0");
-    const price = parseFloat(p.selling_price || "0");
-    return qty > 0 && price > 0 && p.product_name && p.product_name.trim();
-  });
-  console.log("In-stock items with valid price:", inStock.length);
+  // Process all valid POS products from InTouch ERP
+  const allValidProducts = rawProducts.filter(
+    (p) => p.product_name && p.product_name.trim()
+  );
+  console.log("Total valid POS items to sync:", allValidProducts.length);
 
   // Load existing catalog-db.json
   const dbPath = path.resolve(process.cwd(), "src/data/catalog-db.json");
@@ -97,7 +95,7 @@ async function run() {
   const now = new Date().toISOString();
   const syncedProducts = [];
 
-  for (const item of inStock) {
+  for (const item of allValidProducts) {
     const sku = item.sub_sku || item.sku || item.product_id;
     const existing = existingMap.get(sku.toLowerCase());
 
@@ -145,7 +143,7 @@ async function run() {
       specs: [
         { label: "SKU", value: sku },
         { label: "Unit", value: item.unit || "Pc(s)" },
-        { label: "Availability", value: "In Stock" },
+        { label: "Availability", value: stock > 0 ? "In Stock" : "Out of Stock" },
         ...(item.sub_sku && item.sub_sku !== item.sku ? [{ label: "Variation SKU", value: item.sub_sku }] : []),
         ...(item.variation_name ? [{ label: "Variation", value: item.variation_name }] : []),
       ],
@@ -170,6 +168,15 @@ async function run() {
   fs.writeFileSync(dbPath, JSON.stringify(db, null, 2), "utf-8");
   console.log("Successfully written synced products to src/data/catalog-db.json!");
   console.log("File size:", (fs.statSync(dbPath).size / (1024 * 1024)).toFixed(2), "MB");
+
+  // Also save to public/data/catalog-db.json for static availability
+  const publicDbPath = path.resolve(process.cwd(), "public/data/catalog-db.json");
+  const publicDir = path.dirname(publicDbPath);
+  if (!fs.existsSync(publicDir)) {
+    fs.mkdirSync(publicDir, { recursive: true });
+  }
+  fs.writeFileSync(publicDbPath, JSON.stringify(db, null, 2), "utf-8");
+  console.log("Successfully written synced products to public/data/catalog-db.json!");
 }
 
 run().catch(console.error);

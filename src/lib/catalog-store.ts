@@ -1317,7 +1317,35 @@ export interface AdminCatalogResponse {
 
 export const fetchAdminCatalogFn = createServerFn({ method: "GET" }).handler(
   async (): Promise<AdminCatalogResponse> => {
-    const store = loadCatalogStore();
+    let store = loadCatalogStore();
+
+    // If store products only has the 15 fallback items, try reloading catalog or sync all POS products
+    if (!store.products || store.products.length <= 50) {
+      const dbPath = getDbFilePath();
+      try {
+        if (fs && typeof fs.existsSync === "function" && fs.existsSync(dbPath)) {
+          const raw = fs.readFileSync(dbPath, "utf-8");
+          const parsed = JSON.parse(raw);
+          if (parsed && Array.isArray(parsed.products) && parsed.products.length > 50) {
+            store = parsed;
+            saveCatalogStore(store);
+          }
+        }
+      } catch (e) {
+        console.warn("Could not reload catalog-db.json in admin handler:", e);
+      }
+
+      // If still <= 50 (e.g. running on Vercel without local JSON access), auto-sync from POS
+      if (!store.products || store.products.length <= 50) {
+        try {
+          await syncProductsFromPos(false);
+          store = loadCatalogStore();
+        } catch (err) {
+          console.warn("Auto-sync from InTouch POS failed:", err);
+        }
+      }
+    }
+
     const categories = store.categories;
     const products = store.products;
     const media = store.media;
@@ -1576,22 +1604,52 @@ export const fetchLivePosItemsFn = createServerFn({ method: "POST" })
       if (!rawItems || !Array.isArray(rawItems)) {
         return { success: false, items: [], message: "No items returned from InTouch POS" };
       }
+
+      const store = loadCatalogStore();
+      const existingProductMap = new Map<string, string>();
+      for (const p of store.products) {
+        if (p.sku && p.categoryId) {
+          existingProductMap.set(p.sku.toLowerCase(), p.categoryId);
+        }
+      }
+      const categoryNameMap = new Map<string, string>();
+      for (const c of store.categories) {
+        categoryNameMap.set(c.id, c.name);
+      }
+
+      function detectCategory(name: string): string {
+        const lower = name.toLowerCase();
+        if (/solder|iron|toolkit|driver|tweezer|desolder|pump|station|flux|paste|cutter|plier|magnif|mat|antistatic|pry/.test(lower)) return "repair-kits";
+        if (/esp32|esp8266|arduino|nodemcu|uno|nano|mega|stm32|raspberry|pi|sensor|ultrasonic|dht|pir|relay|servo|step|motor|oled|lcd|module|iot/.test(lower)) return "iot-and-microcontrollers";
+        if (/tv|remote|hdmi|av|displayport|vga|optical|splitter|switch|converter|wallmount|bracket/.test(lower)) return "tv-accessories";
+        if (/cable|charger|power bank|powerbank|earbuds|headphone|holder|stand|magsafe|battery|usb|type-c|lightning/.test(lower)) return "mobile-accessories";
+        return "electronics";
+      }
+
       const filtered = (
         inStockOnly
           ? rawItems.filter((p) => parseFloat(p.stock_qty || "0") > 0 && p.product_name)
           : rawItems.filter((p) => Boolean(p.product_name))
-      ).map((p) => ({
-        sku: p.sub_sku || p.sku || p.product_id,
-        name: p.product_name,
-        basePrice:
-          parseFloat(p.purchase_price || "0") > 0
-            ? parseFloat(p.purchase_price || "0")
-            : parseFloat(p.selling_price || "0"),
-        sellingPrice: parseFloat(p.selling_price || "0"),
-        stock: Math.max(0, Math.floor(parseFloat(p.stock_qty || "0"))),
-        unit: p.unit || "Pc(s)",
-        variation: p.variation_name || "",
-      }));
+      ).map((p) => {
+        const sku = p.sub_sku || p.sku || p.product_id;
+        const categoryId = existingProductMap.get(sku.toLowerCase()) || detectCategory(p.product_name);
+        const categoryName = categoryNameMap.get(categoryId) || categoryId;
+
+        return {
+          sku,
+          name: p.product_name,
+          categoryId,
+          categoryName,
+          basePrice:
+            parseFloat(p.purchase_price || "0") > 0
+              ? parseFloat(p.purchase_price || "0")
+              : parseFloat(p.selling_price || "0"),
+          sellingPrice: parseFloat(p.selling_price || "0"),
+          stock: Math.max(0, Math.floor(parseFloat(p.stock_qty || "0"))),
+          unit: p.unit || "Pc(s)",
+          variation: p.variation_name || "",
+        };
+      });
 
       return { success: true, items: filtered };
     } catch (err: unknown) {

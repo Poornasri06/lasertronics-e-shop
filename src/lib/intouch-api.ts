@@ -140,7 +140,7 @@ export async function fetchInTouchAllProducts(
       Accept: "application/json",
     },
     body: formParams.toString(),
-    signal: AbortSignal.timeout(15000),
+    signal: AbortSignal.timeout(45000),
   });
 
   if (!response.ok) {
@@ -196,7 +196,7 @@ export async function fetchInTouchProductBySku(
   return result.data;
 }
 
-function detectCategory(name: string): string {
+export function detectCategory(name: string): string {
   const lower = name.toLowerCase();
   if (/solder|iron|toolkit|driver|tweezer|desolder|pump|station|flux|paste|cutter|plier|magnif|mat|antistatic|pry/.test(lower)) {
     return "repair-kits";

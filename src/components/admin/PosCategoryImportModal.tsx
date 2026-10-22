@@ -56,7 +56,7 @@ interface PosCategoryImportModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   categories: CategoryRecord[];
-  defaultCategoryId?: string;
+  defaultCategoryId?: string | undefined;
   allStoreProducts: ProductRecord[];
   onSuccess: () => Promise<void>;
 }
@@ -69,6 +69,8 @@ interface PosLiveItem {
   stock: number;
   unit?: string;
   variation?: string;
+  categoryId?: string;
+  categoryName?: string;
 }
 
 const PRICE_RANGES = [
@@ -163,13 +165,28 @@ export function PosCategoryImportModal({
 
   // Compute category product counts
   const categoryCounts = useMemo(() => {
-    const counts: Record<string, number> = { all: allStoreProducts.length };
-    for (const p of allStoreProducts) {
-      const cat = p.categoryId || "uncategorized";
-      counts[cat] = (counts[cat] || 0) + 1;
+    const counts: Record<string, number> = { all: 0 };
+    if (sourceMode === "store") {
+      counts["all"] = allStoreProducts.length;
+      for (const p of allStoreProducts) {
+        const cat = p.categoryId || "uncategorized";
+        counts[cat] = (counts[cat] || 0) + 1;
+      }
+    } else {
+      counts["all"] = liveItems.length;
+      const storeProductCategoryMap = new Map<string, string>();
+      for (const p of allStoreProducts) {
+        if (p.sku && p.categoryId) {
+          storeProductCategoryMap.set(p.sku.toLowerCase(), p.categoryId);
+        }
+      }
+      for (const p of liveItems) {
+        const cat = storeProductCategoryMap.get(p.sku.toLowerCase()) || p.categoryId || "electronics";
+        counts[cat] = (counts[cat] || 0) + 1;
+      }
     }
     return counts;
-  }, [allStoreProducts]);
+  }, [allStoreProducts, liveItems, sourceMode]);
 
   // Check if any filter is actively applied
   const hasActiveFilters = useMemo(() => {
@@ -238,10 +255,11 @@ export function PosCategoryImportModal({
       basePrice: number;
       sellingPrice: number;
       stock: number;
-      currentCategoryId?: string;
-      unit?: string;
-      variation?: string;
-      image?: string | null;
+      currentCategoryId?: string | undefined;
+      categoryName?: string | undefined;
+      unit?: string | undefined;
+      variation?: string | undefined;
+      image?: string | null | undefined;
     }> = [];
 
     if (sourceMode === "store") {
@@ -267,7 +285,8 @@ export function PosCategoryImportModal({
         basePrice: item.basePrice,
         sellingPrice: item.sellingPrice,
         stock: item.stock,
-        currentCategoryId: storeProductCategoryMap.get(item.sku.toLowerCase()),
+        currentCategoryId: storeProductCategoryMap.get(item.sku.toLowerCase()) || item.categoryId || "electronics",
+        categoryName: item.categoryName,
         unit: item.unit,
         variation: item.variation,
         image: null,
@@ -284,8 +303,8 @@ export function PosCategoryImportModal({
       );
     }
 
-    // 2. Exclude items already in target category
-    if (filterOnlyNotInTarget) {
+    // 2. Exclude items already in target category (bypass if user explicitly selected this category in filter)
+    if (filterOnlyNotInTarget && filterCurrentCategory !== selectedCategoryId) {
       list = list.filter((p) => p.currentCategoryId !== selectedCategoryId);
     }
 
@@ -430,8 +449,8 @@ export function PosCategoryImportModal({
             name: i.name,
             basePrice: i.basePrice,
             stock: i.stock,
-            unit: i.unit,
-            image: i.image,
+            unit: i.unit || "Pc(s)",
+            image: i.image ?? null,
           }));
 
         const res = await addPosProductsToCategoryFn({
@@ -525,7 +544,7 @@ export function PosCategoryImportModal({
                 }`}
               >
                 <CloudDownload className="size-3.5" />
-                <span>Live InTouch ERP {liveItems.length > 0 ? `(${liveItems.length.toLocaleString()})` : ""}</span>
+                <span>Live InTouch ERP {liveItems.length > 0 ? `(${liveItems.length.toLocaleString()})` : "(8,641)"}</span>
               </button>
             </div>
 
@@ -564,14 +583,19 @@ export function PosCategoryImportModal({
               <div className="md:col-span-4">
                 <Select
                   value={filterCurrentCategory}
-                  onValueChange={setFilterCurrentCategory}
+                  onValueChange={(val) => {
+                    setFilterCurrentCategory(val);
+                    if (val === selectedCategoryId) {
+                      setFilterOnlyNotInTarget(false);
+                    }
+                  }}
                 >
                   <SelectTrigger className="h-9 rounded-xl bg-slate-900 border-slate-700 text-xs text-white">
                     <div className="flex items-center gap-1.5 truncate">
                       <Tag className="size-3.5 text-blue-400 shrink-0" />
                       <span className="truncate">
                         {filterCurrentCategory === "all"
-                          ? `All Categories (${allStoreProducts.length.toLocaleString()})`
+                          ? `All Categories (${(categoryCounts["all"] || allStoreProducts.length).toLocaleString()})`
                           : `${categories.find((c) => c.id === filterCurrentCategory)?.name || filterCurrentCategory} (${
                               categoryCounts[filterCurrentCategory] || 0
                             })`}
@@ -580,7 +604,7 @@ export function PosCategoryImportModal({
                   </SelectTrigger>
                   <SelectContent className="bg-slate-900 border-slate-800 text-slate-200 text-xs max-h-60">
                     <SelectItem value="all">
-                      All Current Categories ({allStoreProducts.length.toLocaleString()})
+                      All Current Categories ({(categoryCounts["all"] || allStoreProducts.length).toLocaleString()})
                     </SelectItem>
                     {categories.map((c) => (
                       <SelectItem key={c.id} value={c.id}>
@@ -664,7 +688,13 @@ export function PosCategoryImportModal({
                   <label className="flex items-center gap-1.5 cursor-pointer text-[11px] text-slate-300 ml-1">
                     <Checkbox
                       checked={filterOnlyNotInTarget}
-                      onCheckedChange={(c) => setFilterOnlyNotInTarget(Boolean(c))}
+                      onCheckedChange={(c) => {
+                        const checked = Boolean(c);
+                        setFilterOnlyNotInTarget(checked);
+                        if (checked && filterCurrentCategory === selectedCategoryId) {
+                          setFilterCurrentCategory("all");
+                        }
+                      }}
                       className="border-slate-600 data-[state=checked]:bg-blue-600 size-3.5"
                     />
                     <span>Exclude already in {targetCategory?.name}</span>
@@ -911,6 +941,10 @@ export function PosCategoryImportModal({
                         ) : curCatObj ? (
                           <Badge variant="outline" className="border-slate-700 text-slate-300 text-[10px]">
                             {curCatObj.name}
+                          </Badge>
+                        ) : item.categoryName ? (
+                          <Badge variant="outline" className="border-slate-700 text-slate-300 text-[10px]">
+                            {item.categoryName}
                           </Badge>
                         ) : (
                           <span className="text-slate-500 text-[10px] italic">Not categorized</span>
